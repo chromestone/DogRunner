@@ -13,7 +13,7 @@ import org.qohs.dogrunner.gameobjects.GameObject;
 public class ClickHandler extends GameObject {
 	
 
-	public ClickHandler(int x, int y, int width, int height) {
+	public ClickHandler(float x, float y, float width, float height) {
 		
 		super(x, y, width, height);
 	}
