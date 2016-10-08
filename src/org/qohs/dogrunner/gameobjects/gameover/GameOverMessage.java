@@ -22,7 +22,7 @@ public class GameOverMessage extends GameObject {
 	//***consider implementing a button instead***
 	private int clicks;
 	
-	public GameOverMessage(int x, int y, int width, int height) {
+	public GameOverMessage(float x, float y, float width, float height) {
 		
 		super(x, y, width, height);
 		
