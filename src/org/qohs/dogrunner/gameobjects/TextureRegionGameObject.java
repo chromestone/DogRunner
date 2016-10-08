@@ -22,7 +22,7 @@ public class TextureRegionGameObject extends GameObject {
 	 * @param height
 	 * @param tRegion
 	 */
-	public TextureRegionGameObject(int x, int y, int width, int height, TextureRegion tRegion) {
+	public TextureRegionGameObject(float x, float y, float width, float height, TextureRegion tRegion) {
 		
 		super(x, y, width, height);
 		
@@ -31,7 +31,7 @@ public class TextureRegionGameObject extends GameObject {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		
+
 		batch.draw(tRegion, x, y, width, height);
 	}
 }
