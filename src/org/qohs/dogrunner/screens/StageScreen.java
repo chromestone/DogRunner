@@ -41,6 +41,14 @@ public abstract class StageScreen implements Screen {
 		stage.act(delta);
 		stage.draw();
 	}
+	
+	/**
+	 * Method can be used to simplify the render method
+	 * in some subclasses.
+	 * @param delta
+	 */
+	protected void act(float delta) {
+	}
 
 	@Override
 	public void resize(int width, int height) {
