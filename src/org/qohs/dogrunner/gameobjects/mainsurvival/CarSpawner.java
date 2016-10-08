@@ -27,8 +27,10 @@ public class CarSpawner {
 	
 	private World world;
 	
-	private Array<Car> carArray;
+	private Array<Body> carArray;
 	
+	//THESE SHOULD BE USED/SET BY THE MAIN SURVIVAL WORLD
+	//AND THUS ARE IN --->METERS<---
 	private float gameWidth, gameHeight;
 	
 	private float time;
@@ -44,7 +46,7 @@ public class CarSpawner {
 		
 		this.world = world;
 		
-		carArray = new Array<Car>(10);
+		carArray = new Array<Body>(10);
 		
 		this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
@@ -54,54 +56,79 @@ public class CarSpawner {
 		carTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.RED_CAR.fileName, Texture.class));
 		carTexture.flip(false, true);
 		
-		carHeight = gameHeight / 4;
+		carHeight = 7f * gameHeight / 48f;
 		carWidth = carHeight / carTexture.getTexture().getHeight() * carTexture.getTexture().getWidth();
 		
 		time = (occuringLength + carWidth) / VELOCITY;
 	}
-
-	public void render(float delta) {
-
+	
+	public void act(float delta) {
+		
 		float frameTime = Math.min(delta, 0.25f);
 		accumulator += frameTime;
 		if (accumulator >= time) {
 			
 			Body body = createCarBody();
-			carArray.add(new Car(body));
+			carArray.add(body);
 
 			accumulator = 0;
 		}
-		
-		Iterator<Car> iterator = carArray.iterator();
-		dogRunner.batch.begin();
+		Iterator<Body> iterator = carArray.iterator();
 		while (iterator.hasNext()) {
 			
-			Car car = iterator.next();
-			if (car.render()) {
+			Body car = iterator.next();
+			if (car.getPosition().x + carWidth / 2 < 0) {
 				
 				iterator.remove();
-				world.destroyBody(car.body);
+				world.destroyBody(car);
 				dogRunner.userProfile.score += 10;
 			}
 		}
+	}
+
+	public void render() {
+		
+		Iterator<Body> iterator = carArray.iterator();
+		dogRunner.batch.begin();
+		while (iterator.hasNext()) {
+			
+			Body car = iterator.next();
+			dogRunner.batch.draw(carTexture, car.getPosition().x - carWidth / 2, car.getPosition().y - carHeight / 2, carWidth, carHeight);
+		}
 		dogRunner.batch.end();
+		
+		/*
+		//DEBUGGING
+		iterator = carArray.iterator();
+		dogRunner.renderer.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
+		while (iterator.hasNext()) {
+			
+			Body car = iterator.next();
+			dogRunner.renderer.rect(car.getPosition().x - (carWidth - 7f) / 2, car.getPosition().y - (carHeight - 7f) / 2, carWidth - 7f, carHeight - 7f);
+		}
+		dogRunner.renderer.end();
+		*/
 	}
 	
 	private Body createCarBody() {
 		
 		BodyDef bodyDef = new BodyDef();  
 		// Set its world position
-		int choice = (int) (Math.random() * 3);
-		float randomFactor = gameHeight / 6;
-		if (choice > 0) {
+		int choice = (int) (Math.random() * 6);
+		float randomFactor = gameHeight / 48;
+//		if (choice > 0) {
+//			
+//			randomFactor += gameHeight / 48 + carHeight;
+//			if (choice > 1) {
+//				
+//				randomFactor += gameHeight / 48 + carHeight;
+//			}
+//		}
+		for (int i = choice; i > 0; i--) {
 			
-			randomFactor += gameHeight / 12 + carHeight;
-			if (choice > 1) {
-				
-				randomFactor += gameHeight / 12 + carHeight;
-			}
+			randomFactor += gameHeight / 48 + carHeight;
 		}
-		bodyDef.position.set(gameWidth + carWidth / 2, randomFactor);  
+		bodyDef.position.set(gameWidth + (carWidth - 7f) / 2, randomFactor + (carHeight - 4f) / 2);  
 		bodyDef.linearVelocity.set(-VELOCITY, 0);
 		bodyDef.type = BodyType.DynamicBody;
 
@@ -111,36 +138,12 @@ public class CarSpawner {
 		// Create a polygon shape
 		PolygonShape shape = new PolygonShape();  
 		//it's actually a radius
-		shape.setAsBox(carWidth / 2, carHeight / 2);
+		shape.setAsBox((carWidth - 7f) / 2, (carHeight - 4f) / 2);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		body.createFixture(shape, 0.0f); 
 		// Clean up after ourselves
 		shape.dispose();
 		
 		return body;
-	}
-	
-	private class Car {
-		
-		protected final Body body;
-		
-		public Car(Body body) {
-			
-			this.body = body;
-		}
-		
-		//returns true if out of bounds
-		public boolean render() {
-			
-			CarSpawner parent = CarSpawner.this;
-			
-			if (body.getPosition().x + parent.carWidth / 2 < 0) {
-				
-				return true;
-			}
-
-			dogRunner.batch.draw(parent.carTexture, body.getPosition().x - parent.carWidth / 2, body.getPosition().y - parent.carHeight / 2, parent.carWidth, parent.carHeight);
-			return false;
-		}
 	}
 }
