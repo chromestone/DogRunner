@@ -38,14 +38,14 @@ public abstract class GameObject extends Actor {
 	}
 	
 	/**
-	 * When the player clicks down on this object
+	 * When the player clicks down on this object.
 	 */
 	public void animateDown() {
 		
 	}
 	
 	/**
-	 * When the player clicks up on this object
+	 * When the player clicks up on this object.
 	 * (releases finger/mouse)
 	 */
 	public void animateUp() {
@@ -53,15 +53,15 @@ public abstract class GameObject extends Actor {
 	}
 	
 	/**
-	 * Called before animateUp()
+	 * Called before animateUp().
 	 */
 	public void clicked() {
 		
 	}
 	
 	/**
-	 * called to check if a click is on this object (before anything else)
-	 * if the game object is not a rectangle, then override this method
+	 * Called to check if a click is on this object (before anything else).
+	 * If the game object is not a rectangle, then override this method.
 	 * @param x
 	 * @param y
 	 * @return
@@ -75,40 +75,29 @@ public abstract class GameObject extends Actor {
 		
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-			
-			if (GameObject.this.collision(x, y)) {
 
-				GameObject.this.clicked();
-			}
+			GameObject.this.clicked();
 		}
 		
 		@Override
 		public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-			
-			super.exit(event, x, y, pointer, toActor);
 
+			super.exit(event, x, y, pointer, toActor);
 			GameObject.this.animateUp();
 		}
 		
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			
-			if (GameObject.this.collision(x, y)) { 
-				
-				super.touchDown(event, x, y, pointer, button);
 
-				GameObject.this.animateDown();
-
-				return true;
-			}
-			return false;
+			super.touchDown(event, x, y, pointer, button);
+			GameObject.this.animateDown();
+			return true;
 		}
 		
 		@Override
 		public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-			
+
 			super.touchUp(event, x, y, pointer, button);
-			
 			GameObject.this.animateUp();
 		}
 	}
