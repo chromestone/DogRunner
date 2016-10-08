@@ -27,12 +27,10 @@ public class StartScreen extends StageScreen {
 		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogAssets.DALMATIAN.fileName, Texture.class));
 		//ratio = new height / picture height
 		//width = ratio * picture width
-		double width = (dogRunner.GAME_HEIGHT * 1.0) / tRegion.getTexture().getHeight() * tRegion.getTexture().getWidth();
+		float width = (dogRunner.GAME_HEIGHT * 1.0f) / tRegion.getTexture().getHeight() * tRegion.getTexture().getWidth();
 		tRegion.flip(false, true);
-		GameObject trGameObj = new TextureRegionGameObject(dogRunner.GAME_WIDTH / 10,
-				0,
-				(int) width,
-				dogRunner.GAME_HEIGHT,
+		GameObject trGameObj = new TextureRegionGameObject(dogRunner.GAME_WIDTH / 10f, 0f,
+				width, dogRunner.GAME_HEIGHT,
 				tRegion);
 		stage.addActor(trGameObj);
 	}
