@@ -15,7 +15,7 @@ public class TestObject extends GameObject {
 	
 	private Color color;
 
-	public TestObject(int x, int y, int width, int height) {
+	public TestObject(float x, float y, float width, float height) {
 		
 		super(x, y, width, height);
 		
