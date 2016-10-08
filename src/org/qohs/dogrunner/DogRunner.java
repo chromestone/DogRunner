@@ -131,6 +131,9 @@ public class DogRunner extends Game {
 		assetManager.load(DogAssets.FERRARI_CAR.fileName, Texture.class);
 		assetManager.load(DogAssets.RED_CAR.fileName, Texture.class);
 		assetManager.load(DogAssets.GAME_OVER_EXPLOSION.fileName, Texture.class);
+		assetManager.load(DogAssets.PAUSE_IMAGE.fileName, Texture.class);
+		assetManager.load(DogAssets.RESUME_IMAGE.fileName, Texture.class);
+		
 		assetManager.load(DogAssets.ENGINE_REV.fileName, Sound.class);
 		assetManager.load(DogAssets.CAR_CRASH_BONG.fileName, Sound.class);
 	}
@@ -140,7 +143,6 @@ public class DogRunner extends Game {
 		
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
 		super.render();
 	}
 	

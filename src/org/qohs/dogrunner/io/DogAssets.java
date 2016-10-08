@@ -10,15 +10,17 @@ package org.qohs.dogrunner.io;
  */
 public enum DogAssets {
 	
-	COMIC_SANS40("placeholder/comic_sans40.ttf"),
-	COMIC_SANS5("placeholder/comic_sans5.ttf"),
+	COMIC_SANS40("comic_sans40.ttf"),
+	COMIC_SANS5("comic_sans5.ttf"),
 	COMIC_SANS_GREEN("placeholder/comic_sans_green.ttf"),
 	DALMATIAN("placeholder/dalmatian.png"),
 	FERRARI_CAR("placeholder/ferrari_car.png"),
 	RED_CAR("placeholder/red_car.png"),
 	ENGINE_REV("placeholder/vroom.mp3"),
 	CAR_CRASH_BONG("placeholder/bong.mp3"),
-	GAME_OVER_EXPLOSION("placeholder/explosion.jpg");
+	GAME_OVER_EXPLOSION("placeholder/explosion.jpg"),
+	PAUSE_IMAGE("placeholder/pause.png"),
+	RESUME_IMAGE("placeholder/resume.png");
 
 	public final String fileName;
 	
