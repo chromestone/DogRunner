@@ -17,7 +17,7 @@ public class StartButton extends GameObject {
 	private float fontX, fontY;
 	private BitmapFont font;
 	
-	public StartButton(int x, int y, int width, int height) {
+	public StartButton(float x, float y, float width, float height) {
 		
 		super(x, y, width, height);
 		
