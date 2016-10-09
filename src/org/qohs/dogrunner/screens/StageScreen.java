@@ -38,7 +38,7 @@ public abstract class StageScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		
-		stage.act(delta);
+		act(delta);
 		stage.draw();
 	}
 	
@@ -47,7 +47,9 @@ public abstract class StageScreen implements Screen {
 	 * in some subclasses.
 	 * @param delta
 	 */
-	protected void act(float delta) {
+	public void act(float delta) {
+		
+		stage.act(delta);
 	}
 
 	@Override
