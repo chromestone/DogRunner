@@ -128,7 +128,7 @@ public class CarSpawner {
 			
 			randomFactor += gameHeight / 48 + carHeight;
 		}
-		bodyDef.position.set(gameWidth + (carWidth - 7f) / 2, randomFactor + (carHeight - 4f) / 2);  
+		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2, randomFactor + (carHeight - 4f) / 2);  
 		bodyDef.linearVelocity.set(-VELOCITY, 0);
 		bodyDef.type = BodyType.DynamicBody;
 
@@ -138,7 +138,7 @@ public class CarSpawner {
 		// Create a polygon shape
 		PolygonShape shape = new PolygonShape();  
 		//it's actually a radius
-		shape.setAsBox((carWidth - 7f) / 2, (carHeight - 4f) / 2);
+		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, (carHeight - 4f) / 2);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		body.createFixture(shape, 0.0f); 
 		// Clean up after ourselves

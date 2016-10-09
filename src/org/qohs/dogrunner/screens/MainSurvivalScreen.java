@@ -112,7 +112,7 @@ public class MainSurvivalScreen extends StageScreen {
 		MainSurvivalWorld.Definition def = new MainSurvivalWorld.Definition();
 		def.meterWidth = meterWidth;
 		def.meterHeight = meterHeight;
-		def.carWidth = carWidth - 7f;
+		def.carWidth = carWidth - meterWidth * (21f / 500f);//7f on a 5:3 ratio; I simplified the equation
 		def.carHeight = carHeight - 4f;
 		
 		physicsWorld = new MainSurvivalWorld(new Vector2(0f, 0f), true, def);
@@ -182,20 +182,19 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		carSpawner.render();
 		
+		//draws the player's car
 		dogRunner.batch.begin();
 		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
 		dogRunner.batch.end();
 		
-		/*
 		//DEBUGGING
 		dogRunner.renderer.begin(ShapeType.Line);
 		dogRunner.renderer.rect(physicsWorld.carBody.getPosition().x - (carWidth - 7f) / 2, physicsWorld.carBody.getPosition().y - (carHeight - 4f) / 2, carWidth - 7f, carHeight - 4f);
 		dogRunner.renderer.end();
-		*/
+		
+		stage.draw();
 		
 		textRenderer.render();
-		
-		super.render(delta);
 		
 		if (pauseButton.queryClicked()) {
 			
@@ -208,7 +207,10 @@ public class MainSurvivalScreen extends StageScreen {
 	}
 	
 	@Override
-	protected void act(float delta) {
+	public void act(float delta) {
+		
+		//stage acting is currently not needed
+		//stage.act();
 		
 		physicsWorld.act(delta);
 		carSpawner.act(delta);
