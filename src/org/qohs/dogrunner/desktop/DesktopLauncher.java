@@ -13,6 +13,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Dog Runner";
+		//current testing configuration is a 5:3 ratio
+		//not true for all android devices
 		config.width = 800;
 		config.height = 480;
 		config.resizable = false;
