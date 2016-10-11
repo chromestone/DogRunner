@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 
 /**
+ * This class spawns the cars in the Main Survival World
  * 
  * @author Derek Zhang
  *
