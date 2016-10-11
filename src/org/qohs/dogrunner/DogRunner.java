@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 /**
  * I wrote this class; thug life.
  * 
- * @author derekzhang
+ * @author Derek Zhang
  *
  */
 public class DogRunner extends Game {
@@ -113,7 +113,16 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
-		assetManager.load(DogAssets.COMIC_SANS5.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.COMIC_SANS10.fileName, BitmapFont.class, fTFLP);
+		
+		fTFLP = new FreeTypeFontLoaderParameter();
+		//actual directory of file
+		fTFLP.fontFileName = "comic_sans.ttf";
+		fTFLP.fontParameters.size = 70;
+		fTFLP.fontParameters.color = Color.GOLD;
+		fTFLP.fontParameters.flip = true;
+
+		assetManager.load(DogAssets.COMIC_SANS70.fileName, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -123,7 +132,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.CYAN;
 		fTFLP.fontParameters.flip = true;
 
-		assetManager.load(DogAssets.COMIC_SANS_GREEN.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.COMIC_SANS_CYAN.fileName, BitmapFont.class, fTFLP);
 
 
 		//name in this case (pictures) matters [must reflect actual path]
