@@ -26,7 +26,7 @@ public class GameOverMessage extends GameObject {
 		
 		super(x, y, width, height);
 		
-		font = dogRunner.assetManager.get(DogAssets.COMIC_SANS_GREEN.fileName, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogAssets.COMIC_SANS_CYAN.fileName, BitmapFont.class);
 		
 		////////////////////////////////
 		//
