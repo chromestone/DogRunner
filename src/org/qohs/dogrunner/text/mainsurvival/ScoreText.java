@@ -27,9 +27,9 @@ public class ScoreText extends TextObject {
 		GlyphLayout glyphLayout = new GlyphLayout();
 		glyphLayout.setText(font, text);
 
-		float fontX = dogRunner.GAME_WIDTH - glyphLayout.width ;//width - glyphLayout.width / fairies.GAME_WIDTH * width;
+		//float fontX = width - glyphLayout.width / fairies.GAME_WIDTH * width;
 		//float fontY = glyphLayout.height / 2;//height + glyphLayout.height / fairies.GAME_HEIGHT * height;
 		
-		font.draw(batch, glyphLayout, fontX, 0f);
+		font.draw(batch, glyphLayout, dogRunner.GAME_WIDTH - glyphLayout.width, 0f);
 	}
 }
