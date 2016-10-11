@@ -32,6 +32,18 @@ public class TextRenderer {
 		
 		textObjs.add(textObj);
 	}
+	
+	/**
+	 * Note that currently only exact memory location (==) is used for comparison
+	 * future implementations will include option of .equals()
+	 * 
+	 * @param textObj
+	 * @return whether or not if the object was successfully removed
+	 */
+	public boolean remove(TextObject textObj) {
+		
+		return textObjs.removeValue(textObj, true);
+	}
 
 	public void render() {
 		
