@@ -11,8 +11,9 @@ package org.qohs.dogrunner.io;
 public enum DogAssets {
 	
 	COMIC_SANS40("comic_sans40.ttf"),
-	COMIC_SANS5("comic_sans5.ttf"),
-	COMIC_SANS_GREEN("placeholder/comic_sans_green.ttf"),
+	COMIC_SANS10("comic_sans10.ttf"),
+	COMIC_SANS70("comic_sans70.ttf"),
+	COMIC_SANS_CYAN("comic_sans_cyan.ttf"),
 	DALMATIAN("placeholder/dalmatian.png"),
 	FERRARI_CAR("placeholder/ferrari_car.png"),
 	RED_CAR("placeholder/red_car.png"),
