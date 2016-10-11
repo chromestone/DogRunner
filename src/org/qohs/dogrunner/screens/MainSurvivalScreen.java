@@ -3,8 +3,10 @@ package org.qohs.dogrunner.screens;
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.mainsurvival.*;
 import org.qohs.dogrunner.io.DogAssets;
+import org.qohs.dogrunner.text.CenteredText;
 import org.qohs.dogrunner.text.TextRenderer;
 import org.qohs.dogrunner.text.mainsurvival.ScoreText;
+import org.qohs.dogrunner.util.Countdown;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
@@ -22,6 +24,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class MainSurvivalScreen extends StageScreen {
 	
+	private enum GameState {
+		
+		PAUSED, COUNTDOWN, RESUMED
+	}
+	
 	private OrthographicCamera cam;
 
 	private MainSurvivalWorld physicsWorld;
@@ -33,7 +40,8 @@ public class MainSurvivalScreen extends StageScreen {
 	private ClickListener upperHandler;
 	private ClickListener lowerHandler;
 	
-	private boolean gamePaused;
+	private GameState gameState;
+	
 	private QueryButton pauseButton;
 	private QueryButton playButton;
 	
@@ -45,6 +53,9 @@ public class MainSurvivalScreen extends StageScreen {
 	private CarSpawner carSpawner;
 	
 	private TextRenderer textRenderer;
+	
+	private Countdown countdown;
+	private CenteredText countdownText;
 	
 	public MainSurvivalScreen(Batch batch) {
 		
@@ -84,19 +95,20 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		stage.addActor(clickHandler);
 		
-		gamePaused = false;
-		
 		pauseButton = new QueryButton(meterWidth - meterHeight / 10, meterHeight / 2 - meterHeight / 20, meterHeight / 10, meterHeight / 10, 
 				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMAGE.fileName, Texture.class)));
 		stage.addActor(pauseButton);
 		
 		playButton = new QueryButton(meterWidth / 2 - meterHeight / 2, 0f, meterHeight, meterHeight, 
 				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMAGE.fileName, Texture.class)));
-		playButton.setTouchable(Touchable.disabled);
-		playButton.setVisible(false);
 		stage.addActor(playButton);
 		
+		//3.4-"3"-3.0-"2"-2.0-"1"-1.0-"GO"-0.0
+		countdown = new Countdown(3.4f);
+		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.COMIC_SANS70.fileName, BitmapFont.class));
+		
 		physicsWorld = null;
+		gameState = null;
 	}
 	
 	@Override
@@ -109,6 +121,7 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.batch.setProjectionMatrix(cam.combined);
 		dogRunner.renderer.setProjectionMatrix(cam.combined);
 		
+		//set up parameters for the physics world
 		MainSurvivalWorld.Definition def = new MainSurvivalWorld.Definition();
 		def.meterWidth = meterWidth;
 		def.meterHeight = meterHeight;
@@ -119,14 +132,16 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
 		
-		gamePaused = false;
+		resume();
 	}
 	
 	@Override
 	public void render(float delta) {
 		
-		if (!gamePaused) {
-
+		switch (gameState) {
+		
+		case RESUMED: {
+			
 			act(delta);
 
 			if (physicsWorld.carCrashed) {
@@ -135,14 +150,62 @@ public class MainSurvivalScreen extends StageScreen {
 				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
 				return;
 			}
-		}
-		else if (playButton.queryClicked()) {
+			
+			if (pauseButton.queryClicked()) {
 				
-			gamePaused = false;
-			playButton.setTouchable(Touchable.disabled);
-			playButton.setVisible(false);
-			pauseButton.setTouchable(Touchable.enabled);
-			pauseButton.setVisible(true);
+				pause();
+			}
+			
+			break;
+		}
+		case PAUSED: {
+			
+			if (playButton.queryClicked()) {
+				
+				gameState = GameState.COUNTDOWN;
+				countdown.reset();
+				playButton.setVisible(false);
+				playButton.setTouchable(Touchable.disabled);
+				textRenderer.add(countdownText);
+			}
+			
+			break;
+		}
+		case COUNTDOWN: {
+			
+			float seconds = countdown.update(delta);
+			if (seconds > 0f) {
+				
+				int number = (int) seconds;
+				if (number > 0) {
+					
+					countdownText.text = "" + number;
+				}
+				else {
+					
+					countdownText.text = "GO";
+				}
+			}
+			else {
+				
+				textRenderer.remove(countdownText);
+				resume();
+			}
+			
+			break;
+		}
+		default: {
+			
+			act(delta);
+
+			if (physicsWorld.carCrashed) {
+
+				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.fileName, Sound.class).play();
+				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
+				return;
+			}
+			break;
+		}
 		}
 		
 		////////////////////////////////
@@ -163,6 +226,34 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.renderer.end();
 		////////////////////////////////
 		
+		carSpawner.render();
+		
+		//draws the player's car
+		dogRunner.batch.begin();
+		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
+		dogRunner.batch.end();
+		
+		/*
+		//DEBUGGING
+		dogRunner.renderer.begin(ShapeType.Line);
+		dogRunner.renderer.rect(physicsWorld.carBody.getPosition().x - (carWidth - 7f) / 2, physicsWorld.carBody.getPosition().y - (carHeight - 4f) / 2, carWidth - 7f, carHeight - 4f);
+		dogRunner.renderer.end();
+		*/
+		
+		stage.draw();
+		
+		textRenderer.render();
+	}
+	
+	@Override
+	public void act(float delta) {
+		
+		//stage acting is currently not needed
+		//stage.act();
+		
+		physicsWorld.act(delta);
+		carSpawner.act(delta);
+		
 		//exclusive or
 		if (upperHandler.isPressed() ^ lowerHandler.isPressed()) {
 			
@@ -179,41 +270,6 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			physicsWorld.carBody.setLinearVelocity(0, 0);
 		}
-		
-		carSpawner.render();
-		
-		//draws the player's car
-		dogRunner.batch.begin();
-		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
-		dogRunner.batch.end();
-		
-		//DEBUGGING
-		dogRunner.renderer.begin(ShapeType.Line);
-		dogRunner.renderer.rect(physicsWorld.carBody.getPosition().x - (carWidth - 7f) / 2, physicsWorld.carBody.getPosition().y - (carHeight - 4f) / 2, carWidth - 7f, carHeight - 4f);
-		dogRunner.renderer.end();
-		
-		stage.draw();
-		
-		textRenderer.render();
-		
-		if (pauseButton.queryClicked()) {
-			
-			gamePaused = true;
-			pauseButton.setTouchable(Touchable.disabled);
-			pauseButton.setVisible(false);
-			playButton.setTouchable(Touchable.enabled);
-			playButton.setVisible(true);
-		}
-	}
-	
-	@Override
-	public void act(float delta) {
-		
-		//stage acting is currently not needed
-		//stage.act();
-		
-		physicsWorld.act(delta);
-		carSpawner.act(delta);
 	}
 
 	@Override
@@ -235,17 +291,33 @@ public class MainSurvivalScreen extends StageScreen {
 		//on android assets need to be reloaded (after for example exiting)
 		//car = new TextureRegion(fairies.assetManager.get(DogAssets.FERRARI_CAR.fileName, Texture.class));
 		//car.flip(false, true);
+		
+		gameState = GameState.RESUMED;
+		
+		playButton.setTouchable(Touchable.disabled);
+		playButton.setVisible(false);
+		pauseButton.setTouchable(Touchable.enabled);
+		pauseButton.setVisible(true);
 	}
 	
 	@Override
 	public void pause() {
 		
+		gameState = GameState.PAUSED;
+		
+		pauseButton.setTouchable(Touchable.disabled);
+		pauseButton.setVisible(false);
+		playButton.setTouchable(Touchable.enabled);
+		playButton.setVisible(true);
 	}
 
 	@Override
 	public void dispose() {
 
-		physicsWorld.dispose();
+		if (physicsWorld != null) {
+			
+			physicsWorld.dispose();
+		}
 	}
 
 }
