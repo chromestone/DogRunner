@@ -132,7 +132,12 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
 		
-		resume();
+		//resume();
+		gameState = GameState.COUNTDOWN;
+		countdown.reset();
+		playButton.setVisible(false);
+		playButton.setTouchable(Touchable.disabled);
+		textRenderer.add(countdownText);
 	}
 	
 	@Override
@@ -189,7 +194,13 @@ public class MainSurvivalScreen extends StageScreen {
 			else {
 				
 				textRenderer.remove(countdownText);
-				resume();
+				
+				gameState = GameState.RESUMED;
+				
+				playButton.setTouchable(Touchable.disabled);
+				playButton.setVisible(false);
+				pauseButton.setTouchable(Touchable.enabled);
+				pauseButton.setVisible(true);
 			}
 			
 			break;
@@ -283,7 +294,7 @@ public class MainSurvivalScreen extends StageScreen {
 
 		physicsWorld.dispose();
 	}
-	
+
 	@Override
 	public void resume() {
 		
@@ -291,17 +302,12 @@ public class MainSurvivalScreen extends StageScreen {
 		//on android assets need to be reloaded (after for example exiting)
 		//car = new TextureRegion(fairies.assetManager.get(DogAssets.FERRARI_CAR.fileName, Texture.class));
 		//car.flip(false, true);
-		
-		gameState = GameState.RESUMED;
-		
-		playButton.setTouchable(Touchable.disabled);
-		playButton.setVisible(false);
-		pauseButton.setTouchable(Touchable.enabled);
-		pauseButton.setVisible(true);
 	}
 	
 	@Override
 	public void pause() {
+		
+		textRenderer.remove(countdownText);
 		
 		gameState = GameState.PAUSED;
 		
