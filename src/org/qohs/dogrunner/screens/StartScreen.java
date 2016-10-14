@@ -7,6 +7,7 @@ import org.qohs.dogrunner.io.DogAssets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 /**
  * 
@@ -19,12 +20,7 @@ public class StartScreen extends StageScreen {
 		
 		super(batch);
 		
-		GameObject startButton = new StartButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 2 - dogRunner.GAME_WIDTH / 20,
-				dogRunner.GAME_HEIGHT / 4,
-				dogRunner.GAME_HEIGHT / 2, dogRunner.GAME_HEIGHT / 2);
-		stage.addActor(startButton);
-		
-		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogAssets.DALMATIAN.fileName, Texture.class));
+		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogAssets.DOG_IMG.fileName, Texture.class));
 		//ratio = new height / picture height
 		//width = ratio * picture width
 		float width = (dogRunner.GAME_HEIGHT * 1.0f) / tRegion.getTexture().getHeight() * tRegion.getTexture().getWidth();
@@ -33,6 +29,12 @@ public class StartScreen extends StageScreen {
 				width, dogRunner.GAME_HEIGHT,
 				tRegion);
 		stage.addActor(trGameObj);
+		trGameObj.setTouchable(Touchable.disabled);
+		
+		GameObject startButton = new StartButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 2 - dogRunner.GAME_WIDTH / 20,
+				dogRunner.GAME_HEIGHT / 4,
+				dogRunner.GAME_HEIGHT / 2, dogRunner.GAME_HEIGHT / 2);
+		stage.addActor(startButton);
 	}
 
 	@Override

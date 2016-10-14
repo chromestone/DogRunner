@@ -108,7 +108,8 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	private void createCarBody() {
 		
 		BodyDef bdef = new BodyDef();
-		bdef.position.set(carWidth / 2 + 1, (meterHeight - carHeight) / 2);
+		//bdef.position.set(5f * carWidth / 8f, (meterHeight - carHeight) / 2);
+		bdef.position.set(carWidth / 2f, (meterHeight - carHeight) / 2f);
 		bdef.type = BodyType.DynamicBody;
 		bdef.bullet = true;
 		

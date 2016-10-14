@@ -54,7 +54,7 @@ public class CarSpawner {
 		
 		accumulator = 0f;
 		
-		carTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.RED_CAR.fileName, Texture.class));
+		carTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.WHITE_CAR.fileName, Texture.class));
 		carTexture.flip(false, true);
 		
 		carHeight = 7f * gameHeight / 48f;
@@ -68,7 +68,7 @@ public class CarSpawner {
 		float frameTime = Math.min(delta, 0.25f);
 		accumulator += frameTime;
 		if (accumulator >= time) {
-			
+
 			Body body = createCarBody();
 			carArray.add(body);
 
@@ -105,7 +105,7 @@ public class CarSpawner {
 		while (iterator.hasNext()) {
 			
 			Body car = iterator.next();
-			dogRunner.renderer.rect(car.getPosition().x - (carWidth - 7f) / 2, car.getPosition().y - (carHeight - 7f) / 2, carWidth - 7f, carHeight - 7f);
+			dogRunner.renderer.rect(car.getPosition().x - (carWidth - 7f) / 2, car.getPosition().y - (carHeight - 5f) / 2, carWidth - 7f, carHeight - 5f);
 		}
 		dogRunner.renderer.end();
 		*/
@@ -116,20 +116,20 @@ public class CarSpawner {
 		BodyDef bodyDef = new BodyDef();  
 		// Set its world position
 		int choice = (int) (Math.random() * 6);
-		float randomFactor = gameHeight / 48;
-//		if (choice > 0) {
-//			
-//			randomFactor += gameHeight / 48 + carHeight;
-//			if (choice > 1) {
-//				
-//				randomFactor += gameHeight / 48 + carHeight;
-//			}
-//		}
-		for (int i = choice; i > 0; i--) {
+		/*
+		float randomFactor = gameHeight / 24;
+		if (choice > 0) {
 			
 			randomFactor += gameHeight / 48 + carHeight;
+			if (choice > 1) {
+				
+				randomFactor += gameHeight / 48 + carHeight;
+			}
 		}
-		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2, randomFactor + (carHeight - 4f) / 2);  
+		randomFactor += choice * (gameHeight / 6f);
+		*/
+		
+		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2, (choice * 2f + 1f) * gameHeight / 12f);//randomFactor + (carHeight - 5f) / 2);  
 		bodyDef.linearVelocity.set(-VELOCITY, 0);
 		bodyDef.type = BodyType.DynamicBody;
 
@@ -139,7 +139,7 @@ public class CarSpawner {
 		// Create a polygon shape
 		PolygonShape shape = new PolygonShape();  
 		//it's actually a radius
-		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, (carHeight - 4f) / 2);
+		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, (carHeight - 5f) / 2);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		body.createFixture(shape, 0.0f); 
 		// Clean up after ourselves

@@ -65,11 +65,11 @@ public class MainSurvivalScreen extends StageScreen {
 		meterWidth = meterHeight / dogRunner.GAME_HEIGHT * dogRunner.GAME_WIDTH;
 		
 		//load car texture
-		car = new TextureRegion(dogRunner.assetManager.get(DogAssets.FERRARI_CAR.fileName, Texture.class));
+		car = new TextureRegion(dogRunner.assetManager.get(DogAssets.PORSCHE_CAR.fileName, Texture.class));
 		car.flip(false, true);
 		
 		//fit car into screen
-		carHeight = meterHeight / 8f;
+		carHeight = 1f * meterHeight / 12f;
 		carWidth = carHeight / car.getTexture().getHeight() * car.getTexture().getWidth();
 //		carRatio = carWidth / carHeight;
 		
@@ -96,14 +96,14 @@ public class MainSurvivalScreen extends StageScreen {
 		stage.addActor(clickHandler);
 		
 		pauseButton = new QueryButton(meterWidth - meterHeight / 10, meterHeight / 2 - meterHeight / 20, meterHeight / 10, meterHeight / 10, 
-				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMAGE.fileName, Texture.class)));
+				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMG.fileName, Texture.class)));
 		stage.addActor(pauseButton);
 		
 		playButton = new QueryButton(meterWidth / 2 - meterHeight / 2, 0f, meterHeight, meterHeight, 
-				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMAGE.fileName, Texture.class)));
+				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMG.fileName, Texture.class)));
 		stage.addActor(playButton);
 		
-		//3.4-"3"-3.0-"2"-2.0-"1"-1.0-"GO"-0.0
+		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
 		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.COMIC_SANS70.fileName, BitmapFont.class));
 		
@@ -125,8 +125,8 @@ public class MainSurvivalScreen extends StageScreen {
 		MainSurvivalWorld.Definition def = new MainSurvivalWorld.Definition();
 		def.meterWidth = meterWidth;
 		def.meterHeight = meterHeight;
-		def.carWidth = carWidth - meterWidth * (21f / 500f);//7f on a 5:3 ratio; I simplified the equation
-		def.carHeight = carHeight - 4f;
+		def.carWidth = carWidth - meterWidth * (12f / 500f);//5f on a 5:3 ratio; I simplified the equation
+		def.carHeight = carHeight - 2f;
 		
 		physicsWorld = new MainSurvivalWorld(new Vector2(0f, 0f), true, def);
 		
@@ -137,6 +137,8 @@ public class MainSurvivalScreen extends StageScreen {
 		countdown.reset();
 		playButton.setVisible(false);
 		playButton.setTouchable(Touchable.disabled);
+		pauseButton.setVisible(false);
+		pauseButton.setTouchable(Touchable.disabled);
 		textRenderer.add(countdownText);
 	}
 	
@@ -178,7 +180,7 @@ public class MainSurvivalScreen extends StageScreen {
 		}
 		case COUNTDOWN: {
 			
-			float seconds = countdown.update(delta);
+			float seconds = countdown.update(delta) + .4f;
 			if (seconds > 0f) {
 				
 				int number = (int) seconds;
@@ -241,13 +243,14 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		//draws the player's car
 		dogRunner.batch.begin();
-		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
+		//dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
+		dogRunner.batch.draw(car, 0f, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
 		dogRunner.batch.end();
 		
 		/*
 		//DEBUGGING
 		dogRunner.renderer.begin(ShapeType.Line);
-		dogRunner.renderer.rect(physicsWorld.carBody.getPosition().x - (carWidth - 7f) / 2, physicsWorld.carBody.getPosition().y - (carHeight - 4f) / 2, carWidth - 7f, carHeight - 4f);
+		dogRunner.renderer.rect(physicsWorld.carBody.getPosition().x - (carWidth - 4f) / 2, physicsWorld.carBody.getPosition().y - (carHeight - 2f) / 2, carWidth - 4f, carHeight - 2f);
 		dogRunner.renderer.end();
 		*/
 		

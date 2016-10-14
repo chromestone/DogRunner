@@ -136,12 +136,12 @@ public class DogRunner extends Game {
 
 
 		//name in this case (pictures) matters [must reflect actual path]
-		assetManager.load(DogAssets.DALMATIAN.fileName, Texture.class);
-		assetManager.load(DogAssets.FERRARI_CAR.fileName, Texture.class);
-		assetManager.load(DogAssets.RED_CAR.fileName, Texture.class);
+		assetManager.load(DogAssets.DOG_IMG.fileName, Texture.class);
+		assetManager.load(DogAssets.PORSCHE_CAR.fileName, Texture.class);
+		assetManager.load(DogAssets.WHITE_CAR.fileName, Texture.class);
 		assetManager.load(DogAssets.GAME_OVER_EXPLOSION.fileName, Texture.class);
-		assetManager.load(DogAssets.PAUSE_IMAGE.fileName, Texture.class);
-		assetManager.load(DogAssets.RESUME_IMAGE.fileName, Texture.class);
+		assetManager.load(DogAssets.PAUSE_IMG.fileName, Texture.class);
+		assetManager.load(DogAssets.RESUME_IMG.fileName, Texture.class);
 		
 		assetManager.load(DogAssets.ENGINE_REV.fileName, Sound.class);
 		assetManager.load(DogAssets.CAR_CRASH_BONG.fileName, Sound.class);

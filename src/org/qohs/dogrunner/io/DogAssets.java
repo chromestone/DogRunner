@@ -14,14 +14,14 @@ public enum DogAssets {
 	COMIC_SANS10("comic_sans10.ttf"),
 	COMIC_SANS70("comic_sans70.ttf"),
 	COMIC_SANS_CYAN("comic_sans_cyan.ttf"),
-	DALMATIAN("placeholder/dalmatian.png"),
-	FERRARI_CAR("placeholder/ferrari_car.png"),
-	RED_CAR("placeholder/red_car.png"),
+	DOG_IMG("placeholder/dog.png"),
+	PORSCHE_CAR("placeholder/porsche_car.png"),
+	WHITE_CAR("placeholder/white_car.png"),
 	ENGINE_REV("placeholder/vroom.mp3"),
 	CAR_CRASH_BONG("placeholder/bong.mp3"),
 	GAME_OVER_EXPLOSION("placeholder/explosion.jpg"),
-	PAUSE_IMAGE("placeholder/pause.png"),
-	RESUME_IMAGE("placeholder/resume.png");
+	PAUSE_IMG("placeholder/pause.png"),
+	RESUME_IMG("placeholder/resume.png");
 
 	public final String fileName;
 	
