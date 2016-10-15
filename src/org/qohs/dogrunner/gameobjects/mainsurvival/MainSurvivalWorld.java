@@ -71,7 +71,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		// Create our body definition
 		BodyDef lBoundDef = new BodyDef();  
 		// Set its world position
-		lBoundDef.position.set(0, meterHeight + 2);  
+		lBoundDef.position.set(0f, meterHeight + 2f);  
 		lBoundDef.type = BodyType.StaticBody;
 
 		// Create a body from the definition and add it to the world
@@ -80,7 +80,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		// Create a polygon shape
 		PolygonShape lowerBox = new PolygonShape();  
 		//it's actually a radius
-		lowerBox.setAsBox(meterWidth, 1);
+		lowerBox.setAsBox(meterWidth, 1f);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		lBoundBody.createFixture(lowerBox, 0.0f); 
 		// Clean up after ourselves
@@ -90,7 +90,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		// Create our body definition
 		BodyDef uBoundDef = new BodyDef();  
 		// Set its world position
-		uBoundDef.position.set(0, -1);  
+		uBoundDef.position.set(0f, -1f);  
 		uBoundDef.type = BodyType.StaticBody;
 
 		// Create a body from the definition and add it to the world
@@ -98,7 +98,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 
 		// Create a polygon shape
 		PolygonShape upperBox = new PolygonShape();  
-		upperBox.setAsBox(meterWidth, 1);
+		upperBox.setAsBox(meterWidth, 1f);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		uBoundBody.createFixture(upperBox, 0.0f); 
 		// Clean up after ourselves
@@ -119,7 +119,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		
 		PolygonShape shape = new PolygonShape();
 		//it's actually a "radius"
-		shape.setAsBox(carWidth / 2, carHeight / 2);
+		shape.setAsBox(carWidth / 2f, carHeight / 2f);
 		FixtureDef fdef = new FixtureDef();
 		fdef.shape = shape;
 		carBody.createFixture(fdef);

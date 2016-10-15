@@ -31,9 +31,9 @@ public class StartScreen extends StageScreen {
 		stage.addActor(trGameObj);
 		trGameObj.setTouchable(Touchable.disabled);
 		
-		GameObject startButton = new StartButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 2 - dogRunner.GAME_WIDTH / 20,
-				dogRunner.GAME_HEIGHT / 4,
-				dogRunner.GAME_HEIGHT / 2, dogRunner.GAME_HEIGHT / 2);
+		GameObject startButton = new StartButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 2f - dogRunner.GAME_WIDTH / 20f,
+				dogRunner.GAME_HEIGHT / 4f,
+				dogRunner.GAME_HEIGHT / 2f, dogRunner.GAME_HEIGHT / 2f);
 		stage.addActor(startButton);
 	}
 

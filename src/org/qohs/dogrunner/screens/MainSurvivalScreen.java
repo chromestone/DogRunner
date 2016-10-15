@@ -85,21 +85,21 @@ public class MainSurvivalScreen extends StageScreen {
 		float upperBound = (meterHeight - (meterHeight * .25f)) / 2;
 		float lowerBound = upperBound + (meterHeight * .25f);
 		
-		ClickHandler clickHandler = new ClickHandler(0, 0, meterWidth, upperBound);
+		ClickHandler clickHandler = new ClickHandler(0f, 0f, meterWidth, upperBound);
 		upperHandler = (ClickListener) clickHandler.getListeners().get(0);
 		
 		stage.addActor(clickHandler);
 		
-		clickHandler = new ClickHandler(0, lowerBound, meterWidth, meterHeight - lowerBound);
+		clickHandler = new ClickHandler(0f, lowerBound, meterWidth, meterHeight - lowerBound);
 		lowerHandler = (ClickListener) clickHandler.getListeners().get(0);
 		
 		stage.addActor(clickHandler);
 		
-		pauseButton = new QueryButton(meterWidth - meterHeight / 10, meterHeight / 2 - meterHeight / 20, meterHeight / 10, meterHeight / 10, 
+		pauseButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
 				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMG.fileName, Texture.class)));
 		stage.addActor(pauseButton);
 		
-		playButton = new QueryButton(meterWidth / 2 - meterHeight / 2, 0f, meterHeight, meterHeight, 
+		playButton = new QueryButton(meterWidth / 2f - meterHeight / 2f, 0f, meterHeight, meterHeight, 
 				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMG.fileName, Texture.class)));
 		stage.addActor(playButton);
 		
@@ -225,17 +225,17 @@ public class MainSurvivalScreen extends StageScreen {
 		//Draws the background roads
 		dogRunner.renderer.begin(ShapeType.Filled);
 		dogRunner.renderer.setColor(Color.BLACK);
-		dogRunner.renderer.rect(0, 0, meterWidth, meterHeight / 6);
+		dogRunner.renderer.rect(0f, 0f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.setColor(Color.WHITE);
-		dogRunner.renderer.rect(0, meterHeight / 6, meterWidth, meterHeight / 6);
+		dogRunner.renderer.rect(0f, meterHeight / 6f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.setColor(Color.BLACK);
-		dogRunner.renderer.rect(0, meterHeight / 3, meterWidth, meterHeight / 6);
+		dogRunner.renderer.rect(0f, meterHeight / 3f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.setColor(Color.WHITE);
-		dogRunner.renderer.rect(0, meterHeight / 2, meterWidth, meterHeight / 6);
+		dogRunner.renderer.rect(0f, meterHeight / 2f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.setColor(Color.BLACK);
-		dogRunner.renderer.rect(0, meterHeight * 2 / 3, meterWidth, meterHeight / 6);
+		dogRunner.renderer.rect(0f, meterHeight * 2f / 3f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.setColor(Color.WHITE);
-		dogRunner.renderer.rect(0, meterHeight * 5 / 6, meterWidth, meterHeight / 6);
+		dogRunner.renderer.rect(0f, meterHeight * 5f / 6f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.end();
 		////////////////////////////////
 		
@@ -273,16 +273,16 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			if (upperHandler.isPressed()) {
 				
-				physicsWorld.carBody.setLinearVelocity(0, -120);
+				physicsWorld.carBody.setLinearVelocity(0f, -120f);
 			}
 			else {
 				
-				physicsWorld.carBody.setLinearVelocity(0, 120);
+				physicsWorld.carBody.setLinearVelocity(0f, 120f);
 			}
 		}
 		else {
 			
-			physicsWorld.carBody.setLinearVelocity(0, 0);
+			physicsWorld.carBody.setLinearVelocity(0f, 0f);
 		}
 	}
 

@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class CarSpawner {
 	
-	private static final int VELOCITY = 120;
+	private static final float VELOCITY = 120;
 	
 	private final DogRunner dogRunner;
 	
@@ -72,7 +72,7 @@ public class CarSpawner {
 			Body body = createCarBody();
 			carArray.add(body);
 
-			accumulator = 0;
+			accumulator = 0f;
 		}
 		Iterator<Body> iterator = carArray.iterator();
 		while (iterator.hasNext()) {
@@ -94,7 +94,7 @@ public class CarSpawner {
 		while (iterator.hasNext()) {
 			
 			Body car = iterator.next();
-			dogRunner.batch.draw(carTexture, car.getPosition().x - carWidth / 2, car.getPosition().y - carHeight / 2, carWidth, carHeight);
+			dogRunner.batch.draw(carTexture, car.getPosition().x - carWidth / 2f, car.getPosition().y - carHeight / 2f, carWidth, carHeight);
 		}
 		dogRunner.batch.end();
 		
@@ -129,8 +129,8 @@ public class CarSpawner {
 		randomFactor += choice * (gameHeight / 6f);
 		*/
 		
-		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2, (choice * 2f + 1f) * gameHeight / 12f);//randomFactor + (carHeight - 5f) / 2);  
-		bodyDef.linearVelocity.set(-VELOCITY, 0);
+		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2f, (choice * 2f + 1f) * gameHeight / 12f);//randomFactor + (carHeight - 5f) / 2);  
+		bodyDef.linearVelocity.set(-VELOCITY, 0f);
 		bodyDef.type = BodyType.DynamicBody;
 
 		// Create a body from the definition and add it to the world
@@ -139,7 +139,7 @@ public class CarSpawner {
 		// Create a polygon shape
 		PolygonShape shape = new PolygonShape();  
 		//it's actually a radius
-		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, (carHeight - 5f) / 2);
+		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, (carHeight - 5f) / 2f);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		body.createFixture(shape, 0.0f); 
 		// Clean up after ourselves

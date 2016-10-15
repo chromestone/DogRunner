@@ -27,6 +27,6 @@ public class CenteredText extends TextObject {
 		GlyphLayout glyphLayout = new GlyphLayout();
 		glyphLayout.setText(font, text);
 
-		font.draw(batch, glyphLayout, (dogRunner.GAME_WIDTH - glyphLayout.width) / 2, (dogRunner.GAME_HEIGHT - glyphLayout.height) / 2);
+		font.draw(batch, glyphLayout, (dogRunner.GAME_WIDTH - glyphLayout.width) / 2f, (dogRunner.GAME_HEIGHT - glyphLayout.height) / 2f);
 	}
 }
