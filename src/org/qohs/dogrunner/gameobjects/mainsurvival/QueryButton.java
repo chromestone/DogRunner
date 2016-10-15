@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * and also draws a texture region
  * 
  * @author Derek Zhang
- * @author Sam Mansfield
  *
  */
 public class QueryButton extends TextureRegionGameObject {

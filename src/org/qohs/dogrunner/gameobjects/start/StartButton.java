@@ -11,6 +11,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class StartButton extends GameObject {
 	
 	private Color color;
@@ -23,7 +28,7 @@ public class StartButton extends GameObject {
 		
 		color = Color.GRAY;
 		
-		font = dogRunner.assetManager.get(DogAssets.COMIC_SANS40.fileName, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogAssets.COMIC_SANS_RED_M.fileName, BitmapFont.class);
 		
 		////////////////////////////////
 		//

@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * Wrapper class for the Box2D World
+ * 
  * @author Derek Zhang
  *
  */

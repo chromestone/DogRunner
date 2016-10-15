@@ -37,6 +37,8 @@ public class MainSurvivalScreen extends StageScreen {
 	private static final float meterHeight = 100f;
 	private final float meterWidth;
 	
+	private UpperClickHandler upperClickHandler;
+	private LowerClickHandler lowerClickHandler ;
 	private ClickListener upperHandler;
 	private ClickListener lowerHandler;
 	
@@ -48,7 +50,6 @@ public class MainSurvivalScreen extends StageScreen {
 	private TextureRegion car;
 	private final float carHeight;
 	private final float carWidth;
-//	private final float carRatio;
 	
 	private CarSpawner carSpawner;
 	
@@ -61,8 +62,12 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		super(batch);
 		
+		////////////////////////////////
 		//calculated width
 		meterWidth = meterHeight / dogRunner.GAME_HEIGHT * dogRunner.GAME_WIDTH;
+		
+		////////////////////////////////
+		//player's car size calculations
 		
 		//load car texture
 		car = new TextureRegion(dogRunner.assetManager.get(DogAssets.PORSCHE_CAR.fileName, Texture.class));
@@ -71,30 +76,36 @@ public class MainSurvivalScreen extends StageScreen {
 		//fit car into screen
 		carHeight = 1f * meterHeight / 12f;
 		carWidth = carHeight / car.getTexture().getHeight() * car.getTexture().getWidth();
-//		carRatio = carWidth / carHeight;
 		
+		////////////////////////////////
 		//configure screen units
 		cam = new OrthographicCamera();
 		cam.setToOrtho(true, meterWidth, meterHeight);
 		stage.getViewport().setCamera(cam);
 		
+		////////////////////////////////
 		//set up text
 		textRenderer = new TextRenderer(cam);
-		textRenderer.add(new ScoreText(dogRunner.assetManager.get(DogAssets.COMIC_SANS40.fileName, BitmapFont.class)));
+		textRenderer.add(new ScoreText(dogRunner.assetManager.get(DogAssets.COMIC_SANS_RED_M.fileName, BitmapFont.class)));
 	
+		////////////////////////////////
+		//sets up inputs for movement of player's car
+		
 		float upperBound = (meterHeight - (meterHeight * .25f)) / 2;
 		float lowerBound = upperBound + (meterHeight * .25f);
 		
-		ClickHandler clickHandler = new ClickHandler(0f, 0f, meterWidth, upperBound);
-		upperHandler = (ClickListener) clickHandler.getListeners().get(0);
+		upperClickHandler = new UpperClickHandler(0f, 0f, meterWidth, upperBound, meterHeight / 12f);
+		upperHandler = (ClickListener) upperClickHandler.getListeners().get(0);
 		
-		stage.addActor(clickHandler);
+		stage.addActor(upperClickHandler);
 		
-		clickHandler = new ClickHandler(0f, lowerBound, meterWidth, meterHeight - lowerBound);
-		lowerHandler = (ClickListener) clickHandler.getListeners().get(0);
+		lowerClickHandler = new LowerClickHandler(0f, lowerBound, meterWidth, meterHeight - lowerBound, meterHeight / 12f);
+		lowerHandler = (ClickListener) lowerClickHandler.getListeners().get(0);
 		
-		stage.addActor(clickHandler);
+		stage.addActor(lowerClickHandler);
 		
+		////////////////////////////////
+		//pause and play buttons
 		pauseButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
 				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMG.fileName, Texture.class)));
 		stage.addActor(pauseButton);
@@ -103,10 +114,14 @@ public class MainSurvivalScreen extends StageScreen {
 				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMG.fileName, Texture.class)));
 		stage.addActor(playButton);
 		
+		////////////////////////////////
+		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
-		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.COMIC_SANS70.fileName, BitmapFont.class));
+		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.COMIC_SANS_GOLD_L.fileName, BitmapFont.class));
 		
+		////////////////////////////////
+		//
 		physicsWorld = null;
 		gameState = null;
 	}
@@ -128,11 +143,15 @@ public class MainSurvivalScreen extends StageScreen {
 		def.carWidth = carWidth - meterWidth * (12f / 500f);//5f on a 5:3 ratio; I simplified the equation
 		def.carHeight = carHeight - 2f;
 		
+		upperClickHandler.activated = false;
+		lowerClickHandler.activated = false;
+		
 		physicsWorld = new MainSurvivalWorld(new Vector2(0f, 0f), true, def);
 		
 		carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
 		
-		//resume();
+		////////////////////////////////
+		//the game will start in a state counting down the to the start of the game
 		gameState = GameState.COUNTDOWN;
 		countdown.reset();
 		playButton.setVisible(false);
@@ -145,6 +164,18 @@ public class MainSurvivalScreen extends StageScreen {
 	@Override
 	public void render(float delta) {
 		
+		/*
+		 * In a resumed state the game will run (act),
+		 * check if the player has crashed,
+		 * and check if the player has clicked the pause button.
+		 * 
+		 * In a paused state, the game will check
+		 * if the play button has been clicked
+		 * and start the countdown sequence
+		 * 
+		 * In a count down state, the game will count down
+		 * and resume the game once the timer goes to 0
+		 */
 		switch (gameState) {
 		
 		case RESUMED: {
@@ -222,6 +253,12 @@ public class MainSurvivalScreen extends StageScreen {
 		}
 		
 		////////////////////////////////
+		//rendering starts here
+		
+		////////////////////////////////
+		//this is the section where the shape renderer is used
+		//note that the shape renderer should EVENTUALLY BE REPLACED (by textures/pictures/sprites)
+		
 		//Draws the background roads
 		dogRunner.renderer.begin(ShapeType.Filled);
 		dogRunner.renderer.setColor(Color.BLACK);
@@ -237,7 +274,9 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.renderer.setColor(Color.WHITE);
 		dogRunner.renderer.rect(0f, meterHeight * 5f / 6f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.end();
+		
 		////////////////////////////////
+		//SpriteBatch is used to render here
 		
 		carSpawner.render();
 		
@@ -268,21 +307,32 @@ public class MainSurvivalScreen extends StageScreen {
 		physicsWorld.act(delta);
 		carSpawner.act(delta);
 		
+		/*
+		 * If one hemisphere of the screen is pressed, then the player's car
+		 * will move in that direction
+		 * 
+		 * Otherwise if both hemispheres are pressed or the player has not
+		 * pressed, then the player's car will stop moving
+		 */
 		//exclusive or
 		if (upperHandler.isPressed() ^ lowerHandler.isPressed()) {
 			
 			if (upperHandler.isPressed()) {
 				
 				physicsWorld.carBody.setLinearVelocity(0f, -120f);
+				upperClickHandler.activated = true;
 			}
 			else {
 				
 				physicsWorld.carBody.setLinearVelocity(0f, 120f);
+				lowerClickHandler.activated = true;
 			}
 		}
 		else {
 			
 			physicsWorld.carBody.setLinearVelocity(0f, 0f);
+			upperClickHandler.activated = false;
+			lowerClickHandler.activated = false;
 		}
 	}
 
@@ -295,7 +345,10 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.batch.setProjectionMatrix(dogRunner.cam.combined);
 		dogRunner.renderer.setProjectionMatrix(dogRunner.cam.combined);
 
+		textRenderer.remove(countdownText);
+		
 		physicsWorld.dispose();
+		carSpawner = null;
 	}
 
 	@Override
