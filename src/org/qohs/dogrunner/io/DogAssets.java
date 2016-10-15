@@ -25,7 +25,7 @@ public enum DogAssets {
 
 	public final String fileName;
 	
-	private DogAssets(String fileName) {
+	DogAssets(String fileName) {
 		
 		this.fileName = "assets/" + fileName;
 	}
