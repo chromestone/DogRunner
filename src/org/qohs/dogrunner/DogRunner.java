@@ -83,6 +83,9 @@ public class DogRunner extends Game {
 		this.setScreen(DogScreens.Type.START_SCREEN.getStageScreen(fairyScreens));
 		
 		userProfile = new UserProfile();
+		
+		//sets the initial clear color for the screen
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 	}
 	
 	//load all the "assets" here (pictures, fonts, etc.)
@@ -98,7 +101,7 @@ public class DogRunner extends Game {
 		FreeTypeFontLoaderParameter fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file (must be root, i.e. not in a folder other than assets)
 		fTFLP.fontFileName = "comic_sans.ttf";
-		fTFLP.fontParameters.size = 40;
+		fTFLP.fontParameters.size = (int) (40 * GAME_WIDTH / 800d);
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
@@ -109,7 +112,7 @@ public class DogRunner extends Game {
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
 		fTFLP.fontFileName = "comic_sans.ttf";
-		fTFLP.fontParameters.size = 10;
+		fTFLP.fontParameters.size = (int) (20 * GAME_WIDTH / 800d);
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
@@ -118,7 +121,7 @@ public class DogRunner extends Game {
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
 		fTFLP.fontFileName = "comic_sans.ttf";
-		fTFLP.fontParameters.size = 70;
+		fTFLP.fontParameters.size = (int) (100 * GAME_WIDTH / 800d);
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
 
@@ -128,8 +131,10 @@ public class DogRunner extends Game {
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
 		fTFLP.fontFileName = "comic_sans.ttf";
-		fTFLP.fontParameters.size = 40;
-		fTFLP.fontParameters.color = Color.CYAN;
+		fTFLP.fontParameters.size = (int) (90 * GAME_WIDTH / 800d);
+		fTFLP.fontParameters.color = new Color(128f/255f, 128f/255f, 128f/255f, 1f);
+		fTFLP.fontParameters.borderColor = Color.BLACK;
+		fTFLP.fontParameters.borderWidth = 1f * GAME_WIDTH / 800f;
 		fTFLP.fontParameters.flip = true;
 
 		assetManager.load(DogAssets.COMIC_SANS_CYAN.fileName, BitmapFont.class, fTFLP);
@@ -150,8 +155,10 @@ public class DogRunner extends Game {
 	@Override
 	public void render() {
 		
-		Gdx.gl.glClearColor(255, 255, 255, 1);
+		//clears the screen (with set color)
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//sets color for next clear and can be overridden in the screens
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		super.render();
 	}
 	
