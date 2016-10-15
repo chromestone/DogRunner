@@ -36,6 +36,11 @@ public class CarSpawner {
 	
 	private float time;
 	
+	/*
+	 * used to accumulate time
+	 * is "subtracted" from when a car is spawned
+	 * this ensures accuracy of spawning
+	*/
 	private float accumulator;
 	
 	private TextureRegion carTexture;
@@ -65,19 +70,21 @@ public class CarSpawner {
 	
 	public void act(float delta) {
 		
-		float frameTime = Math.min(delta, 0.25f);
-		accumulator += frameTime;
+		//float frameTime = Math.min(delta, .25f);
+		accumulator += delta;//frameTime;
 		if (accumulator >= time) {
 
 			Body body = createCarBody();
 			carArray.add(body);
-
-			accumulator = 0f;
+			
+			accumulator %= time;
 		}
 		Iterator<Body> iterator = carArray.iterator();
 		while (iterator.hasNext()) {
 			
 			Body car = iterator.next();
+			//if the car is no longer on the screen
+			//delete it to stop wasting memory
 			if (car.getPosition().x + carWidth / 2 < 0) {
 				
 				iterator.remove();
@@ -113,22 +120,11 @@ public class CarSpawner {
 	
 	private Body createCarBody() {
 		
-		BodyDef bodyDef = new BodyDef();  
-		// Set its world position
-		int choice = (int) (Math.random() * 6);
-		/*
-		float randomFactor = gameHeight / 24;
-		if (choice > 0) {
-			
-			randomFactor += gameHeight / 48 + carHeight;
-			if (choice > 1) {
-				
-				randomFactor += gameHeight / 48 + carHeight;
-			}
-		}
-		randomFactor += choice * (gameHeight / 6f);
-		*/
+		BodyDef bodyDef = new BodyDef(); 
 		
+		int choice = (int) (Math.random() * 6);
+		
+		// Set its world position
 		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2f, (choice * 2f + 1f) * gameHeight / 12f);//randomFactor + (carHeight - 5f) / 2);  
 		bodyDef.linearVelocity.set(-VELOCITY, 0f);
 		bodyDef.type = BodyType.DynamicBody;
