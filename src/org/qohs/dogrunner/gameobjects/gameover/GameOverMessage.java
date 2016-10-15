@@ -26,7 +26,7 @@ public class GameOverMessage extends GameObject {
 		
 		super(x, y, width, height);
 		
-		font = dogRunner.assetManager.get(DogAssets.COMIC_SANS_CYAN.fileName, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogAssets.COMIC_SANS_BLACK_L.fileName, BitmapFont.class);
 		
 		////////////////////////////////
 		//
@@ -35,11 +35,11 @@ public class GameOverMessage extends GameObject {
 		GlyphLayout glyphLayout = new GlyphLayout();
 		glyphLayout.setText(font, text);
 
-		fontX = x + width / 2 - glyphLayout.width / 2;
-		fontY = y + height / 2 - glyphLayout.height / 2;
+		fontX = width / 2 - glyphLayout.width / 2f;
+		fontY = height / 3f - glyphLayout.height / 2f;
 		
 		scoreFontX = -1;
-		scoreFontY = glyphLayout.height;
+		scoreFontY = height * 2f / 3f - glyphLayout.height / 2f;
 		clicks = 0;
 	}
 
@@ -54,8 +54,7 @@ public class GameOverMessage extends GameObject {
 			GlyphLayout glyphLayout = new GlyphLayout();
 			glyphLayout.setText(font, text);
 
-			scoreFontX = x + width / 2 - glyphLayout.width / 2;
-			scoreFontY += y + height / 2 - glyphLayout.height / 2 + 1;
+			scoreFontX = (width - glyphLayout.width) / 2f;
 		}
 		font.draw(batch, "SCORE: " + dogRunner.userProfile.score, scoreFontX, scoreFontY);
 	}
