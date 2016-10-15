@@ -97,7 +97,7 @@ public class DogRunner extends Game {
 		assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 		
 		////////////////////////////////
-		//
+		//setups parameters and loads fonts with "Free Type Font"
 		FreeTypeFontLoaderParameter fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file (must be root, i.e. not in a folder other than assets)
 		fTFLP.fontFileName = "comic_sans.ttf";
@@ -106,7 +106,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.flip = true;
 		
 		//name of this does not matter, however must end in .ttf
-		assetManager.load(DogAssets.COMIC_SANS40.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.COMIC_SANS_RED_M.fileName, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -116,7 +116,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
-		assetManager.load(DogAssets.COMIC_SANS10.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.COMIC_SANS_RED_S.fileName, BitmapFont.class, fTFLP);
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
@@ -125,7 +125,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
 
-		assetManager.load(DogAssets.COMIC_SANS70.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.COMIC_SANS_GOLD_L.fileName, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -137,8 +137,10 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.borderWidth = 1f * GAME_WIDTH / 800f;
 		fTFLP.fontParameters.flip = true;
 
-		assetManager.load(DogAssets.COMIC_SANS_CYAN.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.COMIC_SANS_BLACK_L.fileName, BitmapFont.class, fTFLP);
 
+		////////////////////////////////
+		//loads picture assets
 
 		//name in this case (pictures) matters [must reflect actual path]
 		assetManager.load(DogAssets.DOG_IMG.fileName, Texture.class);
@@ -147,7 +149,11 @@ public class DogRunner extends Game {
 		assetManager.load(DogAssets.GAME_OVER_EXPLOSION.fileName, Texture.class);
 		assetManager.load(DogAssets.PAUSE_IMG.fileName, Texture.class);
 		assetManager.load(DogAssets.RESUME_IMG.fileName, Texture.class);
+		assetManager.load(DogAssets.TRIANGLE_GRAY_IMG.fileName, Texture.class);
+		assetManager.load(DogAssets.TRIANGLE_GOLD_IMG.fileName, Texture.class);
 		
+		////////////////////////////////
+		//loads sound assets
 		assetManager.load(DogAssets.ENGINE_REV.fileName, Sound.class);
 		assetManager.load(DogAssets.CAR_CRASH_BONG.fileName, Sound.class);
 	}
