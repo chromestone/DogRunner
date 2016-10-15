@@ -10,10 +10,11 @@ package org.qohs.dogrunner.io;
  */
 public enum DogAssets {
 	
-	COMIC_SANS40("comic_sans40.ttf"),
-	COMIC_SANS10("comic_sans10.ttf"),
-	COMIC_SANS70("comic_sans70.ttf"),
-	COMIC_SANS_CYAN("comic_sans_cyan.ttf"),
+	//S-Small; M-Medium; L-Large; XL-Extra Large; XXL-Extra Extra Large; etc.
+	COMIC_SANS_RED_M("comic_sans_red_40.ttf"),
+	COMIC_SANS_RED_S("comic_sans_red_20.ttf"),
+	COMIC_SANS_GOLD_L("comic_sans_gold_100.ttf"),
+	COMIC_SANS_BLACK_L("comic_sans_black_90.ttf"),
 	DOG_IMG("placeholder/dog.png"),
 	PORSCHE_CAR("placeholder/porsche_car.png"),
 	WHITE_CAR("placeholder/white_car.png"),
@@ -21,7 +22,9 @@ public enum DogAssets {
 	CAR_CRASH_BONG("placeholder/bong.mp3"),
 	GAME_OVER_EXPLOSION("placeholder/explosion.jpg"),
 	PAUSE_IMG("placeholder/pause.png"),
-	RESUME_IMG("placeholder/resume.png");
+	RESUME_IMG("placeholder/resume.png"),
+	TRIANGLE_GRAY_IMG("placeholder/triangle_gray.png"),
+	TRIANGLE_GOLD_IMG("placeholder/triangle_gold.png");
 
 	public final String fileName;
 	
