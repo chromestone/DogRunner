@@ -1,19 +1,13 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
-import org.qohs.dogrunner.gameobjects.PhysicsWorld;
+import org.qohs.dogrunner.gameobjects.*;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 /**
+ * Encapsulates all the physics (Box2D) code for the Main Survival Screen
  * 
  * @author Derek Zhang
  *
@@ -43,7 +37,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	private float carHeight = 0f;
 	
 	//game over
-	public boolean carCrashed;
+	public boolean playerCarCrashed;
 	
 	public MainSurvivalWorld(Vector2 gravity, boolean doSleep, Definition def) {
 		
@@ -57,7 +51,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		this.carWidth = def.carWidth;
 		this.carHeight = def.carHeight;
 		
-		carCrashed = false;
+		playerCarCrashed = false;
 		
 		init();
 	}
@@ -68,6 +62,10 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		createCarBody();
 		
         ////////////////////////////////
+		//create the walls
+		
+        ////////////////////////////////
+		//lower wall
 		// Create our body definition
 		BodyDef lBoundDef = new BodyDef();  
 		// Set its world position
@@ -75,18 +73,20 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		lBoundDef.type = BodyType.StaticBody;
 
 		// Create a body from the definition and add it to the world
-		Body lBoundBody = world.createBody(lBoundDef);  
+		Body lBoundBody = world.createBody(lBoundDef); 
+		lBoundBody.setUserData(PhysicsBodyType.WALL);
 
 		// Create a polygon shape
 		PolygonShape lowerBox = new PolygonShape();  
 		//it's actually a radius
 		lowerBox.setAsBox(meterWidth, 1f);
 		// Create a fixture from our polygon shape and add it to our ground body  
-		lBoundBody.createFixture(lowerBox, 0.0f); 
+		lBoundBody.createFixture(lowerBox, 0.0f);
 		// Clean up after ourselves
 		lowerBox.dispose();
 		
         ////////////////////////////////
+		//upper wall
 		// Create our body definition
 		BodyDef uBoundDef = new BodyDef();  
 		// Set its world position
@@ -95,6 +95,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 
 		// Create a body from the definition and add it to the world
 		Body uBoundBody = world.createBody(uBoundDef);  
+		uBoundBody.setUserData(PhysicsBodyType.WALL);
 
 		// Create a polygon shape
 		PolygonShape upperBox = new PolygonShape();  
@@ -113,17 +114,15 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		bdef.type = BodyType.DynamicBody;
 		bdef.bullet = true;
 		
-		
 		carBody = world.createBody(bdef);
-		
 		
 		PolygonShape shape = new PolygonShape();
 		//it's actually a "radius"
 		shape.setAsBox(carWidth / 2f, carHeight / 2f);
-		FixtureDef fdef = new FixtureDef();
-		fdef.shape = shape;
-		carBody.createFixture(fdef);
+		carBody.createFixture(shape, 0f);
 		shape.dispose();
+		
+		carBody.setUserData(PhysicsBodyType.PLAYER_CAR);
 	}
 	
 	private class MyContactListener implements ContactListener {
@@ -131,6 +130,40 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		@Override
 		public void beginContact(Contact contact) {
 			
+			boolean isCarBodyA = contact.getFixtureA().getBody() == MainSurvivalWorld.this.carBody;
+
+			//if this is a contact between the player's car and a non static body
+			if ((isCarBodyA ||contact.getFixtureA().getBody() == MainSurvivalWorld.this.carBody)) {
+
+				Body crashedBody = isCarBodyA ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+				
+				assert crashedBody.getUserData() instanceof PhysicsBodyType;
+				
+				PhysicsBodyType type = (PhysicsBodyType) crashedBody.getUserData();
+				
+				switch (type) {
+				
+				case NPC_CAR: {
+					
+					MainSurvivalWorld.this.playerCarCrashed = true;
+					break;
+				}
+				case WALL: {
+					
+					break;
+				}
+				case PLAYER_CAR: {
+					
+					throw new IllegalStateException("A player car crashed into another player car.");
+				}
+				default: {
+					
+					break;
+				}
+				}
+			}
+			
+			/*
 			if((contact.getFixtureA().getBody() == carBody
 					&& BodyType.DynamicBody.equals(contact.getFixtureB().getBody().getType()))
                     ||
@@ -139,6 +172,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 				
 				MainSurvivalWorld.this.carCrashed = true;
 			}
+			*/
 		}
 
 		@Override
@@ -149,6 +183,38 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		@Override
 		public void preSolve(Contact contact, Manifold oldManifold) {
 			
+			boolean isCarBodyA = contact.getFixtureA().getBody() == MainSurvivalWorld.this.carBody;
+
+			//if this is a contact between the player's car and a non static body
+			if ((isCarBodyA ||contact.getFixtureA().getBody() == MainSurvivalWorld.this.carBody)) {
+
+				Body crashedBody = isCarBodyA ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+				
+				assert crashedBody.getUserData() instanceof PhysicsBodyType;
+				
+				PhysicsBodyType type = (PhysicsBodyType) crashedBody.getUserData();
+				
+				switch (type) {
+				
+				case NPC_CAR: {
+					
+					contact.setEnabled(false);
+					break;
+				}
+				case WALL: {
+					
+					break;
+				}
+				case PLAYER_CAR: {
+					
+					throw new IllegalStateException("A player car crashed into another player car.");
+				}
+				default: {
+					
+					break;
+				}
+				}
+			}
 		}
 
 		@Override

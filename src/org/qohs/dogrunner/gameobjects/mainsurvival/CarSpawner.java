@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class CarSpawner {
 	
-	private static final float VELOCITY = 120;
+	private static final float VELOCITY = 120f;
 	
 	private final DogRunner dogRunner;
 	
@@ -130,7 +130,8 @@ public class CarSpawner {
 		bodyDef.type = BodyType.DynamicBody;
 
 		// Create a body from the definition and add it to the world
-		Body body = world.createBody(bodyDef);  
+		Body body = world.createBody(bodyDef);
+		body.setUserData(PhysicsBodyType.NPC_CAR);
 
 		// Create a polygon shape
 		PolygonShape shape = new PolygonShape();  
