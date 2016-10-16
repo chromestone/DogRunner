@@ -10,11 +10,9 @@ package org.qohs.dogrunner;
  */
 public class UserProfile {
 	
-	public int score;
+	public int score = 0;
 
 	//don't instantiate this class outside of Fairies
 	protected UserProfile() {
-		
-		score = 0;
 	}
 }
