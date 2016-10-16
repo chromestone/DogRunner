@@ -58,6 +58,8 @@ public class MainSurvivalScreen extends StageScreen {
 	private Countdown countdown;
 	private CenteredText countdownText;
 	
+	private RoadManager roadManager;
+	
 	public MainSurvivalScreen(Batch batch) {
 		
 		super(batch);
@@ -119,11 +121,12 @@ public class MainSurvivalScreen extends StageScreen {
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
 		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.COMIC_SANS_GOLD_L.fileName, BitmapFont.class));
-		
+
 		////////////////////////////////
 		//
 		physicsWorld = null;
 		gameState = null;
+		roadManager = null;
 	}
 	
 	@Override
@@ -149,6 +152,8 @@ public class MainSurvivalScreen extends StageScreen {
 		physicsWorld = new MainSurvivalWorld(new Vector2(0f, 0f), true, def);
 		
 		carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
+		
+		roadManager = new RoadManager(meterWidth, meterHeight, 120f);
 		
 		////////////////////////////////
 		//the game will start in a state counting down the to the start of the game
@@ -182,7 +187,7 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			act(delta);
 
-			if (physicsWorld.carCrashed) {
+			if (physicsWorld.playerCarCrashed) {
 
 				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.fileName, Sound.class).play();
 				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
@@ -242,7 +247,7 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			act(delta);
 
-			if (physicsWorld.carCrashed) {
+			if (physicsWorld.playerCarCrashed) {
 
 				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.fileName, Sound.class).play();
 				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
@@ -276,7 +281,9 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.renderer.end();
 		
 		////////////////////////////////
-		//SpriteBatch is used to render here
+		//SpriteBatch is used to render starting here
+		
+		roadManager.render();
 		
 		carSpawner.render();
 		
@@ -301,12 +308,11 @@ public class MainSurvivalScreen extends StageScreen {
 	@Override
 	public void act(float delta) {
 		
+		////////////////////////////////
 		//stage acting is currently not needed
 		//stage.act();
 		
-		physicsWorld.act(delta);
-		carSpawner.act(delta);
-		
+		////////////////////////////////
 		/*
 		 * If one hemisphere of the screen is pressed, then the player's car
 		 * will move in that direction
@@ -334,6 +340,13 @@ public class MainSurvivalScreen extends StageScreen {
 			upperClickHandler.activated = false;
 			lowerClickHandler.activated = false;
 		}
+		
+		////////////////////////////////
+		//physics (Box2D) related acting
+		
+		physicsWorld.act(delta);
+		carSpawner.act(delta);
+		roadManager.act(delta);
 	}
 
 	@Override
@@ -348,7 +361,9 @@ public class MainSurvivalScreen extends StageScreen {
 		textRenderer.remove(countdownText);
 		
 		physicsWorld.dispose();
+		physicsWorld = null;
 		carSpawner = null;
+		roadManager = null;
 	}
 
 	@Override
