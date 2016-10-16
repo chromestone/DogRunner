@@ -26,6 +26,11 @@ public class TextureRegionGameObject extends GameObject {
 		
 		super(x, y, width, height);
 		
+		if (tRegion == null) {
+			
+			throw new IllegalArgumentException("TextureRegion cannot be null.");
+		}
+		
 		this.tRegion = tRegion;
 	}
 
