@@ -28,6 +28,7 @@ public class LowerClickHandler extends GameObject {
 	//triangle is encapsulated in a square picture
 	//this is how long one side of such square is
 	private float triangleLength;
+	private float padding;
 	
 	private float triangleY;
 
@@ -41,6 +42,8 @@ public class LowerClickHandler extends GameObject {
 		goldTriangle = new TextureRegion(dogRunner.assetManager.get(DogAssets.TRIANGLE_GOLD_IMG.fileName, Texture.class));
 		this.triangleLength = triangleLength;
 		
+		padding = width % triangleLength / 2f;
+		
 		triangleY = y + height - triangleLength;
 	}
 	
@@ -52,14 +55,14 @@ public class LowerClickHandler extends GameObject {
 		
 		if (activated) {
 			
-			for (float i = x; i <= x + width - triangleLength; i += triangleLength * 2f) {
+			for (float i = x + padding; i <= x + width - triangleLength; i += triangleLength * 2f) {
 
 				batch.draw(goldTriangle, i, triangleY, triangleLength, triangleLength);
 			}
 		}
 		else {
 			
-			for (float i = x; i <= x + width - triangleLength; i += triangleLength * 2f) {
+			for (float i = x + padding; i <= x + width - triangleLength; i += triangleLength * 2f) {
 
 				batch.draw(greyTriangle, i, triangleY, triangleLength, triangleLength);
 			}

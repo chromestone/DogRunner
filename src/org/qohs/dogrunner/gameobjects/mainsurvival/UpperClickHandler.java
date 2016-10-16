@@ -31,6 +31,7 @@ public class UpperClickHandler extends GameObject {
 	//triangle is encapsulated in a square picture
 	//this is how long one side of such square is
 	private float triangleLength;
+	private float padding;
 
 	public UpperClickHandler(float x, float y, float width, float height, float triangleLength) {
 		
@@ -43,6 +44,7 @@ public class UpperClickHandler extends GameObject {
 		goldTriangle = new TextureRegion(dogRunner.assetManager.get(DogAssets.TRIANGLE_GOLD_IMG.fileName, Texture.class));
 		goldTriangle.flip(false, true);
 		this.triangleLength = triangleLength;
+		padding = width % triangleLength / 2f;
 	}
 	
 	@Override
@@ -53,14 +55,14 @@ public class UpperClickHandler extends GameObject {
 		
 		if (activated) {
 			
-			for (float i = x; i <= x + width - triangleLength; i += triangleLength * 2f) {
+			for (float i = x + padding; i <= x + width - triangleLength; i += triangleLength * 2f) {
 
 				batch.draw(goldTriangle, i, y, triangleLength, triangleLength);
 			}
 		}
 		else {
 			
-			for (float i = x; i <= x + width - triangleLength; i += triangleLength * 2f) {
+			for (float i = x + padding; i <= x + width - triangleLength; i += triangleLength * 2f) {
 
 				batch.draw(greyTriangle, i, y, triangleLength, triangleLength);
 			}
