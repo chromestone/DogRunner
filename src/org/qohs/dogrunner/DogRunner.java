@@ -132,7 +132,7 @@ public class DogRunner extends Game {
 		//actual directory of file
 		fTFLP.fontFileName = "comic_sans.ttf";
 		fTFLP.fontParameters.size = (int) (90 * GAME_WIDTH / 800d);
-		fTFLP.fontParameters.color = new Color(128f/255f, 128f/255f, 128f/255f, 1f);
+		fTFLP.fontParameters.color = Color.ORANGE;//new Color(128f/255f, 128f/255f, 128f/255f, 1f);
 		fTFLP.fontParameters.borderColor = Color.BLACK;
 		fTFLP.fontParameters.borderWidth = 1f * GAME_WIDTH / 800f;
 		fTFLP.fontParameters.flip = true;
@@ -151,6 +151,7 @@ public class DogRunner extends Game {
 		assetManager.load(DogAssets.RESUME_IMG.fileName, Texture.class);
 		assetManager.load(DogAssets.TRIANGLE_GRAY_IMG.fileName, Texture.class);
 		assetManager.load(DogAssets.TRIANGLE_GOLD_IMG.fileName, Texture.class);
+		assetManager.load(DogAssets.ROAD_IMG.fileName, Texture.class);
 		
 		////////////////////////////////
 		//loads sound assets
