@@ -17,6 +17,8 @@ public class GameOverMessage extends GameObject {
 	private BitmapFont font;
 	
 	private float scoreFontX, scoreFontY;
+	private String scoreText;
+	
 	//noticed that user sometimes clicks after exiting previous screen
 	//two clicks exits the Game Over screen
 	//***consider implementing a button instead***
@@ -40,6 +42,8 @@ public class GameOverMessage extends GameObject {
 		
 		scoreFontX = -1;
 		scoreFontY = height * 2f / 3f - glyphLayout.height / 2f;
+		scoreText = null;
+		
 		clicks = 0;
 	}
 
@@ -47,16 +51,16 @@ public class GameOverMessage extends GameObject {
 	public void draw(Batch batch, float parentAlpha) {
 		
 		font.draw(batch, "GAME OVER", fontX, fontY);
-		if (scoreFontX < 0) {
+		if (scoreText == null) {
 			
-			String text = "SCORE: " + dogRunner.userProfile.score;
+			scoreText = "SCORE: " + dogRunner.userProfile.score;
 
 			GlyphLayout glyphLayout = new GlyphLayout();
-			glyphLayout.setText(font, text);
+			glyphLayout.setText(font, scoreText);
 
 			scoreFontX = (width - glyphLayout.width) / 2f;
 		}
-		font.draw(batch, "SCORE: " + dogRunner.userProfile.score, scoreFontX, scoreFontY);
+		font.draw(batch, scoreText, scoreFontX, scoreFontY);
 	}
 	
 	public void clicked() {
@@ -64,6 +68,7 @@ public class GameOverMessage extends GameObject {
 		clicks++;
 		if (clicks >= 2) {
 			
+			scoreText = null;
 			clicks = 0;
 			dogRunner.userProfile.score = 0;
 			dogRunner.setScreen(DogScreens.Type.START_SCREEN);
