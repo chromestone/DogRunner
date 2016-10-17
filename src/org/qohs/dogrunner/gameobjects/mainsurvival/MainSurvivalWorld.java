@@ -38,6 +38,8 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	
 	//game over
 	public boolean playerCarCrashed;
+
+	public CarSpawner carSpawner;
 	
 	public MainSurvivalWorld(Vector2 gravity, boolean doSleep, Definition def) {
 		
@@ -52,6 +54,8 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		this.carHeight = def.carHeight;
 		
 		playerCarCrashed = false;
+
+		carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
 		
 		init();
 	}
@@ -104,6 +108,18 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		uBoundBody.createFixture(upperBox, 0.0f); 
 		// Clean up after ourselves
 		upperBox.dispose();
+	}
+
+	@Override
+	protected void perAct() {
+
+		carSpawner.act(STEP_RATE);
+	}
+
+	@Override
+	protected void postAct(float delta) {
+
+		carSpawner.clean();
 	}
 	
 	private void createCarBody() {

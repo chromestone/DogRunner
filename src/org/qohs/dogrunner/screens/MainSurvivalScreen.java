@@ -51,7 +51,7 @@ public class MainSurvivalScreen extends StageScreen {
 	private final float carHeight;
 	private final float carWidth;
 	
-	private CarSpawner carSpawner;
+	//private CarSpawner carSpawner;
 	
 	private TextRenderer textRenderer;
 	
@@ -151,7 +151,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		physicsWorld = new MainSurvivalWorld(new Vector2(0f, 0f), true, def);
 		
-		carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
+		//carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
 		
 		roadManager = new RoadManager(meterWidth, meterHeight, 120f);
 		
@@ -285,7 +285,8 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		roadManager.render();
 		
-		carSpawner.render();
+		//carSpawner.render();
+		physicsWorld.carSpawner.render();
 		
 		//draws the player's car
 		dogRunner.batch.begin();
@@ -345,7 +346,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//physics (Box2D) related acting
 		
 		physicsWorld.act(delta);
-		carSpawner.act(delta);
+		//carSpawner.act(delta);
 		roadManager.act(delta);
 	}
 
@@ -362,7 +363,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		physicsWorld.dispose();
 		physicsWorld = null;
-		carSpawner = null;
+		//carSpawner = null;
 		roadManager = null;
 	}
 

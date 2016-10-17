@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * This class spawns the cars in the Main Survival World
+ * Note that this class should be used in accordance
+ * and inside a physics world (see act and clean)
  * 
  * @author Derek Zhang
  *
@@ -67,9 +69,13 @@ public class CarSpawner {
 		
 		time = (occuringLength + carWidth) / VELOCITY;
 	}
-	
+
+	/**
+	 * Note that this should be called within the Physics World per act method
+	 * @param delta
+     */
 	public void act(float delta) {
-		
+
 		//float frameTime = Math.min(delta, .25f);
 		accumulator += delta;//frameTime;
 		if (accumulator >= time) {
@@ -79,14 +85,23 @@ public class CarSpawner {
 			
 			accumulator %= time;
 		}
+	}
+
+	/**
+	 * Should be called once per render
+	 * recommended to be called in the post act
+	 * in the Physics World
+	 */
+	public void clean() {
+
 		Iterator<Body> iterator = carArray.iterator();
 		while (iterator.hasNext()) {
-			
+
 			Body car = iterator.next();
 			//if the car is no longer on the screen
 			//delete it to stop wasting memory
 			if (car.getPosition().x + carWidth / 2 < 0) {
-				
+
 				iterator.remove();
 				world.destroyBody(car);
 				dogRunner.userProfile.score += 10;

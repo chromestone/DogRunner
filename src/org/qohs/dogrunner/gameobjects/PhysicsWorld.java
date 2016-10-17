@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public abstract class PhysicsWorld {
 
+	protected static final float STEP_RATE = 1/60f;
+
 	public World world;
 	
 	private boolean disposed;
@@ -41,17 +43,35 @@ public abstract class PhysicsWorld {
 	protected void init() {
 	}
 	
-	public void act(float delta) {
+	public final void act(float delta) {
+
+		preAct(delta);
 		
 	    // fixed time step
 	    // max frame time to avoid spiral of death (on slow devices)
 	    float frameTime = Math.min(delta, 0.25f);
 	    accumulator += frameTime;
-	    while (accumulator >= 1/60f) {
+	    while (accumulator >= STEP_RATE) {
 //			b2DRenderer.render(world, cam.combined);
-	        world.step(1/60f, 6, 2);
-	        accumulator -= 1/60f;
+	        world.step(STEP_RATE, 6, 2);
+	        accumulator -= STEP_RATE;
+
+			perAct();
 	    }
+
+		postAct(delta);
+	}
+
+	protected void preAct(float delta) {
+
+	}
+
+	protected void perAct() {
+
+	}
+
+	protected void postAct(float delta) {
+
 	}
 	
 	public void dispose() {
