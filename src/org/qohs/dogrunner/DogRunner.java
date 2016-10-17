@@ -136,6 +136,9 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.borderColor = Color.BLACK;
 		fTFLP.fontParameters.borderWidth = 1f * GAME_WIDTH / 800f;
 		fTFLP.fontParameters.flip = true;
+		//fTFLP.fontParameters.genMipMaps = true;
+		//fTFLP.fontParameters.magFilter = Texture.TextureFilter.MipMapLinearLinear;
+		//fTFLP.fontParameters.minFilter = Texture.TextureFilter.MipMapLinearLinear;
 
 		assetManager.load(DogAssets.COMIC_SANS_BLACK_L.fileName, BitmapFont.class, fTFLP);
 
