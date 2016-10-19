@@ -96,11 +96,13 @@ public class DogRunner extends Game {
 		assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
 		assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 		
+		String arial = "Arial.ttf";
+		
 		////////////////////////////////
 		//setups parameters and loads fonts with "Free Type Font"
 		FreeTypeFontLoaderParameter fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file (must be root, i.e. not in a folder other than assets)
-		fTFLP.fontFileName = "comic_sans.ttf";
+		fTFLP.fontFileName = arial;
 		fTFLP.fontParameters.size = (int) (40 * GAME_WIDTH / 800d);
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
@@ -111,7 +113,7 @@ public class DogRunner extends Game {
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
-		fTFLP.fontFileName = "comic_sans.ttf";
+		fTFLP.fontFileName = arial;
 		fTFLP.fontParameters.size = (int) (20 * GAME_WIDTH / 800d);
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
@@ -120,7 +122,7 @@ public class DogRunner extends Game {
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
-		fTFLP.fontFileName = "comic_sans.ttf";
+		fTFLP.fontFileName = arial;
 		fTFLP.fontParameters.size = (int) (100 * GAME_WIDTH / 800d);
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
@@ -130,7 +132,7 @@ public class DogRunner extends Game {
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
-		fTFLP.fontFileName = "comic_sans.ttf";
+		fTFLP.fontFileName = arial;
 		fTFLP.fontParameters.size = (int) (90 * GAME_WIDTH / 800d);
 		fTFLP.fontParameters.color = Color.ORANGE;//new Color(128f/255f, 128f/255f, 128f/255f, 1f);
 		fTFLP.fontParameters.borderColor = Color.BLACK;
