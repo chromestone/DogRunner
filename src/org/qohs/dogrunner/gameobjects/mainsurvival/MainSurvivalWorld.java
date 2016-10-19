@@ -29,7 +29,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		public float carHeight = 0f;
 	}
 	
-	
+	////////////////////////////////
 
 	private float meterWidth;
 	private float meterHeight;
@@ -59,7 +59,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		playerCarCrashed = false;
 
 		carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
-		roadManager = new RoadManager(meterWidth, meterHeight, 120f);
+		roadManager = new RoadManager(meterWidth, meterHeight, 165f);
 		
 		init();
 	}

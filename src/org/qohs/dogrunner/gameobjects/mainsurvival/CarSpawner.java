@@ -1,6 +1,6 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
-import java.util.Iterator;
+import java.util.*;
 
 import org.qohs.dogrunner.DogRunner;
 import org.qohs.dogrunner.io.DogAssets;
@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class CarSpawner {
 	
-	private static final float VELOCITY = 120f;
+	private static final float VELOCITY = 75f;
 	
 	private final DogRunner dogRunner;
 	
@@ -45,6 +45,10 @@ public class CarSpawner {
 	private TextureRegion carTexture;
 	private float carWidth, carHeight;
 	
+	private boolean[] prevFormation;
+	private boolean[] currentFormation;
+	private int[] openRows;
+	
 	public CarSpawner(World world, float gameWidth, float gameHeight, float occuringLength) {
 		
 		dogRunner = DogRunner.getInstance();
@@ -65,6 +69,29 @@ public class CarSpawner {
 		carWidth = carHeight / carTexture.getTexture().getHeight() * carTexture.getTexture().getWidth();
 		
 		time = (occuringLength + carWidth) / VELOCITY;
+		
+		prevFormation = new boolean[6];
+		currentFormation = new boolean[6];
+		openRows = new int[6];
+		Arrays.fill(openRows, -1);
+		
+		ArrayList<Integer> firstFormation = new ArrayList<Integer>();
+		for (int i = 0; i < 6; i++) {
+			
+			firstFormation.add(new Integer(i));
+		}
+		Collections.shuffle(firstFormation);
+		//leave at least one row empty
+		int rowsFilled = (int) (Math.random() * 5);
+		for (int i = 0; i < rowsFilled; i++) {
+			
+			if (Math.random() * 2 >= 1) {
+				
+				int row = firstFormation.get(i);
+				prevFormation[row] = true;
+				carArray.add(createCarBody(row));
+			}
+		}
 	}
 
 	/**
@@ -76,9 +103,53 @@ public class CarSpawner {
 		//float frameTime = Math.min(delta, .25f);
 		accumulator += delta;//frameTime;
 		if (accumulator >= time) {
+			
+			int openRowCount = 0;
+			
+			int i = 0;
+			for (; i < 6; i++) {
+				
+				//if the previous wave of cars did spawn a car at this row
+				if (prevFormation[i]) {
+					
+					if (Math.random() * 2 >= 1) {
+						
+						currentFormation[i] = true;
+						carArray.add(createCarBody(i));
+					}
+				}
+				else {
+					
+					openRows[openRowCount++] = i;
+				}
+			}
+			
+			boolean previousFilled = false, currentFilled = false;
+			for (i = 0; i < openRowCount && openRows[i] >= 0; i++) {
+				
+				previousFilled = (openRows[i] - 1 >= 0) ? currentFormation[openRows[i] - 1]: true;
+				currentFilled = (openRows[i] + 1 < 6) ? currentFormation[openRows[i] + 1]: true;
+				
+				if (!previousFilled || ! currentFilled) {
+					
+					if (Math.random() * 2 >= 1) {
+						
+						currentFormation[openRows[i]] = true;
+						carArray.add(createCarBody(openRows[i]));
+					}
+				}
+			}
 
-			Body body = createCarBody();
-			carArray.add(body);
+			//Body body = createCarBody((int) (Math.random() * 6));
+			//carArray.add(body);
+			
+			for (i = 0; i < 6; i++) {
+				
+				prevFormation[i] = currentFormation[i];
+			}
+			
+			Arrays.fill(currentFormation, false);
+			Arrays.fill(openRows, -1);
 			
 			accumulator %= time;
 		}
@@ -101,7 +172,7 @@ public class CarSpawner {
 
 				iterator.remove();
 				world.destroyBody(car);
-				dogRunner.userProfile.score += 10;
+				dogRunner.userProfile.score += 1;
 			}
 		}
 	}
@@ -130,14 +201,12 @@ public class CarSpawner {
 		*/
 	}
 	
-	private Body createCarBody() {
+	private Body createCarBody(int row) {
 		
 		BodyDef bodyDef = new BodyDef(); 
 		
-		int choice = (int) (Math.random() * 6);
-		
 		// Set its world position
-		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2f, (choice * 2f + 1f) * gameHeight / 12f);//randomFactor + (carHeight - 5f) / 2);  
+		bodyDef.position.set(gameWidth + (carWidth - gameWidth * (21f / 500f)) / 2f, (row * 2f + 1f) * gameHeight / 12f);//randomFactor + (carHeight - 5f) / 2);  
 		bodyDef.linearVelocity.set(-VELOCITY, 0f);
 		bodyDef.type = BodyType.DynamicBody;
 
