@@ -27,17 +27,17 @@ public class RoadManager {
 	private float roadHeight;
 	private float roadWidth;
 	
-	private float speed;
+	private float distance;
 	
 	private Array<Point> tRegionPoints;
 	
-	private float accumulator;
+	//private float accumulator;
 	
 	/**
 	 * It is assumed that roadWidth and roadHeight are in same units
 	 * these units should be consistent with speed
 	 * 
-	 * @param roadWidth
+	 * @param screenWidth
 	 * @param roadHeight
 	 * @param speed horizontal velocity of road (units/second)
 	 */
@@ -52,9 +52,8 @@ public class RoadManager {
 		
 		this.roadHeight = roadHeight;
 		this.roadWidth = roadHeight * road.getTexture().getWidth() / road.getTexture().getHeight();
-;
 		
-		this.speed = speed;
+		distance = speed / 60f;
 		
 		road = new TextureRegion(dogRunner.assetManager.get(DogAssets.ROAD_IMG.fileName, Texture.class));
 		road.flip(false, true);
@@ -63,18 +62,25 @@ public class RoadManager {
 		
 		tRegionPoints.add(new Point(0f, 0f));
 		
-		accumulator = 0f;
+		//accumulator = 0f;
 	}
 	
 	public void act(float delta) {
 		
+		/*
 		float frameTime = Math.min(delta, 0.25f);
 		accumulator += frameTime;
-		float temp = accumulator % 1/60f;
-
-		float distance = (accumulator - temp) * speed;
+		//float temp = accumulator % 1/60f;
 		
-		accumulator = temp;
+		float totalDist = 0f;
+		while (accumulator >= 1/60f) {
+			
+			totalDist += distance;
+			accumulator -= 1/60f;
+		}
+		*/
+		
+		//accumulator = temp;
 
 		Iterator<Point> iterator = tRegionPoints.iterator();
 		Point p = null;

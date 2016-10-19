@@ -28,6 +28,8 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		public float carWidth = 0f;
 		public float carHeight = 0f;
 	}
+	
+	
 
 	private float meterWidth;
 	private float meterHeight;
@@ -40,6 +42,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	public boolean playerCarCrashed;
 
 	public CarSpawner carSpawner;
+	public RoadManager roadManager;
 	
 	public MainSurvivalWorld(Vector2 gravity, boolean doSleep, Definition def) {
 		
@@ -56,6 +59,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		playerCarCrashed = false;
 
 		carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
+		roadManager = new RoadManager(meterWidth, meterHeight, 120f);
 		
 		init();
 	}
@@ -114,6 +118,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	protected void perAct() {
 
 		carSpawner.act(STEP_RATE);
+		roadManager.act(STEP_RATE);
 	}
 
 	@Override

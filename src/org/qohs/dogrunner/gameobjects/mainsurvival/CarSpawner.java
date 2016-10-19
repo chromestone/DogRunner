@@ -5,12 +5,9 @@ import java.util.Iterator;
 import org.qohs.dogrunner.DogRunner;
 import org.qohs.dogrunner.io.DogAssets;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 
@@ -110,7 +107,7 @@ public class CarSpawner {
 	}
 
 	public void render() {
-		
+
 		Iterator<Body> iterator = carArray.iterator();
 		dogRunner.batch.begin();
 		while (iterator.hasNext()) {
@@ -151,7 +148,7 @@ public class CarSpawner {
 		// Create a polygon shape
 		PolygonShape shape = new PolygonShape();  
 		//it's actually a radius
-		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, (carHeight - 5f) / 2f);
+		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, carHeight / 2f - 2f);
 		// Create a fixture from our polygon shape and add it to our ground body  
 		body.createFixture(shape, 0.0f); 
 		// Clean up after ourselves

@@ -11,7 +11,6 @@ import org.qohs.dogrunner.util.Countdown;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -58,7 +57,7 @@ public class MainSurvivalScreen extends StageScreen {
 	private Countdown countdown;
 	private CenteredText countdownText;
 	
-	private RoadManager roadManager;
+	//private RoadManager roadManager;
 	
 	public MainSurvivalScreen(Batch batch) {
 		
@@ -76,7 +75,7 @@ public class MainSurvivalScreen extends StageScreen {
 		car.flip(false, true);
 		
 		//fit car into screen
-		carHeight = 1f * meterHeight / 12f;
+		carHeight = meterHeight / 10f;
 		carWidth = carHeight / car.getTexture().getHeight() * car.getTexture().getWidth();
 		
 		////////////////////////////////
@@ -126,7 +125,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//
 		physicsWorld = null;
 		gameState = null;
-		roadManager = null;
+		//roadManager = null;
 	}
 	
 	@Override
@@ -153,7 +152,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		//carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
 		
-		roadManager = new RoadManager(meterWidth, meterHeight, 120f);
+		//roadManager = new RoadManager(meterWidth, meterHeight, 120f);
 		
 		////////////////////////////////
 		//the game will start in a state counting down the to the start of the game
@@ -264,6 +263,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//this is the section where the shape renderer is used
 		//note that the shape renderer should EVENTUALLY BE REPLACED (by textures/pictures/sprites)
 		
+		/*
 		//Draws the background roads
 		dogRunner.renderer.begin(ShapeType.Filled);
 		dogRunner.renderer.setColor(Color.BLACK);
@@ -279,13 +279,15 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.renderer.setColor(Color.WHITE);
 		dogRunner.renderer.rect(0f, meterHeight * 5f / 6f, meterWidth, meterHeight / 6f);
 		dogRunner.renderer.end();
+		*/
 		
 		////////////////////////////////
 		//SpriteBatch is used to render starting here
 		
-		roadManager.render();
+		//roadManager.render();
 		
 		//carSpawner.render();
+		physicsWorld.roadManager.render();
 		physicsWorld.carSpawner.render();
 		
 		//draws the player's car
@@ -347,7 +349,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		physicsWorld.act(delta);
 		//carSpawner.act(delta);
-		roadManager.act(delta);
+		//roadManager.act(delta);
 	}
 
 	@Override
@@ -364,7 +366,7 @@ public class MainSurvivalScreen extends StageScreen {
 		physicsWorld.dispose();
 		physicsWorld = null;
 		//carSpawner = null;
-		roadManager = null;
+		//roadManager = null;
 	}
 
 	@Override
