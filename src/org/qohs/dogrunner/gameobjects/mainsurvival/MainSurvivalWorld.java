@@ -207,7 +207,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 			boolean isCarBodyA = contact.getFixtureA().getBody() == MainSurvivalWorld.this.carBody;
 
 			//if this is a contact between the player's car and a non static body
-			if ((isCarBodyA ||contact.getFixtureA().getBody() == MainSurvivalWorld.this.carBody)) {
+			if ((isCarBodyA ||contact.getFixtureB().getBody() == MainSurvivalWorld.this.carBody)) {
 
 				Body crashedBody = isCarBodyA ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
 				
