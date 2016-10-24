@@ -47,7 +47,7 @@ public class CarSpawner {
 	
 	private boolean[] prevFormation;
 	private boolean[] currentFormation;
-	private int[] openRows;
+	private byte[] openRows;
 	
 	public CarSpawner(World world, float gameWidth, float gameHeight, float occuringLength) {
 		
@@ -72,13 +72,13 @@ public class CarSpawner {
 		
 		prevFormation = new boolean[6];
 		currentFormation = new boolean[6];
-		openRows = new int[6];
-		Arrays.fill(openRows, -1);
+		openRows = new byte[6];
+		Arrays.fill(openRows, (byte) - 1);
 		
-		ArrayList<Integer> firstFormation = new ArrayList<Integer>();
-		for (int i = 0; i < 6; i++) {
+		ArrayList<Byte> firstFormation = new ArrayList<Byte>();
+		for (byte i = 0; i < 6; i++) {
 			
-			firstFormation.add(new Integer(i));
+			firstFormation.add(new Byte(i));
 		}
 		Collections.shuffle(firstFormation);
 		//leave at least one row empty
@@ -87,7 +87,7 @@ public class CarSpawner {
 			
 			if (Math.random() * 2 >= 1) {
 				
-				int row = firstFormation.get(i);
+				byte row = firstFormation.get(i).byteValue();
 				prevFormation[row] = true;
 				carArray.add(createCarBody(row));
 			}
@@ -106,26 +106,31 @@ public class CarSpawner {
 			
 			int openRowCount = 0;
 			
-			int i = 0;
-			for (; i < 6; i++) {
+			//int i = 0;
+			for (byte row = 0; row < 6; row++) {
 				
 				//if the previous wave of cars did spawn a car at this row
-				if (prevFormation[i]) {
+				if (prevFormation[row]) {
 					
 					if (Math.random() * 2 >= 1) {
 						
-						currentFormation[i] = true;
-						carArray.add(createCarBody(i));
+						currentFormation[row] = true;
+						carArray.add(createCarBody(row));
+					}
+					else {
+						
+						currentFormation[row] = false;
 					}
 				}
 				else {
 					
-					openRows[openRowCount++] = i;
+					currentFormation[row] = false;
+					openRows[openRowCount++] = row;
 				}
 			}
 			
 			boolean previousFilled = false, currentFilled = false;
-			for (i = 0; i < openRowCount && openRows[i] >= 0; i++) {
+			for (byte i = 0; i < openRowCount && openRows[i] >= 0; i++) {
 				
 				previousFilled = (openRows[i] - 1 >= 0) ? currentFormation[openRows[i] - 1]: true;
 				currentFilled = (openRows[i] + 1 < 6) ? currentFormation[openRows[i] + 1]: true;
@@ -143,13 +148,13 @@ public class CarSpawner {
 			//Body body = createCarBody((int) (Math.random() * 6));
 			//carArray.add(body);
 			
-			for (i = 0; i < 6; i++) {
+			for (byte i = 0; i < 6; i++) {
 				
 				prevFormation[i] = currentFormation[i];
 			}
 			
-			Arrays.fill(currentFormation, false);
-			Arrays.fill(openRows, -1);
+			//Arrays.fill(currentFormation, false);
+			//Arrays.fill(openRows, -1);
 			
 			accumulator %= time;
 		}
@@ -201,7 +206,7 @@ public class CarSpawner {
 		*/
 	}
 	
-	private Body createCarBody(int row) {
+	private Body createCarBody(byte row) {
 		
 		BodyDef bodyDef = new BodyDef(); 
 		
