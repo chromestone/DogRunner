@@ -43,6 +43,8 @@ public class DogRunner extends Game {
 	
 	public UserProfile userProfile;
 	
+	//FPSLogger log = new FPSLogger();
+	
 	@Override
 	public void create() {
 
@@ -166,6 +168,8 @@ public class DogRunner extends Game {
 
 	@Override
 	public void render() {
+		
+		//log.log();
 		
 		//clears the screen (with set color)
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
