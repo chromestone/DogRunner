@@ -108,7 +108,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.flip = true;
 		
 		//name of this does not matter, however must end in .ttf
-		assetManager.load(DogAssets.COMIC_SANS_RED_M.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_RED_M.fileName, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -118,7 +118,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
-		assetManager.load(DogAssets.COMIC_SANS_RED_S.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_RED_S.fileName, BitmapFont.class, fTFLP);
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
@@ -127,7 +127,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
 
-		assetManager.load(DogAssets.COMIC_SANS_GOLD_L.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_GOLD_L.fileName, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -142,7 +142,7 @@ public class DogRunner extends Game {
 		//fTFLP.fontParameters.magFilter = Texture.TextureFilter.MipMapLinearLinear;
 		//fTFLP.fontParameters.minFilter = Texture.TextureFilter.MipMapLinearLinear;
 
-		assetManager.load(DogAssets.COMIC_SANS_BLACK_L.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_BLACK_L.fileName, BitmapFont.class, fTFLP);
 
 		////////////////////////////////
 		//loads picture assets
@@ -160,7 +160,7 @@ public class DogRunner extends Game {
 		
 		////////////////////////////////
 		//loads sound assets
-		assetManager.load(DogAssets.ENGINE_REV.fileName, Sound.class);
+		assetManager.load(DogAssets.IGNITION_REV.fileName, Sound.class);
 		assetManager.load(DogAssets.CAR_CRASH_BONG.fileName, Sound.class);
 	}
 

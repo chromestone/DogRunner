@@ -87,7 +87,7 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//set up text
 		textRenderer = new TextRenderer(cam);
-		textRenderer.add(new ScoreText(dogRunner.assetManager.get(DogAssets.COMIC_SANS_RED_M.fileName, BitmapFont.class)));
+		textRenderer.add(new ScoreText(dogRunner.assetManager.get(DogAssets.ARIAL_RED_M.fileName, BitmapFont.class)));
 	
 		////////////////////////////////
 		//sets up inputs for movement of player's car
@@ -119,7 +119,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
-		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.COMIC_SANS_GOLD_L.fileName, BitmapFont.class));
+		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.ARIAL_GOLD_L.fileName, BitmapFont.class));
 
 		////////////////////////////////
 		//

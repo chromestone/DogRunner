@@ -28,7 +28,7 @@ public class StartButton extends GameObject {
 		
 		color = Color.GRAY;
 		
-		font = dogRunner.assetManager.get(DogAssets.COMIC_SANS_RED_M.fileName, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogAssets.ARIAL_RED_M.fileName, BitmapFont.class);
 		
 		////////////////////////////////
 		//
@@ -68,7 +68,7 @@ public class StartButton extends GameObject {
 	
 	public void clicked() {
 		
-		dogRunner.assetManager.get(DogAssets.ENGINE_REV.fileName, Sound.class).play(1f);
+		dogRunner.assetManager.get(DogAssets.IGNITION_REV.fileName, Sound.class).play(1f);
 		dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
 	}
 }
