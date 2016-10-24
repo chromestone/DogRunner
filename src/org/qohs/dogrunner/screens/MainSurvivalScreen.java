@@ -215,7 +215,7 @@ public class MainSurvivalScreen extends StageScreen {
 		}
 		case COUNTDOWN: {
 			
-			float seconds = countdown.update(delta) + .4f;
+			float seconds = countdown.update(delta) + .6f;
 			if (seconds > 0f) {
 				
 				int number = (int) seconds;
