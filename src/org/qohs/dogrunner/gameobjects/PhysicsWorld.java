@@ -53,7 +53,7 @@ public abstract class PhysicsWorld {
 	    accumulator += frameTime;
 	    while (accumulator >= STEP_RATE) {
 //			b2DRenderer.render(world, cam.combined);
-	        world.step(STEP_RATE, 8, 4);
+	        world.step(STEP_RATE, 1, 1);
 	        accumulator -= STEP_RATE;
 
 			perAct();
