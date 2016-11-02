@@ -62,7 +62,7 @@ public class CarSpawner {
 		
 		accumulator = 0f;
 		
-		carTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.WHITE_CAR.fileName, Texture.class));
+		carTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.WHITE_CAR.FILE_NAME, Texture.class));
 		carTexture.flip(false, true);
 		
 		carHeight = 7f * gameHeight / 48f;

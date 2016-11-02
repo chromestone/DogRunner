@@ -28,10 +28,10 @@ public enum DogAssets {
 	TRIANGLE_GOLD_IMG("placeholder/triangle_gold.png"),
 	ROAD_IMG("placeholder/road.png");
 
-	public final String fileName;
+	public final String FILE_NAME;
 	
 	DogAssets(String fileName) {
 		
-		this.fileName = "assets/" + fileName;
+		this.FILE_NAME = "assets/" + fileName;
 	}
 }

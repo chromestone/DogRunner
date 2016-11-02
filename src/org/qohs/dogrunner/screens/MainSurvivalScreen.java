@@ -71,7 +71,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//player's car size calculations
 		
 		//load car texture
-		car = new TextureRegion(dogRunner.assetManager.get(DogAssets.PORSCHE_CAR.fileName, Texture.class));
+		car = new TextureRegion(dogRunner.assetManager.get(DogAssets.PORSCHE_CAR.FILE_NAME, Texture.class));
 		car.flip(false, true);
 		
 		//fit car into screen
@@ -87,7 +87,7 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//set up text
 		textRenderer = new TextRenderer(cam);
-		textRenderer.add(new ScoreText(dogRunner.assetManager.get(DogAssets.ARIAL_RED_M.fileName, BitmapFont.class)));
+		textRenderer.add(new ScoreText(dogRunner.assetManager.get(DogAssets.ARIAL_RED_M.FILE_NAME, BitmapFont.class)));
 	
 		////////////////////////////////
 		//sets up inputs for movement of player's car
@@ -108,18 +108,18 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//pause and play buttons
 		pauseButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
-				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMG.fileName, Texture.class)));
+				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMG.FILE_NAME, Texture.class)));
 		stage.addActor(pauseButton);
 		
 		playButton = new QueryButton(meterWidth / 2f - meterHeight / 2f, 0f, meterHeight, meterHeight, 
-				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMG.fileName, Texture.class)));
+				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMG.FILE_NAME, Texture.class)));
 		stage.addActor(playButton);
 		
 		////////////////////////////////
 		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
-		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.ARIAL_GOLD_L.fileName, BitmapFont.class));
+		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class));
 
 		////////////////////////////////
 		//
@@ -188,7 +188,7 @@ public class MainSurvivalScreen extends StageScreen {
 
 			if (physicsWorld.playerCarCrashed) {
 
-				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.fileName, Sound.class).play();
+				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
 				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
 				return;
 			}
@@ -248,7 +248,7 @@ public class MainSurvivalScreen extends StageScreen {
 
 			if (physicsWorld.playerCarCrashed) {
 
-				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.fileName, Sound.class).play();
+				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
 				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
 				return;
 			}

@@ -110,7 +110,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.flip = true;
 		
 		//name of this does not matter, however must end in .ttf
-		assetManager.load(DogAssets.ARIAL_RED_M.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_RED_M.FILE_NAME, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -120,7 +120,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
-		assetManager.load(DogAssets.ARIAL_RED_S.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_RED_S.FILE_NAME, BitmapFont.class, fTFLP);
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
@@ -129,7 +129,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
 
-		assetManager.load(DogAssets.ARIAL_GOLD_L.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -144,26 +144,27 @@ public class DogRunner extends Game {
 		//fTFLP.fontParameters.magFilter = Texture.TextureFilter.MipMapLinearLinear;
 		//fTFLP.fontParameters.minFilter = Texture.TextureFilter.MipMapLinearLinear;
 
-		assetManager.load(DogAssets.ARIAL_BLACK_L.fileName, BitmapFont.class, fTFLP);
+		assetManager.load(DogAssets.ARIAL_BLACK_L.FILE_NAME, BitmapFont.class, fTFLP);
 
 		////////////////////////////////
 		//loads picture assets
 
 		//name in this case (pictures) matters [must reflect actual path]
-		assetManager.load(DogAssets.DOG_IMG.fileName, Texture.class);
-		assetManager.load(DogAssets.PORSCHE_CAR.fileName, Texture.class);
-		assetManager.load(DogAssets.WHITE_CAR.fileName, Texture.class);
-		assetManager.load(DogAssets.GAME_OVER_EXPLOSION.fileName, Texture.class);
-		assetManager.load(DogAssets.PAUSE_IMG.fileName, Texture.class);
-		assetManager.load(DogAssets.RESUME_IMG.fileName, Texture.class);
-		assetManager.load(DogAssets.TRIANGLE_GRAY_IMG.fileName, Texture.class);
-		assetManager.load(DogAssets.TRIANGLE_GOLD_IMG.fileName, Texture.class);
-		assetManager.load(DogAssets.ROAD_IMG.fileName, Texture.class);
+		assetManager.load(DogAssets.DOG_IMG.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.PORSCHE_CAR.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.WHITE_CAR.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.GAME_OVER_EXPLOSION.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.PAUSE_IMG.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.RESUME_IMG.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.TRIANGLE_GRAY_IMG.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.TRIANGLE_GOLD_IMG.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.ROAD_IMG.FILE_NAME, Texture.class);
+		assetManager.load(DogAssets.EXPLODE.FILE_NAME, Texture.class);
 		
 		////////////////////////////////
 		//loads sound assets
-		assetManager.load(DogAssets.IGNITION_REV.fileName, Sound.class);
-		assetManager.load(DogAssets.CAR_CRASH_BONG.fileName, Sound.class);
+		assetManager.load(DogAssets.IGNITION_REV.FILE_NAME, Sound.class);
+		assetManager.load(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class);
 	}
 
 	@Override

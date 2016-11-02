@@ -38,8 +38,8 @@ public class LowerClickHandler extends GameObject {
 		
 		activated = false;
 		
-		greyTriangle = new TextureRegion(dogRunner.assetManager.get(DogAssets.TRIANGLE_GRAY_IMG.fileName, Texture.class));
-		goldTriangle = new TextureRegion(dogRunner.assetManager.get(DogAssets.TRIANGLE_GOLD_IMG.fileName, Texture.class));
+		greyTriangle = new TextureRegion(dogRunner.assetManager.get(DogAssets.TRIANGLE_GRAY_IMG.FILE_NAME, Texture.class));
+		goldTriangle = new TextureRegion(dogRunner.assetManager.get(DogAssets.TRIANGLE_GOLD_IMG.FILE_NAME, Texture.class));
 		this.triangleLength = triangleLength;
 		
 		padding = width % triangleLength / 2f;
