@@ -105,7 +105,7 @@ public class DogRunner extends Game {
 		FreeTypeFontLoaderParameter fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file (must be root, i.e. not in a folder other than assets)
 		fTFLP.fontFileName = arial;
-		fTFLP.fontParameters.size = (int) (40 * GAME_WIDTH / 800d);
+		fTFLP.fontParameters.size = (int) (GAME_WIDTH * 40d / 800d);
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
@@ -116,7 +116,7 @@ public class DogRunner extends Game {
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
 		fTFLP.fontFileName = arial;
-		fTFLP.fontParameters.size = (int) (20 * GAME_WIDTH / 800d);
+		fTFLP.fontParameters.size = (int) (GAME_WIDTH * 20d / 800d);
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
@@ -125,7 +125,7 @@ public class DogRunner extends Game {
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
 		fTFLP.fontFileName = arial;
-		fTFLP.fontParameters.size = (int) (100 * GAME_WIDTH / 800d);
+		fTFLP.fontParameters.size = (int) (GAME_WIDTH * 100d / 800d);
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
 
@@ -135,10 +135,10 @@ public class DogRunner extends Game {
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
 		fTFLP.fontFileName = arial;
-		fTFLP.fontParameters.size = (int) (90 * GAME_WIDTH / 800d);
-		fTFLP.fontParameters.color = Color.ORANGE;//new Color(128f/255f, 128f/255f, 128f/255f, 1f);
+		fTFLP.fontParameters.size = (int) (GAME_WIDTH * 90d / 800d);
+		fTFLP.fontParameters.color = Color.YELLOW;//new Color(128f/255f, 128f/255f, 128f/255f, 1f);
 		fTFLP.fontParameters.borderColor = Color.BLACK;
-		fTFLP.fontParameters.borderWidth = 1f * GAME_WIDTH / 800f;
+		fTFLP.fontParameters.borderWidth = (float) (GAME_WIDTH / 800);
 		fTFLP.fontParameters.flip = true;
 		//fTFLP.fontParameters.genMipMaps = true;
 		//fTFLP.fontParameters.magFilter = Texture.TextureFilter.MipMapLinearLinear;
