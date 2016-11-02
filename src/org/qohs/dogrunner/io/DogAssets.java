@@ -26,7 +26,8 @@ public enum DogAssets {
 	RESUME_IMG("placeholder/resume.png"),
 	TRIANGLE_GRAY_IMG("placeholder/triangle_gray.png"),
 	TRIANGLE_GOLD_IMG("placeholder/triangle_gold.png"),
-	ROAD_IMG("placeholder/road.png");
+	ROAD_IMG("placeholder/road.png"),
+	EXPLODE("placeholder/car_explosion.png");
 
 	public final String FILE_NAME;
 	

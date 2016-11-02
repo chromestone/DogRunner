@@ -45,6 +45,8 @@ public class CarSpawner {
 	private TextureRegion carTexture;
 	private float carWidth, carHeight;
 	
+	private TextureRegion crashedTexture;
+	
 	private boolean[] prevFormation;
 	private boolean[] currentFormation;
 	private byte[] openRows;
@@ -67,6 +69,8 @@ public class CarSpawner {
 		
 		carHeight = 7f * gameHeight / 48f;
 		carWidth = carHeight / carTexture.getTexture().getHeight() * carTexture.getTexture().getWidth();
+		
+		crashedTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.EXPLODE.FILE_NAME, Texture.class));
 		
 		time = (occuringLength + carWidth) / VELOCITY;
 		
@@ -189,7 +193,14 @@ public class CarSpawner {
 		while (iterator.hasNext()) {
 			
 			Body car = iterator.next();
-			dogRunner.batch.draw(carTexture, car.getPosition().x - carWidth / 2f, car.getPosition().y - carHeight / 2f, carWidth, carHeight);
+			
+			NPCBodyData npcData = (NPCBodyData) car.getUserData();
+				dogRunner.batch.draw(crashedTexture, car.getPosition().x - carWidth / 2f, car.getPosition().y - carHeight / 2f, carWidth, carHeight);
+			}
+			else {
+
+				dogRunner.batch.draw(carTexture, car.getPosition().x - carWidth / 2f, car.getPosition().y - carHeight / 2f, carWidth, carHeight);
+			}
 		}
 		dogRunner.batch.end();
 		
