@@ -188,10 +188,12 @@ public class CarSpawner {
 	}
 
 	public void render() {
+		
+		//dogRunner.batch.begin();
 
 		boolean oneSoundPlayed = false;
 		Iterator<Body> iterator = carArray.iterator();
-		dogRunner.batch.begin();
+		
 		while (iterator.hasNext()) {
 			
 			Body car = iterator.next();
@@ -212,7 +214,8 @@ public class CarSpawner {
 				dogRunner.batch.draw(carTexture, car.getPosition().x - carWidth / 2f, car.getPosition().y - carHeight / 2f, carWidth, carHeight);
 			}
 		}
-		dogRunner.batch.end();
+		
+		//dogRunner.batch.end();
 		
 		/*
 		//DEBUGGING
@@ -238,7 +241,8 @@ public class CarSpawner {
 
 		// Create a body from the definition and add it to the world
 		Body body = world.createBody(bodyDef);
-		body.setUserData(PhysicsBodyType.NPC_CAR);
+		//body.setUserData(PhysicsBodyType.NPC_CAR);
+		body.setUserData(new NPCBodyData(PhysicsBodyType.NPC_CAR));
 
 		// Create a polygon shape
 		PolygonShape shape = new PolygonShape();  

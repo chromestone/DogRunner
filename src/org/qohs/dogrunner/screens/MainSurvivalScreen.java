@@ -186,7 +186,7 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			act(delta);
 
-			if (physicsWorld.playerCarCrashed) {
+			if (physicsWorld.playerCarTotalled) {
 
 				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
 				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
@@ -246,7 +246,7 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			act(delta);
 
-			if (physicsWorld.playerCarCrashed) {
+			if (physicsWorld.playerCarTotalled) {
 
 				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
 				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
@@ -284,6 +284,8 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//SpriteBatch is used to render starting here
 		
+		dogRunner.batch.begin();
+		
 		//roadManager.render();
 		
 		//carSpawner.render();
@@ -291,10 +293,10 @@ public class MainSurvivalScreen extends StageScreen {
 		physicsWorld.carSpawner.render();
 		
 		//draws the player's car
-		dogRunner.batch.begin();
+		//dogRunner.batch.begin();
 		//dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
 		dogRunner.batch.draw(car, 0f, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
-		dogRunner.batch.end();
+		//dogRunner.batch.end();
 		
 		/*
 		//DEBUGGING
@@ -302,6 +304,8 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.renderer.rect(physicsWorld.carBody.getPosition().x - (carWidth - 4f) / 2, physicsWorld.carBody.getPosition().y - (carHeight - 2f) / 2, carWidth - 4f, carHeight - 2f);
 		dogRunner.renderer.end();
 		*/
+		
+		dogRunner.batch.end();
 		
 		stage.draw();
 		

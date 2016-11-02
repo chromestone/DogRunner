@@ -39,10 +39,12 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	private float carHeight = 0f;
 	
 	//game over
-	public boolean playerCarCrashed;
+	public boolean playerCarTotalled;
 
 	public CarSpawner carSpawner;
 	public RoadManager roadManager;
+	
+	public int crashes;
 	
 	public MainSurvivalWorld(Vector2 gravity, boolean doSleep, Definition def) {
 		
@@ -56,7 +58,9 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		this.carWidth = def.carWidth;
 		this.carHeight = def.carHeight;
 		
-		playerCarCrashed = false;
+		playerCarTotalled = false;
+		
+		crashes = 0;
 
 		carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
 		roadManager = new RoadManager(meterWidth, meterHeight, 165f);
@@ -82,7 +86,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 
 		// Create a body from the definition and add it to the world
 		Body lBoundBody = world.createBody(lBoundDef); 
-		lBoundBody.setUserData(PhysicsBodyType.WALL);
+		lBoundBody.setUserData(new NPCBodyData(PhysicsBodyType.WALL));
 
 		// Create a polygon shape
 		PolygonShape lowerBox = new PolygonShape();  
@@ -96,14 +100,14 @@ public class MainSurvivalWorld extends PhysicsWorld {
         ////////////////////////////////
 		//upper wall
 		// Create our body definition
-		BodyDef uBoundDef = new BodyDef();  
+		BodyDef uBoundDef = new BodyDef();
 		// Set its world position
 		uBoundDef.position.set(0f, -1f);  
 		uBoundDef.type = BodyType.StaticBody;
 
 		// Create a body from the definition and add it to the world
 		Body uBoundBody = world.createBody(uBoundDef);  
-		uBoundBody.setUserData(PhysicsBodyType.WALL);
+		uBoundBody.setUserData(new NPCBodyData(PhysicsBodyType.WALL));
 
 		// Create a polygon shape
 		PolygonShape upperBox = new PolygonShape();  
@@ -158,15 +162,23 @@ public class MainSurvivalWorld extends PhysicsWorld {
 
 				Body crashedBody = isCarBodyA ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
 				
-				assert crashedBody.getUserData() instanceof PhysicsBodyType;
-				
-				PhysicsBodyType type = (PhysicsBodyType) crashedBody.getUserData();
+				PhysicsBodyData data = (PhysicsBodyData) crashedBody.getUserData();
+				PhysicsBodyType type = data.type;
 				
 				switch (type) {
 				
 				case NPC_CAR: {
 					
-					MainSurvivalWorld.this.playerCarCrashed = true;
+					//MainSurvivalWorld.this.playerCarTotalled = true;
+					MainSurvivalWorld.this.crashes++;
+					NPCBodyData npcData = ((NPCBodyData) data);
+					npcData.crashed = true;
+					
+					
+					if (MainSurvivalWorld.this.crashes >= 3) {
+						
+						MainSurvivalWorld.this.playerCarTotalled = true;
+					}
 					break;
 				}
 				case WALL: {

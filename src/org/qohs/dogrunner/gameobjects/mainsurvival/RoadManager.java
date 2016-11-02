@@ -108,7 +108,7 @@ public class RoadManager {
 	
 	public void render() {
 		
-		dogRunner.batch.begin();
+		//dogRunner.batch.begin();
 		
 		Iterator<Point> iterator = tRegionPoints.iterator();
 		Point p = null;
@@ -118,7 +118,7 @@ public class RoadManager {
 			dogRunner.batch.draw(road, p.x, p.y, roadWidth, roadHeight);
 		}
 		
-		dogRunner.batch.end();
+		//dogRunner.batch.end();
 	}
 
 	private class Point {
