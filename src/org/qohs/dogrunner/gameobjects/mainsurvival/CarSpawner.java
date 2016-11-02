@@ -5,6 +5,7 @@ import java.util.*;
 import org.qohs.dogrunner.DogRunner;
 import org.qohs.dogrunner.io.DogAssets;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
@@ -188,6 +189,7 @@ public class CarSpawner {
 
 	public void render() {
 
+		boolean oneSoundPlayed = false;
 		Iterator<Body> iterator = carArray.iterator();
 		dogRunner.batch.begin();
 		while (iterator.hasNext()) {
@@ -195,6 +197,14 @@ public class CarSpawner {
 			Body car = iterator.next();
 			
 			NPCBodyData npcData = (NPCBodyData) car.getUserData();
+			if (	npcData.crashed) {
+
+				if (!oneSoundPlayed && !npcData.soundPlayed) {
+					
+					dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
+					npcData.soundPlayed = true;
+					oneSoundPlayed = true;
+				}
 				dogRunner.batch.draw(crashedTexture, car.getPosition().x - carWidth / 2f, car.getPosition().y - carHeight / 2f, carWidth, carHeight);
 			}
 			else {
