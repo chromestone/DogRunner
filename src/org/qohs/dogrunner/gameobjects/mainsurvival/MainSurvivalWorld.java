@@ -211,9 +211,8 @@ public class MainSurvivalWorld extends PhysicsWorld {
 
 				Body crashedBody = isCarBodyA ? contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
 				
-				assert crashedBody.getUserData() instanceof PhysicsBodyType;
-				
-				PhysicsBodyType type = (PhysicsBodyType) crashedBody.getUserData();
+				PhysicsBodyData data = (PhysicsBodyData) crashedBody.getUserData();
+				PhysicsBodyType type = data.type;
 				
 				switch (type) {
 				
