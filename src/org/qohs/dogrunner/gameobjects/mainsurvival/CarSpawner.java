@@ -87,7 +87,7 @@ public class CarSpawner {
 		}
 		Collections.shuffle(firstFormation);
 		//leave at least one row empty
-		int rowsFilled = (int) (Math.random() * 5);
+		int rowsFilled = (int) (Math.random() * 4) + 1;
 		for (int i = 0; i < rowsFilled; i++) {
 			
 			if (Math.random() * 2 >= 1) {
