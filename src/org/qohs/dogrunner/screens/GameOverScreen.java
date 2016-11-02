@@ -20,7 +20,7 @@ public class GameOverScreen extends StageScreen {
 		
 		super(batch);
 		
-		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogAssets.GAME_OVER_EXPLOSION.fileName, Texture.class));
+		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogAssets.GAME_OVER_EXPLOSION.FILE_NAME, Texture.class));
 		tRegion.flip(false, true);
 		int height = dogRunner.GAME_HEIGHT;
 		int width = (int) (1f * height / tRegion.getTexture().getHeight() * tRegion.getTexture().getWidth());
