@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 public class GameOverMessage extends GameObject {
 	
 	private float fontX, fontY;
+	private float fontX2, fontY2;
 	private BitmapFont font;
 	
 	private float scoreFontX, scoreFontY;
@@ -37,11 +38,20 @@ public class GameOverMessage extends GameObject {
 		GlyphLayout glyphLayout = new GlyphLayout();
 		glyphLayout.setText(font, text);
 
-		fontX = width / 2 - glyphLayout.width / 2f;
-		fontY = height / 3f - glyphLayout.height / 2f;
+		fontX = width / 2f - glyphLayout.width / 2f;
+		fontY = height / 4f - glyphLayout.height / 2f;
+
+		//float prevWidth = glyphLayout.height;
+
+		text = "SCORE:";
+		glyphLayout = new GlyphLayout();
+		glyphLayout.setText(font, text);
+
+		fontX2 = width / 2f - glyphLayout.width / 2f;
+		fontY2 = height / 2f - glyphLayout.height / 2f;
 		
-		scoreFontX = -1;
-		scoreFontY = height * 2f / 3f - glyphLayout.height / 2f;
+		scoreFontX = -1f;
+		scoreFontY = height * 3f / 4f - glyphLayout.height / 2f;
 		scoreText = null;
 		
 		clicks = 0;
@@ -51,9 +61,10 @@ public class GameOverMessage extends GameObject {
 	public void draw(Batch batch, float parentAlpha) {
 		
 		font.draw(batch, "GAME OVER", fontX, fontY);
+		font.draw(batch, "SCORE:", fontX2, fontY2);
 		if (scoreText == null) {
 			
-			scoreText = "SCORE: " + dogRunner.userProfile.score;
+			scoreText = "" + dogRunner.userProfile.score;
 
 			GlyphLayout glyphLayout = new GlyphLayout();
 			glyphLayout.setText(font, scoreText);
