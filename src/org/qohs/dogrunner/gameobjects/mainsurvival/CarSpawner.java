@@ -83,7 +83,7 @@ public class CarSpawner {
 		ArrayList<Byte> firstFormation = new ArrayList<Byte>();
 		for (byte i = 0; i < 6; i++) {
 			
-			firstFormation.add(new Byte(i));
+			firstFormation.add(i);//new Byte(i));
 		}
 		Collections.shuffle(firstFormation);
 		//leave at least one row empty
@@ -92,7 +92,7 @@ public class CarSpawner {
 			
 			if (Math.random() * 2 >= 1) {
 				
-				byte row = firstFormation.get(i).byteValue();
+				byte row = firstFormation.get(i);//.byteValue();
 				prevFormation[row] = true;
 				carArray.add(createCarBody(row));
 			}
@@ -134,11 +134,11 @@ public class CarSpawner {
 				}
 			}
 			
-			boolean previousFilled = false, currentFilled = false;
+			//boolean previousFilled = false, currentFilled = false;
 			for (byte i = 0; i < openRowCount && openRows[i] >= 0; i++) {
 				
-				previousFilled = (openRows[i] - 1 >= 0) ? currentFormation[openRows[i] - 1]: true;
-				currentFilled = (openRows[i] + 1 < 6) ? currentFormation[openRows[i] + 1]: true;
+				boolean previousFilled = (openRows[i] - 1 < 0) || currentFormation[openRows[i] - 1];//: true;
+				boolean currentFilled = (openRows[i] + 1 >= 6) || currentFormation[openRows[i] + 1];//: true;
 				
 				if (!previousFilled || ! currentFilled) {
 					
@@ -152,11 +152,12 @@ public class CarSpawner {
 
 			//Body body = createCarBody((int) (Math.random() * 6));
 			//carArray.add(body);
-			
-			for (byte i = 0; i < 6; i++) {
+
+			System.arraycopy(currentFormation, 0, prevFormation, 0, 6);
+			/*for (byte i = 0; i < 6; i++) {
 				
 				prevFormation[i] = currentFormation[i];
-			}
+			}*/
 			
 			//Arrays.fill(currentFormation, false);
 			//Arrays.fill(openRows, -1);
