@@ -28,12 +28,14 @@ public class CarSpawner {
 	
 	private World world;
 	
+	//all the cars currently in the game world
 	private Array<Body> carArray;
 	
 	//THESE SHOULD BE USED/SET BY THE MAIN SURVIVAL WORLD
 	//AND THUS ARE IN --->METERS<---
 	private float gameWidth, gameHeight;
 	
+	//how much time per waves of cars
 	private float time;
 	
 	/*
@@ -48,8 +50,11 @@ public class CarSpawner {
 	
 	private TextureRegion crashedTexture;
 	
+	//previous wave of cars
 	private boolean[] prevFormation;
+	//current wave of cars
 	private boolean[] currentFormation;
+	//the open rows of the previous wave (important in ensuring a possible path for player)
 	private byte[] openRows;
 	
 	public CarSpawner(World world, float gameWidth, float gameHeight, float occuringLength) {
@@ -78,21 +83,26 @@ public class CarSpawner {
 		prevFormation = new boolean[6];
 		currentFormation = new boolean[6];
 		openRows = new byte[6];
-		Arrays.fill(openRows, (byte) - 1);
+		Arrays.fill(openRows, (byte) -1);
 		
 		ArrayList<Byte> firstFormation = new ArrayList<Byte>();
 		for (byte i = 0; i < 6; i++) {
 			
-			firstFormation.add(i);//new Byte(i));
+			firstFormation.add(i);
 		}
+		
+		//ensures a uniform distribution (probability) of cars spawning in each row
 		Collections.shuffle(firstFormation);
+		
 		//leave at least one row empty
+		//assuming 6 rows fill randomly 1 to 5 rows (inclusive)
 		int rowsFilled = (int) (Math.random() * 4) + 1;
 		for (int i = 0; i < rowsFilled; i++) {
 			
+			//1/2 chance of spawning a car
 			if (Math.random() * 2 >= 1) {
 				
-				byte row = firstFormation.get(i);//.byteValue();
+				byte row = firstFormation.get(i);
 				prevFormation[row] = true;
 				carArray.add(createCarBody(row));
 			}
@@ -105,18 +115,20 @@ public class CarSpawner {
      */
 	public void act(float delta) {
 
-		//float frameTime = Math.min(delta, .25f);
-		accumulator += delta;//frameTime;
+		accumulator += delta;
 		if (accumulator >= time) {
 			
+			//the amount of open rows in the previous wave
+			//also corresponds to the index in the openRows array
 			int openRowCount = 0;
 			
-			//int i = 0;
+			//note it is important to overwrite every index of the currentFormation array
 			for (byte row = 0; row < 6; row++) {
 				
 				//if the previous wave of cars did spawn a car at this row
 				if (prevFormation[row]) {
 					
+					//1/2 chance of spawning a car
 					if (Math.random() * 2 >= 1) {
 						
 						currentFormation[row] = true;
@@ -127,6 +139,8 @@ public class CarSpawner {
 						currentFormation[row] = false;
 					}
 				}
+				//there is an opening in the previous wave
+				//this row is considered "open"
 				else {
 					
 					currentFormation[row] = false;
@@ -134,14 +148,16 @@ public class CarSpawner {
 				}
 			}
 			
-			//boolean previousFilled = false, currentFilled = false;
 			for (byte i = 0; i < openRowCount && openRows[i] >= 0; i++) {
 				
-				boolean previousFilled = (openRows[i] - 1 < 0) || currentFormation[openRows[i] - 1];//: true;
-				boolean currentFilled = (openRows[i] + 1 >= 6) || currentFormation[openRows[i] + 1];//: true;
+				//checks if the previous and next row is not accessible to the player (a car or "wall" present)
+				boolean previousFilled = (openRows[i] - 1 < 0) || currentFormation[openRows[i] - 1];
+				boolean nextFilled = (openRows[i] + 1 >= 6) || currentFormation[openRows[i] + 1];
 				
-				if (!previousFilled || ! currentFilled) {
+				//if the player is not blocked both above and below the current row
+				if (!previousFilled || !nextFilled) {
 					
+					//1/2 chance of spawning a car
 					if (Math.random() * 2 >= 1) {
 						
 						currentFormation[openRows[i]] = true;
@@ -150,19 +166,11 @@ public class CarSpawner {
 				}
 			}
 
-			//Body body = createCarBody((int) (Math.random() * 6));
-			//carArray.add(body);
-
+			//copy current wave into the previous wave
 			System.arraycopy(currentFormation, 0, prevFormation, 0, 6);
-			/*for (byte i = 0; i < 6; i++) {
-				
-				prevFormation[i] = currentFormation[i];
-			}*/
 			
-			//Arrays.fill(currentFormation, false);
-			//Arrays.fill(openRows, -1);
-			
-			accumulator %= time;
+			//under assumption accumulator is never greater than 2*time
+			accumulator -= time;
 		}
 	}
 
@@ -182,8 +190,12 @@ public class CarSpawner {
 			if (car.getPosition().x + carWidth / 2 < 0) {
 
 				iterator.remove();
+				NPCBodyData npcData = (NPCBodyData) car.getUserData();
+				if (!npcData.crashed) {
+
+					dogRunner.userProfile.score += 1;
+				}
 				world.destroyBody(car);
-				dogRunner.userProfile.score += 1;
 			}
 		}
 	}
