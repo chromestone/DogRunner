@@ -18,14 +18,16 @@ public class DogScreens {
 	//"register" screens here (make sure to add it in the enum Type)
 	private final StageScreen startScreen;
 	private final StageScreen mainSurvivalScreen;
-	private final StageScreen gameOverScreen;
+	private final StageScreen highScoreScreen;
+	private final StageScreen inputHighScoreScreen;
 
 	//don't instantiate this class outside of DogRunner
 	protected DogScreens(Batch batch) {
 		
 		startScreen = new StartScreen(batch);
 		mainSurvivalScreen = new MainSurvivalScreen(batch);
-		gameOverScreen = new GameOverScreen(batch);
+		highScoreScreen = new HighScoreScreen(batch);
+		inputHighScoreScreen = new InputHighScoreScreen(batch);
 	}
 	
 	//dispose screens here
@@ -33,7 +35,8 @@ public class DogScreens {
 		
 		startScreen.dispose();
 		mainSurvivalScreen.dispose();
-		gameOverScreen.dispose();
+		highScoreScreen.dispose();
+		inputHighScoreScreen.dispose();
 	}
 	
 	public enum Type {
@@ -41,8 +44,14 @@ public class DogScreens {
 		//"register" the screen again here (and "register" it in the switch statement)
 		START_SCREEN,
 		MAIN_SURVIVE_SCREEN,
-		GAME_OVER_SCREEN;
+		HIGH_SCORE_SCREEN,
+		INPUT_HIGH_SCORE_SCREEN;
 		
+		/**
+		 * 
+		 * @param dogScreens
+		 * @return
+		 */
 		public StageScreen getStageScreen(DogScreens dogScreens) {
 			
 			StageScreen stageScreen = null;
@@ -58,9 +67,13 @@ public class DogScreens {
 				
 				stageScreen = dogScreens.mainSurvivalScreen;
 				break;
-			case GAME_OVER_SCREEN:
+			case HIGH_SCORE_SCREEN:
 				
-				stageScreen = dogScreens.gameOverScreen;
+				stageScreen = dogScreens.highScoreScreen;
+				break;
+			case INPUT_HIGH_SCORE_SCREEN:
+				
+				stageScreen = dogScreens.inputHighScoreScreen;
 				break;
 			default:
 				

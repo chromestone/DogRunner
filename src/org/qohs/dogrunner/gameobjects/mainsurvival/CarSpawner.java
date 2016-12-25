@@ -3,7 +3,7 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
 import java.util.*;
 
 import org.qohs.dogrunner.DogRunner;
-import org.qohs.dogrunner.io.DogAssets;
+import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
@@ -70,13 +70,13 @@ public class CarSpawner {
 		
 		accumulator = 0f;
 		
-		carTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.WHITE_CAR.FILE_NAME, Texture.class));
+		carTexture = new TextureRegion(dogRunner.assetManager.get(DogTexture.WHITE_CAR.FILE_NAME, Texture.class));
 		carTexture.flip(false, true);
 		
 		carHeight = 7f * gameHeight / 48f;
 		carWidth = carHeight / carTexture.getTexture().getHeight() * carTexture.getTexture().getWidth();
 		
-		crashedTexture = new TextureRegion(dogRunner.assetManager.get(DogAssets.EXPLODE.FILE_NAME, Texture.class));
+		crashedTexture = new TextureRegion(dogRunner.assetManager.get(DogTexture.EXPLODE.FILE_NAME, Texture.class));
 		
 		time = (occuringLength + carWidth) / VELOCITY;
 		
@@ -216,7 +216,7 @@ public class CarSpawner {
 
 				if (!oneSoundPlayed && !npcData.soundPlayed) {
 					
-					dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
+					dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
 					npcData.soundPlayed = true;
 					oneSoundPlayed = true;
 				}

@@ -2,7 +2,7 @@ package org.qohs.dogrunner.screens;
 
 import org.qohs.dogrunner.gameobjects.*;
 import org.qohs.dogrunner.gameobjects.start.*;
-import org.qohs.dogrunner.io.DogAssets;
+import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,7 +20,7 @@ public class StartScreen extends StageScreen {
 		
 		super(batch);
 		
-		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogAssets.DOG_IMG.FILE_NAME, Texture.class));
+		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.DOG.FILE_NAME, Texture.class));
 		//ratio = new height / picture height
 		//width = ratio * picture width
 		float width = (dogRunner.GAME_HEIGHT * 1.0f) / tRegion.getTexture().getHeight() * tRegion.getTexture().getWidth();
@@ -35,21 +35,5 @@ public class StartScreen extends StageScreen {
 				dogRunner.GAME_HEIGHT / 4f,
 				dogRunner.GAME_HEIGHT / 2f, dogRunner.GAME_HEIGHT / 2f);
 		stage.addActor(startButton);
-	}
-
-	@Override
-	public void pause() {
-
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
-	public void dispose() {
-		
-		
 	}
 }

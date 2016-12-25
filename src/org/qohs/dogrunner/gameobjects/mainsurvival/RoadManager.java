@@ -3,7 +3,7 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
 import java.util.Iterator;
 
 import org.qohs.dogrunner.DogRunner;
-import org.qohs.dogrunner.io.DogAssets;
+import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,7 +47,7 @@ public class RoadManager {
 		
 		this.screenWidth = screenWidth;
 		
-		road = new TextureRegion(dogRunner.assetManager.get(DogAssets.ROAD_IMG.FILE_NAME, Texture.class));
+		road = new TextureRegion(dogRunner.assetManager.get(DogTexture.ROAD_IMG.FILE_NAME, Texture.class));
 		road.flip(false, true);
 		
 		this.roadHeight = roadHeight;
@@ -55,7 +55,7 @@ public class RoadManager {
 		
 		distance = speed / 60f;
 		
-		road = new TextureRegion(dogRunner.assetManager.get(DogAssets.ROAD_IMG.FILE_NAME, Texture.class));
+		road = new TextureRegion(dogRunner.assetManager.get(DogTexture.ROAD_IMG.FILE_NAME, Texture.class));
 		road.flip(false, true);
 		
 		tRegionPoints = new Array<Point>(4);

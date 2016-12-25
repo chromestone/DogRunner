@@ -1,12 +1,12 @@
 package org.qohs.dogrunner;
 
-import org.qohs.dogrunner.io.DogAssets;
+import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2D;
 
 /**
- * I wrote this class; thug life.
+ * I wrote all of this class; thug life.
  * 
  * @author Derek Zhang
  *
@@ -27,6 +27,8 @@ public class DogRunner extends Game {
 	//DO NOT CHANGE THESE CONSTANTS outside of this.create()
 	public int GAME_WIDTH;
 	public int GAME_HEIGHT;
+	
+	public static final String PARENT_DIR = "assets/";
 	
 	public AssetManager assetManager;
 		
@@ -39,9 +41,11 @@ public class DogRunner extends Game {
 	//screens should not be able to use this
 	//since screens should only communicate by switching screens
 	//and the user profile
-	private DogScreens fairyScreens;
+	private DogScreens dogScreens;
 	
 	public UserProfile userProfile;
+	
+	public HighScoreFileManager highScoreFM;
 	
 	//FPSLogger log = new FPSLogger();
 	
@@ -78,16 +82,19 @@ public class DogRunner extends Game {
 		
 		////////////////////////////////
 		//Instantiates the screens
-		fairyScreens = new DogScreens(batch);
+		dogScreens = new DogScreens(batch);
 		
 		////////////////////////////////
 		//Sets the first screen users will see
-		this.setScreen(DogScreens.Type.START_SCREEN.getStageScreen(fairyScreens));
+		this.setScreen(DogScreens.Type.START_SCREEN.getStageScreen(dogScreens));
 		
 		userProfile = new UserProfile();
 		
+		highScoreFM = new HighScoreFileManager();
+		highScoreFM.load();
+		
 		//sets the initial clear color for the screen
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 	}
 	
 	//load all the "assets" here (pictures, fonts, etc.)
@@ -110,7 +117,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.flip = true;
 		
 		//name of this does not matter, however must end in .ttf
-		assetManager.load(DogAssets.ARIAL_RED_M.FILE_NAME, BitmapFont.class, fTFLP);
+		assetManager.load(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -120,7 +127,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.RED;
 		fTFLP.fontParameters.flip = true;
 		
-		assetManager.load(DogAssets.ARIAL_RED_S.FILE_NAME, BitmapFont.class, fTFLP);
+		assetManager.load(DogAsset.ARIAL_RED_S.FILE_NAME, BitmapFont.class, fTFLP);
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
 		//actual directory of file
@@ -129,7 +136,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
 
-		assetManager.load(DogAssets.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class, fTFLP);
+		assetManager.load(DogAsset.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class, fTFLP);
 		
 		
 		fTFLP = new FreeTypeFontLoaderParameter();
@@ -144,27 +151,31 @@ public class DogRunner extends Game {
 		//fTFLP.fontParameters.magFilter = Texture.TextureFilter.MipMapLinearLinear;
 		//fTFLP.fontParameters.minFilter = Texture.TextureFilter.MipMapLinearLinear;
 
-		assetManager.load(DogAssets.ARIAL_BLACK_L.FILE_NAME, BitmapFont.class, fTFLP);
+		assetManager.load(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class, fTFLP);
 
 		////////////////////////////////
 		//loads picture assets
 
 		//name in this case (pictures) matters [must reflect actual path]
-		assetManager.load(DogAssets.DOG_IMG.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.PORSCHE_CAR.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.WHITE_CAR.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.GAME_OVER_EXPLOSION.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.PAUSE_IMG.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.RESUME_IMG.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.TRIANGLE_GRAY_IMG.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.TRIANGLE_GOLD_IMG.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.ROAD_IMG.FILE_NAME, Texture.class);
-		assetManager.load(DogAssets.EXPLODE.FILE_NAME, Texture.class);
+		for (DogTexture dogTexture: DogTexture.values()) {
+			
+			assetManager.load(dogTexture.FILE_NAME, Texture.class);
+		}
 		
 		////////////////////////////////
 		//loads sound assets
-		assetManager.load(DogAssets.IGNITION_REV.FILE_NAME, Sound.class);
-		assetManager.load(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class);
+		for (DogSound dogSound : DogSound.values()) {
+			
+			assetManager.load(dogSound.FILE_NAME, Sound.class);
+		}
+		
+		////////////////////////////////
+		//loads music assets
+		
+		for (DogMusic dogSound : DogMusic.values()) {
+			
+			assetManager.load(dogSound.FILE_NAME, Music.class);
+		}
 	}
 
 	@Override
@@ -175,7 +186,7 @@ public class DogRunner extends Game {
 		//clears the screen (with set color)
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//sets color for next clear and can be overridden in the screens
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+		//Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		super.render();
 	}
 	
@@ -190,6 +201,8 @@ public class DogRunner extends Game {
 	@Override
 	public void dispose() {
 		
+		highScoreFM.save();
+		
 		assetManager.dispose();
 		
 		batch.dispose();
@@ -197,12 +210,12 @@ public class DogRunner extends Game {
 		
 		////////////////////////////////
 		//Disposes screens
-		fairyScreens.dispose();
+		dogScreens.dispose();
 	}
 	
 	public void setScreen(DogScreens.Type type) {
 		
-		super.setScreen(type.getStageScreen(fairyScreens));
+		super.setScreen(type.getStageScreen(dogScreens));
 	}
 	
 	/**

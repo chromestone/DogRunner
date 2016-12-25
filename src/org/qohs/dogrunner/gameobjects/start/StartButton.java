@@ -2,13 +2,11 @@ package org.qohs.dogrunner.gameobjects.start;
 
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.GameObject;
-import org.qohs.dogrunner.io.DogAssets;
+import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 /**
@@ -28,7 +26,7 @@ public class StartButton extends GameObject {
 		
 		color = Color.GRAY;
 		
-		font = dogRunner.assetManager.get(DogAssets.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
 		
 		////////////////////////////////
 		//
@@ -68,7 +66,8 @@ public class StartButton extends GameObject {
 	
 	public void clicked() {
 		
-		dogRunner.assetManager.get(DogAssets.IGNITION_REV.FILE_NAME, Sound.class).play(1f);
+		dogRunner.userProfile.score = 0;
+		dogRunner.assetManager.get(DogSound.IGNITION_REV.FILE_NAME, Sound.class).play(1f);
 		dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
 	}
 }

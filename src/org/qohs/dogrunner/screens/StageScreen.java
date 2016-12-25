@@ -62,4 +62,20 @@ public abstract class StageScreen implements Screen {
 		
 		Gdx.input.setInputProcessor(null);
 	}
+	
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void dispose() {
+		
+		stage.dispose();
+	}
 }

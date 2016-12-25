@@ -1,13 +1,14 @@
 package org.qohs.dogrunner.screens;
 
 import org.qohs.dogrunner.DogScreens;
+import org.qohs.dogrunner.gameobjects.QueryButton;
 import org.qohs.dogrunner.gameobjects.mainsurvival.*;
-import org.qohs.dogrunner.io.DogAssets;
-import org.qohs.dogrunner.text.CenteredText;
-import org.qohs.dogrunner.text.TextRenderer;
-import org.qohs.dogrunner.text.mainsurvival.ScoreText;
-import org.qohs.dogrunner.util.Countdown;
+import org.qohs.dogrunner.io.*;
+import org.qohs.dogrunner.text.*;
+import org.qohs.dogrunner.text.mainsurvival.*;
+import org.qohs.dogrunner.util.*;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -16,16 +17,17 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Where the action at
+ * Where the action at. This screen displays the main runner game.
  * 
  * @author Derek Zhang
+ * @author Sam Mansfield
  *
  */
 public class MainSurvivalScreen extends StageScreen {
 	
 	private enum GameState {
 		
-		PAUSED, COUNTDOWN, RESUMED
+		PAUSED, COUNTDOWN, RESUMED, GAME_OVER
 	}
 	
 	private OrthographicCamera cam;
@@ -36,8 +38,9 @@ public class MainSurvivalScreen extends StageScreen {
 	private static final float meterHeight = 100f;
 	private final float meterWidth;
 	
+	//
 	private UpperClickHandler upperClickHandler;
-	private LowerClickHandler lowerClickHandler ;
+	private LowerClickHandler lowerClickHandler;
 	private ClickListener upperHandler;
 	private ClickListener lowerHandler;
 	
@@ -54,10 +57,24 @@ public class MainSurvivalScreen extends StageScreen {
 	
 	private TextRenderer textRenderer;
 	
+	private TextObject scoreText;
+	
 	private Countdown countdown;
 	private CenteredText countdownText;
 	
 	//private RoadManager roadManager;
+	
+	private TextureRegion health;
+	
+	//game over (end game) fields
+	private TextureRegion background;
+	private final static Color backgroundColor = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.5f);
+	
+	private QueryButton nextButton;
+	
+	private GameOverScore gOS;
+	
+	private Music backMusic;
 	
 	public MainSurvivalScreen(Batch batch) {
 		
@@ -71,7 +88,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//player's car size calculations
 		
 		//load car texture
-		car = new TextureRegion(dogRunner.assetManager.get(DogAssets.PORSCHE_CAR.FILE_NAME, Texture.class));
+		car = new TextureRegion(dogRunner.assetManager.get(DogTexture.PORSCHE_CAR.FILE_NAME, Texture.class));
 		car.flip(false, true);
 		
 		//fit car into screen
@@ -87,7 +104,7 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//set up text
 		textRenderer = new TextRenderer(cam);
-		textRenderer.add(new ScoreText(dogRunner.assetManager.get(DogAssets.ARIAL_RED_M.FILE_NAME, BitmapFont.class)));
+		textRenderer.add((scoreText = new ScoreText(dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class))));
 	
 		////////////////////////////////
 		//sets up inputs for movement of player's car
@@ -108,24 +125,36 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//pause and play buttons
 		pauseButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
-				new TextureRegion(dogRunner.assetManager.get(DogAssets.PAUSE_IMG.FILE_NAME, Texture.class)));
+				new TextureRegion(dogRunner.assetManager.get(DogTexture.PAUSE_IMG.FILE_NAME, Texture.class)));
 		stage.addActor(pauseButton);
 		
 		playButton = new QueryButton(meterWidth / 2f - meterHeight / 2f, 0f, meterHeight, meterHeight, 
-				new TextureRegion(dogRunner.assetManager.get(DogAssets.RESUME_IMG.FILE_NAME, Texture.class)));
+				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
 		stage.addActor(playButton);
+		
+		health = new TextureRegion(dogRunner.assetManager.get(DogTexture.HEALTH.FILE_NAME, Texture.class));
 		
 		////////////////////////////////
 		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
-		countdownText = new CenteredText(dogRunner.assetManager.get(DogAssets.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class));
+		countdownText = new CenteredText(dogRunner.assetManager.get(DogAsset.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class));
 
 		////////////////////////////////
 		//
 		physicsWorld = null;
 		gameState = null;
 		//roadManager = null;
+		
+		////////////////////////////////
+		//end game stuff
+		background = new TextureRegion(dogRunner.assetManager.get(DogTexture.BLANK.FILE_NAME, Texture.class));
+	
+		nextButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
+				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
+	
+		backMusic = dogRunner.assetManager.get(DogMusic.BACKGROUND_THEME.FILE_NAME, Music.class);
+		backMusic.setLooping(true);
 	}
 	
 	@Override
@@ -149,10 +178,7 @@ public class MainSurvivalScreen extends StageScreen {
 		lowerClickHandler.activated = false;
 		
 		physicsWorld = new MainSurvivalWorld(new Vector2(0f, 0f), true, def);
-		
-		//carSpawner = new CarSpawner(physicsWorld.world, meterWidth, meterHeight, carWidth * 1.5f);//with three cars was 1.75//old values//1.5f//4f
-		
-		//roadManager = new RoadManager(meterWidth, meterHeight, 120f);
+
 		
 		////////////////////////////////
 		//the game will start in a state counting down the to the start of the game
@@ -188,9 +214,29 @@ public class MainSurvivalScreen extends StageScreen {
 
 			if (physicsWorld.playerCarTotalled) {
 
-				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
-				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
-				return;
+				dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
+				dogRunner.assetManager.get(DogSound.CRASH_DEATH.FILE_NAME, Sound.class).play();
+
+				//dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
+				//return;
+				
+				pauseButton.setVisible(false);
+				pauseButton.setTouchable(Touchable.disabled);
+				upperClickHandler.setVisible(false);
+				upperClickHandler.setTouchable(Touchable.disabled);
+				lowerClickHandler.setVisible(false);
+				lowerClickHandler.setTouchable(Touchable.disabled);
+				
+				stage.addActor(nextButton);
+				
+				textRenderer.remove(scoreText);
+				textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
+				
+				gameState = GameState.GAME_OVER;
+				
+				backMusic.stop();
+				
+				break;
 			}
 			
 			if (pauseButton.queryClicked()) {
@@ -238,8 +284,40 @@ public class MainSurvivalScreen extends StageScreen {
 				playButton.setVisible(false);
 				pauseButton.setTouchable(Touchable.enabled);
 				pauseButton.setVisible(true);
+				
+				backMusic.play();
 			}
 			
+			break;
+		}
+		case GAME_OVER: {
+			
+			if (nextButton.queryClicked()) {
+				
+				pauseButton.setVisible(true);
+				pauseButton.setTouchable(Touchable.enabled);
+				upperClickHandler.setVisible(true);
+				upperClickHandler.setTouchable(Touchable.enabled);
+				lowerClickHandler.setVisible(true);
+				lowerClickHandler.setTouchable(Touchable.enabled);
+				
+				nextButton.remove();
+				
+				textRenderer.remove(gOS);
+				textRenderer.add(scoreText);
+				
+				if (dogRunner.highScoreFM.highScore.isHighScore(dogRunner.userProfile.score)) {
+					
+					dogRunner.setScreen(DogScreens.Type.INPUT_HIGH_SCORE_SCREEN);
+				}
+				else {
+					
+					dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
+				}
+				
+				return;
+			}
+	
 			break;
 		}
 		default: {
@@ -248,10 +326,24 @@ public class MainSurvivalScreen extends StageScreen {
 
 			if (physicsWorld.playerCarTotalled) {
 
-				dogRunner.assetManager.get(DogAssets.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
-				dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
-				return;
+				dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
+				
+				pauseButton.setVisible(false);
+				upperClickHandler.setVisible(false);
+				lowerClickHandler.setVisible(false);
+				
+				textRenderer.remove(scoreText);
+				textRenderer.add(new GameOverScore(dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
+				
+				gameState = GameState.GAME_OVER;
+				break;
 			}
+			
+			if (pauseButton.queryClicked()) {
+				
+				pause();
+			}
+			
 			break;
 		}
 		}
@@ -260,41 +352,15 @@ public class MainSurvivalScreen extends StageScreen {
 		//rendering starts here
 		
 		////////////////////////////////
-		//this is the section where the shape renderer is used
-		//note that the shape renderer should EVENTUALLY BE REPLACED (by textures/pictures/sprites)
-		
-		/*
-		//Draws the background roads
-		dogRunner.renderer.begin(ShapeType.Filled);
-		dogRunner.renderer.setColor(Color.BLACK);
-		dogRunner.renderer.rect(0f, 0f, meterWidth, meterHeight / 6f);
-		dogRunner.renderer.setColor(Color.WHITE);
-		dogRunner.renderer.rect(0f, meterHeight / 6f, meterWidth, meterHeight / 6f);
-		dogRunner.renderer.setColor(Color.BLACK);
-		dogRunner.renderer.rect(0f, meterHeight / 3f, meterWidth, meterHeight / 6f);
-		dogRunner.renderer.setColor(Color.WHITE);
-		dogRunner.renderer.rect(0f, meterHeight / 2f, meterWidth, meterHeight / 6f);
-		dogRunner.renderer.setColor(Color.BLACK);
-		dogRunner.renderer.rect(0f, meterHeight * 2f / 3f, meterWidth, meterHeight / 6f);
-		dogRunner.renderer.setColor(Color.WHITE);
-		dogRunner.renderer.rect(0f, meterHeight * 5f / 6f, meterWidth, meterHeight / 6f);
-		dogRunner.renderer.end();
-		*/
-		
-		////////////////////////////////
 		//SpriteBatch is used to render starting here
 		
 		dogRunner.batch.begin();
 		
-		//roadManager.render();
-		
-		//carSpawner.render();
 		physicsWorld.roadManager.render();
 		physicsWorld.carSpawner.render();
 		
 		//draws the player's car
 		//dogRunner.batch.begin();
-		//dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
 		dogRunner.batch.draw(car, 0f, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
 		//dogRunner.batch.end();
 		
@@ -304,6 +370,16 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.renderer.rect(physicsWorld.carBody.getPosition().x - (carWidth - 4f) / 2, physicsWorld.carBody.getPosition().y - (carHeight - 2f) / 2, carWidth - 4f, carHeight - 2f);
 		dogRunner.renderer.end();
 		*/
+		
+		if (GameState.GAME_OVER == gameState) {
+			
+			Color color = dogRunner.batch.getColor();
+			dogRunner.batch.setColor(backgroundColor);
+			
+			dogRunner.batch.draw(background, 0, 0, meterWidth, meterHeight);
+			
+			dogRunner.batch.setColor(color);
+		}
 		
 		dogRunner.batch.end();
 		
@@ -352,8 +428,6 @@ public class MainSurvivalScreen extends StageScreen {
 		//physics (Box2D) related acting
 		
 		physicsWorld.act(delta);
-		//carSpawner.act(delta);
-		//roadManager.act(delta);
 	}
 
 	@Override
@@ -369,8 +443,6 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		physicsWorld.dispose();
 		physicsWorld = null;
-		//carSpawner = null;
-		//roadManager = null;
 	}
 
 	@Override
@@ -385,19 +457,25 @@ public class MainSurvivalScreen extends StageScreen {
 	@Override
 	public void pause() {
 		
-		textRenderer.remove(countdownText);
-		
-		gameState = GameState.PAUSED;
-		
-		pauseButton.setTouchable(Touchable.disabled);
-		pauseButton.setVisible(false);
-		playButton.setTouchable(Touchable.enabled);
-		playButton.setVisible(true);
+		if (GameState.RESUMED == gameState || GameState.COUNTDOWN == gameState) {
+			
+			textRenderer.remove(countdownText);
+
+			gameState = GameState.PAUSED;
+
+			pauseButton.setTouchable(Touchable.disabled);
+			pauseButton.setVisible(false);
+			playButton.setTouchable(Touchable.enabled);
+			playButton.setVisible(true);
+			
+			backMusic.pause();
+		}
 	}
 
 	@Override
 	public void dispose() {
 
+		super.dispose();
 		if (physicsWorld != null) {
 			
 			physicsWorld.dispose();
