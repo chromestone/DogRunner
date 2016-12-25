@@ -114,7 +114,9 @@ public class InputHighScoreScreen extends StageScreen {
 		score.setText(String.valueOf(dogRunner.userProfile.score));
 		score.setX(dogRunner.GAME_WIDTH / 2f - score.getPrefWidth() / 2f);
 		score.setY(score.getPrefHeight() * 1.5f);
-		
+
+		stage.addActor(score);
+				
 		textField.setText("");
 	}
 	
