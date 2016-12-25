@@ -19,7 +19,6 @@ public enum DogTexture {
 	TRIANGLE_GOLD_IMG("placeholder/triangle_gold.png"),
 	ROAD_IMG("placeholder/road.png"),
 	EXPLODE("placeholder/car_explosion.png"),
-	HEALTH("placeholder/health.png"),
 	BLANK("texture/white.png"),
 	GAME_OVER_EXPLOSION("placeholder/explosion.jpg");
 

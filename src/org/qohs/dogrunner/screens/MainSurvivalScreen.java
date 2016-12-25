@@ -64,8 +64,6 @@ public class MainSurvivalScreen extends StageScreen {
 	
 	//private RoadManager roadManager;
 	
-	private TextureRegion health;
-	
 	//game over (end game) fields
 	private TextureRegion background;
 	private final static Color backgroundColor = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.5f);
@@ -131,8 +129,6 @@ public class MainSurvivalScreen extends StageScreen {
 		playButton = new QueryButton(meterWidth / 2f - meterHeight / 2f, 0f, meterHeight, meterHeight, 
 				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
 		stage.addActor(playButton);
-		
-		health = new TextureRegion(dogRunner.assetManager.get(DogTexture.HEALTH.FILE_NAME, Texture.class));
 		
 		////////////////////////////////
 		//count down

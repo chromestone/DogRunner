@@ -71,12 +71,12 @@ public class InputHighScoreScreen extends StageScreen {
 		textField = new TextField("", tFStyle);
 		textField.setX(0);
 		textField.setY(name.getY() + name.getPrefHeight());
-		textField.setWidth(dogRunner.GAME_WIDTH - textField.getHeight());
+		textField.setWidth(dogRunner.GAME_WIDTH - title.getPrefHeight());
 		textField.setMaxLength(32);
 		
 		stage.addActor(textField);
 		
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - textField.getHeight(), dogRunner.GAME_HEIGHT - textField.getHeight(), textField.getHeight(), textField.getHeight(),
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - title.getPrefHeight(), dogRunner.GAME_HEIGHT - title.getPrefHeight(), title.getPrefHeight(), title.getPrefHeight(),
 				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
 		
 		stage.addActor(continueButton);
