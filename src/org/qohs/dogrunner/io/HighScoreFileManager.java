@@ -3,7 +3,6 @@ package org.qohs.dogrunner.io;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.qohs.dogrunner.DogRunner;
 import org.qohs.dogrunner.util.HighScore;
 
 import com.badlogic.gdx.Gdx;
@@ -22,7 +21,7 @@ public class HighScoreFileManager implements FileManager {
 	@Override
 	public void load() {
 		
-		FileHandle file = Gdx.files.local(DogRunner.PARENT_DIR + "highscores.txt");
+		FileHandle file = Gdx.files.local(FileManager.PARENT_DIR + "highscores.txt");
 		LinkedList<String> names = new LinkedList<String>();
 		LinkedList<Integer> scores = new LinkedList<Integer>();
 		String text = file.readString();//.replace("\n", "");
@@ -62,7 +61,7 @@ public class HighScoreFileManager implements FileManager {
 				stringBuilder.append(semiColon);
 			}
 			
-			FileHandle file = Gdx.files.local(DogRunner.PARENT_DIR + "highscores.txt");
+			FileHandle file = Gdx.files.local(FileManager.PARENT_DIR + "highscores.txt");
 			file.writeString(stringBuilder.toString(), false);
 		}
 		catch (Exception e) {

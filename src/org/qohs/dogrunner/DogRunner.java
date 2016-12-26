@@ -28,6 +28,10 @@ public class DogRunner extends Game {
 	public int GAME_WIDTH;
 	public int GAME_HEIGHT;
 	
+	/**
+	 * DUE TO PROJECT CONFIGURATION, THIS IS ONLY USED IN DESKTOP MODE
+	 * ON ANDROID, EMPTY STRING
+	 */
 	public static final String PARENT_DIR = "assets/";
 	
 	public AssetManager assetManager;
@@ -153,6 +157,18 @@ public class DogRunner extends Game {
 
 		assetManager.load(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class, fTFLP);
 
+		fTFLP = new FreeTypeFontLoaderParameter();
+		//actual directory of file
+		fTFLP.fontFileName = arial;
+		fTFLP.fontParameters.size = (int) (GAME_WIDTH * 45d / 800d);
+		fTFLP.fontParameters.color = Color.YELLOW;//new Color(128f/255f, 128f/255f, 128f/255f, 1f);
+		fTFLP.fontParameters.borderColor = Color.BLACK;
+		fTFLP.fontParameters.borderWidth = (float) (GAME_WIDTH / 800);
+		fTFLP.fontParameters.flip = true;
+		
+		assetManager.load(DogAsset.ARIAL_YELLOW_M.FILE_NAME, BitmapFont.class, fTFLP);
+
+		
 		////////////////////////////////
 		//loads picture assets
 

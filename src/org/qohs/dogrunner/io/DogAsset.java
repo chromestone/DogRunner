@@ -16,7 +16,8 @@ public enum DogAsset {
 	ARIAL_RED_M("arial_red_40.ttf"),
 	ARIAL_RED_S("arial_red_20.ttf"),
 	ARIAL_GOLD_L("arial_gold_100.ttf"),
-	ARIAL_YELLOW_L("arial_black_90.ttf");
+	ARIAL_YELLOW_L("arial_black_90.ttf"),
+	ARIAL_YELLOW_M("arial_black_45.ttf");
 
 	public final String FILE_NAME;
 	

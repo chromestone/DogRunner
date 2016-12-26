@@ -25,9 +25,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class InputHighScoreScreen extends StageScreen {
 	
-	private static Color color = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.25f);
+	//private static Color color = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.25f);
 	
 	private Label score;
+	private float underTitleY;
+	
 	private TextField textField;
 	
 	private QueryButton continueButton;
@@ -39,47 +41,68 @@ public class InputHighScoreScreen extends StageScreen {
 		super(batch);
 
 		BitmapFont font = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
+		BitmapFont smallFont = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_M.FILE_NAME, BitmapFont.class);
 		
-		LabelStyle labelStyle = new LabelStyle();
-		labelStyle.font = font;
-
-		Label title = new Label("New High Score:", labelStyle);
-		title.setX(dogRunner.GAME_WIDTH / 2f - title.getPrefWidth() / 2f);
-		title.setY(0f);
+		LabelStyle smallLabelStyle = new LabelStyle();
+		smallLabelStyle.font = smallFont;
 		
-		stage.addActor(title);
+		////////////////////////////////
 		
-		score = new Label("", labelStyle);
-		
-		stage.addActor(score);
-		
-		Label name = new Label("Name:", labelStyle);
-		name.setY(title.getPrefHeight() * 2f);
+		Label name = new Label("Name:", smallLabelStyle);
+		name.setY(0f);
 		
 		stage.addActor(name);
 		
+		////////////////////////////////
+
 		TextFieldStyle tFStyle = new TextFieldStyle();
-		tFStyle.font = font;
-		tFStyle.fontColor = font.getColor();
-		tFStyle.cursor = new TextureRegionDrawable(
-				new TextureRegion(dogRunner.assetManager.get(DogTexture.BLANK.FILE_NAME, Texture.class))
-				).tint(color);
+		tFStyle.font = smallFont;
+		tFStyle.fontColor = smallFont.getColor();
 		tFStyle.background = new TextureRegionDrawable(
 				new TextureRegion(dogRunner.assetManager.get(DogTexture.BLANK.FILE_NAME, Texture.class))
 				);
 		
 		textField = new TextField("", tFStyle);
-		textField.setX(0);
+		textField.setWidth(dogRunner.GAME_WIDTH);
+		textField.setHeight(name.getPrefHeight() * 2f);
+		textField.setX(0f);
 		textField.setY(name.getY() + name.getPrefHeight());
-		textField.setWidth(dogRunner.GAME_WIDTH - title.getPrefHeight());
 		textField.setMaxLength(32);
 		
 		stage.addActor(textField);
+
+		////////////////////////////////
 		
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - title.getPrefHeight(), dogRunner.GAME_HEIGHT - title.getPrefHeight(), title.getPrefHeight(), title.getPrefHeight(),
+		LabelStyle labelStyle = new LabelStyle();
+		labelStyle.font = font;
+		
+		////////////////////////////////
+
+		score = new Label("", labelStyle);
+		
+		////////////////////////////////
+		
+		Label title = new Label("New High Score:", labelStyle);
+		
+		title.setX(dogRunner.GAME_WIDTH / 2f - title.getPrefWidth() / 2f);
+		
+		float titleY = textField.getY() + textField.getHeight();
+		float titleY2 = dogRunner.GAME_HEIGHT / 2f - title.getPrefHeight() / 2f;
+
+		title.setY(titleY < titleY2 ? titleY2: titleY);
+		
+		underTitleY = title.getY() + title.getPrefHeight() * 1.5f;
+		
+		stage.addActor(title);
+		
+		////////////////////////////////
+		
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - name.getPrefHeight(), 0f, name.getPrefHeight(), name.getPrefHeight(),
 				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
 		
 		stage.addActor(continueButton);
+		
+		////////////////////////////////
 		
 		WindowStyle windowStyle = new WindowStyle();
 		windowStyle.titleFont = dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
@@ -89,7 +112,7 @@ public class InputHighScoreScreen extends StageScreen {
 		labelStyle = new LabelStyle();
 		labelStyle.font = windowStyle.titleFont;
 		
-		warningDialog.text("Are you sure you want to quit?", labelStyle);
+		warningDialog.text("No high score will be attributed to you. Continue?", labelStyle);
 		
 		TextButtonStyle buttonStyle = new TextButtonStyle();
 		buttonStyle.font = labelStyle.font;
@@ -101,7 +124,7 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		warningDialog.setBackground(new TextureRegionDrawable(
 				new TextureRegion(dogRunner.assetManager.get(DogTexture.BLANK.FILE_NAME, Texture.class)))
-				);
+		.tint(Color.DARK_GRAY));
 	}
 	
 	@Override
@@ -109,14 +132,14 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		super.show();
 		
-		Gdx.gl.glClearColor(1f, 140f / 255f, 0f, 1f);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		
 		score.setText(String.valueOf(dogRunner.userProfile.score));
 		score.setX(dogRunner.GAME_WIDTH / 2f - score.getPrefWidth() / 2f);
-		score.setY(score.getPrefHeight() * 1.5f);
-
+		score.setY(underTitleY);
+		
 		stage.addActor(score);
-				
+		
 		textField.setText("");
 	}
 	
