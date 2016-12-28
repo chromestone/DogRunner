@@ -86,12 +86,12 @@ public class MainSurvivalScreen extends StageScreen {
 		//player's car size calculations
 		
 		//load car texture
-		car = new TextureRegion(dogRunner.assetManager.get(DogTexture.PORSCHE_CAR.FILE_NAME, Texture.class));
+		car = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.PORSCHE_CAR));
 		car.flip(false, true);
 		
 		//fit car into screen
 		carHeight = meterHeight / 10f;
-		carWidth = carHeight / car.getTexture().getHeight() * car.getTexture().getWidth();
+		carWidth = carHeight / car.getRegionHeight() * car.getRegionWidth();
 		
 		////////////////////////////////
 		//configure screen units
@@ -123,11 +123,11 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//pause and play buttons
 		pauseButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
-				new TextureRegion(dogRunner.assetManager.get(DogTexture.PAUSE_IMG.FILE_NAME, Texture.class)));
+				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.PAUSE_IMG)));
 		stage.addActor(pauseButton);
 		
 		playButton = new QueryButton(meterWidth / 2f - meterHeight / 2f, 0f, meterHeight, meterHeight, 
-				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
+				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		stage.addActor(playButton);
 		
 		////////////////////////////////
@@ -144,10 +144,10 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		////////////////////////////////
 		//end game stuff
-		background = new TextureRegion(dogRunner.assetManager.get(DogTexture.BLANK.FILE_NAME, Texture.class));
+		background = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
 	
 		nextButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
-				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
+				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 	
 		backMusic = dogRunner.assetManager.get(DogMusic.BACKGROUND_THEME.FILE_NAME, Music.class);
 		backMusic.setLooping(true);

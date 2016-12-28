@@ -4,13 +4,11 @@ import java.util.Iterator;
 
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.QueryButton;
-import org.qohs.dogrunner.io.DogAsset;
-import org.qohs.dogrunner.io.DogTexture;
+import org.qohs.dogrunner.io.*;
 import org.qohs.dogrunner.util.HighScore;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -54,7 +52,7 @@ public class HighScoreScreen extends StageScreen {
 		
 		stage.addActor(title);
 		
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - title.getPrefHeight(), 0f, title.getPrefHeight(), title.getPrefHeight(), new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - title.getPrefHeight(), 0f, title.getPrefHeight(), title.getPrefHeight(), new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		
 		stage.addActor(continueButton);
 		

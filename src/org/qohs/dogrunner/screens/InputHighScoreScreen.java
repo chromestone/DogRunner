@@ -2,15 +2,11 @@ package org.qohs.dogrunner.screens;
 
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.QueryButton;
-import org.qohs.dogrunner.io.DogAsset;
-import org.qohs.dogrunner.io.DogTexture;
+import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -59,7 +55,7 @@ public class InputHighScoreScreen extends StageScreen {
 		tFStyle.font = smallFont;
 		tFStyle.fontColor = smallFont.getColor();
 		tFStyle.background = new TextureRegionDrawable(
-				new TextureRegion(dogRunner.assetManager.get(DogTexture.BLANK.FILE_NAME, Texture.class))
+				dogRunner.getAtlasRegion(DogAtlasRegion.BLANK)
 				);
 		
 		textField = new TextField("", tFStyle);
@@ -98,7 +94,7 @@ public class InputHighScoreScreen extends StageScreen {
 		////////////////////////////////
 		
 		continueButton = new QueryButton(dogRunner.GAME_WIDTH - name.getPrefHeight(), 0f, name.getPrefHeight(), name.getPrefHeight(),
-				new TextureRegion(dogRunner.assetManager.get(DogTexture.RESUME_IMG.FILE_NAME, Texture.class)));
+				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		
 		stage.addActor(continueButton);
 		
@@ -110,21 +106,28 @@ public class InputHighScoreScreen extends StageScreen {
 		warningDialog = new MyWarningDialog("", windowStyle);
 		
 		labelStyle = new LabelStyle();
-		labelStyle.font = windowStyle.titleFont;
+		labelStyle.font = dogRunner.assetManager.get(DogAsset.ARIAL_RED_S.FILE_NAME, BitmapFont.class);
 		
 		warningDialog.text("No high score will be attributed to you. Continue?", labelStyle);
+		//Label dialogLabel = new Label("No high score will be attributed to you. Continue?", labelStyle);
+		//dialogLabel.setWrap(true);
+		//warningDialog.text(dialogLabel);
 		
 		TextButtonStyle buttonStyle = new TextButtonStyle();
-		buttonStyle.font = labelStyle.font;
+		buttonStyle.font = windowStyle.titleFont;
 		buttonStyle.downFontColor = Color.BLUE;
-		buttonStyle.fontColor = labelStyle.font.getColor();
+		buttonStyle.fontColor = windowStyle.titleFont.getColor();
 		
 		warningDialog.button("No     ", false, buttonStyle);  //sends "false" as the result
 		warningDialog.button("     Yes", true, buttonStyle); //sends "true" as the result
 		
+		Color backColor = new Color(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0.85f);
+		
 		warningDialog.setBackground(new TextureRegionDrawable(
-				new TextureRegion(dogRunner.assetManager.get(DogTexture.BLANK.FILE_NAME, Texture.class)))
-		.tint(Color.DARK_GRAY));
+				dogRunner.getAtlasRegion(DogAtlasRegion.BLANK))
+		.tint(backColor));
+		
+		warningDialog.setWidth(dogRunner.GAME_WIDTH);
 	}
 	
 	@Override

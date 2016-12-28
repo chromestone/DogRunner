@@ -6,7 +6,6 @@ import org.qohs.dogrunner.DogRunner;
 import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -70,13 +69,13 @@ public class CarSpawner {
 		
 		accumulator = 0f;
 		
-		carTexture = new TextureRegion(dogRunner.assetManager.get(DogTexture.WHITE_CAR.FILE_NAME, Texture.class));
+		carTexture = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.WHITE_CAR));
 		carTexture.flip(false, true);
 		
 		carHeight = 7f * gameHeight / 48f;
-		carWidth = carHeight / carTexture.getTexture().getHeight() * carTexture.getTexture().getWidth();
+		carWidth = carHeight / carTexture.getRegionHeight() * carTexture.getRegionWidth();
 		
-		crashedTexture = new TextureRegion(dogRunner.assetManager.get(DogTexture.EXPLODE.FILE_NAME, Texture.class));
+		crashedTexture = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.EXPLODE));
 		
 		time = (occuringLength + carWidth) / VELOCITY;
 		

@@ -23,7 +23,7 @@ public class StartScreen extends StageScreen {
 		TextureRegion tRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.DOG.FILE_NAME, Texture.class));
 		//ratio = new height / picture height
 		//width = ratio * picture width
-		float width = (dogRunner.GAME_HEIGHT * 1.0f) / tRegion.getTexture().getHeight() * tRegion.getTexture().getWidth();
+		float width = (dogRunner.GAME_HEIGHT * 1.0f) / tRegion.getRegionHeight() * tRegion.getRegionWidth();
 		tRegion.flip(false, true);
 		GameObject trGameObj = new TextureRegionGameObject(dogRunner.GAME_WIDTH / 10f, 0f,
 				width, dogRunner.GAME_HEIGHT,

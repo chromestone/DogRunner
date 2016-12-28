@@ -51,7 +51,7 @@ public class RoadManager {
 		road.flip(false, true);
 		
 		this.roadHeight = roadHeight;
-		this.roadWidth = roadHeight * road.getTexture().getWidth() / road.getTexture().getHeight();
+		this.roadWidth = roadHeight * road.getRegionWidth() / road.getRegionHeight();
 		
 		distance = speed / 60f;
 		

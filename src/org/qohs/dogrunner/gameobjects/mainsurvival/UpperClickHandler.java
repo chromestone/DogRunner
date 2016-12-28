@@ -3,8 +3,7 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
 import org.qohs.dogrunner.gameobjects.GameObject;
 import org.qohs.dogrunner.io.*;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -39,9 +38,9 @@ public class UpperClickHandler extends GameObject {
 		
 		activated = false;
 		
-		greyTriangle = new TextureRegion(dogRunner.assetManager.get(DogTexture.TRIANGLE_GRAY_IMG.FILE_NAME, Texture.class));
+		greyTriangle = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.TRIANGLE_GRAY_IMG));
 		greyTriangle.flip(false, true);
-		goldTriangle = new TextureRegion(dogRunner.assetManager.get(DogTexture.TRIANGLE_GOLD_IMG.FILE_NAME, Texture.class));
+		goldTriangle = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.TRIANGLE_GOLD_IMG));
 		goldTriangle.flip(false, true);
 		this.triangleLength = triangleLength;
 		padding = width % triangleLength / 2f;

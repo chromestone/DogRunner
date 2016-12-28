@@ -1,0 +1,62 @@
+
+dog_textures1.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+car_explosion
+  rotate: false
+  xy: 2, 104
+  size: 200, 100
+  orig: 200, 100
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 803, 753
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+porsche_car
+  rotate: false
+  xy: 2, 206
+  size: 500, 145
+  orig: 500, 145
+  offset: 0, 0
+  index: -1
+resume
+  rotate: false
+  xy: 2, 353
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+triangle_gold
+  rotate: false
+  xy: 2, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+triangle_gray
+  rotate: false
+  xy: 204, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 504, 568
+  size: 297, 285
+  orig: 297, 285
+  offset: 0, 0
+  index: -1
+white_car
+  rotate: false
+  xy: 504, 466
+  size: 200, 100
+  orig: 200, 100
+  offset: 0, 0
+  index: -1

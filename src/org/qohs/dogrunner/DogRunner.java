@@ -8,8 +8,8 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -173,9 +173,16 @@ public class DogRunner extends Game {
 		//loads picture assets
 
 		//name in this case (pictures) matters [must reflect actual path]
-		for (DogTexture dogTexture: DogTexture.values()) {
+		for (DogTexture dogTexture : DogTexture.values()) {
 			
 			assetManager.load(dogTexture.FILE_NAME, Texture.class);
+		}
+		
+		////////////////////////////////
+		//loads picture assets with Texture Atlas
+		for (DogTextureAtlas dogTextureAtlas : DogTextureAtlas.values()) {
+			
+			assetManager.load(dogTextureAtlas.FILE_NAME, TextureAtlas.class);
 		}
 		
 		////////////////////////////////
@@ -187,7 +194,6 @@ public class DogRunner extends Game {
 		
 		////////////////////////////////
 		//loads music assets
-		
 		for (DogMusic dogSound : DogMusic.values()) {
 			
 			assetManager.load(dogSound.FILE_NAME, Music.class);
@@ -246,5 +252,15 @@ public class DogRunner extends Game {
 		assert (listener instanceof DogRunner);
 			
 		return ((DogRunner) listener);
+	}
+	
+	/**
+	 * Convenience method
+	 * @param dTA the enum for a specific sprite
+	 * @return the corresponding atlas region (sprite) to the dTA
+	 */
+	public AtlasRegion getAtlasRegion(DogAtlasRegion dTA) {
+		
+		return assetManager.get(dTA.ENCLOSING_ATLAS.FILE_NAME, TextureAtlas.class).findRegion(dTA.NAME);
 	}
 }
