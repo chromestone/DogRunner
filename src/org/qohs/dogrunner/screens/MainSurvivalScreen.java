@@ -353,7 +353,8 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.batch.begin();
 		
 		physicsWorld.roadManager.render();
-		physicsWorld.carSpawner.render();
+		//physicsWorld.carSpawner.render();
+		physicsWorld.spawnManager.render();
 		
 		//draws the player's car
 		//dogRunner.batch.begin();

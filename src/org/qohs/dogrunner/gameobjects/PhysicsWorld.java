@@ -13,9 +13,9 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public abstract class PhysicsWorld {
 
-	protected static final float STEP_RATE = 1/60f;
+	public static final float STEP_RATE = 1/60f;
 
-	public World world;
+	protected World world;
 	
 	private boolean disposed;
 	private float accumulator;
@@ -43,8 +43,21 @@ public abstract class PhysicsWorld {
 	protected void init() {
 	}
 	
+	/**
+	 * Will act (step) for the world if not disposed
+	 * the world has a constant "tick" rate
+	 * if the time elapsed is too high then
+	 * anti lag measures will be used
+	 * 
+	 * @param delta time elapsed
+	 */
 	public final void act(float delta) {
 
+		if (disposed) {
+			
+			return;
+		}
+		
 		preAct(delta);
 		
 	    // fixed time step
@@ -62,16 +75,35 @@ public abstract class PhysicsWorld {
 		postAct(delta);
 	}
 
+	/**
+	 * Called before the world act (step) is called
+	 * 
+	 * @param delta
+	 */
 	protected void preAct(float delta) {
 
 	}
 
+	/**
+	 * Called each time the world act (step) is called
+	 * 
+	 */
 	protected void perAct() {
 
 	}
 
+	/**
+	 * Called after all the world act (step) is called
+	 * 
+	 * @param delta
+	 */
 	protected void postAct(float delta) {
 
+	}
+	
+	public boolean isDisposed() {
+		
+		return disposed;
 	}
 	
 	public void dispose() {

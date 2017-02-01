@@ -1,0 +1,127 @@
+package org.qohs.dogrunner.gameobjects.mainsurvival;
+
+import org.qohs.dogrunner.DogRunner;
+
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+
+/**
+ * A spawner does not directly spawn bodies (entities)
+ * Instead it is requested by a spawn manager to generate
+ * spawn requests per cycle in the form of metadata (user object or body data)
+ * encased in the data priority class. 
+ * 
+ * A body created by a spawner should have a constant body definition
+ * and a constant shape.
+ * 
+ * For memory conservation purposes, NONE of the abstract methods
+ * of this class should be implemented with creating "new instances" of classes.
+ * It is recommended not to do heavy calculations or create new numbers.
+ * 
+ * @author Derek Zhang
+ *
+ */
+public abstract class Spawner {
+	
+	protected final DogRunner dogRunner;
+
+	//private final BodyDef bodyDef;
+	//private final Shape shape;
+	private final DataPriority[] spawnList;
+	
+	protected final float gameWidth, gameHeight;
+	
+	private boolean disposed;
+	
+	public Spawner(float gameWidth, float gameHeight) {
+		
+		dogRunner = DogRunner.getInstance();
+		
+		//bodyDef = createBodyDef();
+		
+		//shape = createShape();
+		
+		spawnList = new DataPriority[SpawnManager.ROWS];
+		
+		for (int i = 0; i < SpawnManager.ROWS; i++) {
+			
+			//spawnList.add(createDefaultDataPriority());
+			spawnList[i] = new DataPriority(null, 0);
+		}
+		
+		this.gameWidth = gameWidth;
+		this.gameHeight = gameHeight;
+		
+		disposed = false;
+	}
+	
+	/**
+	 * each index in the returned array represents a lane from top to bottom.
+	 * for example: 0 is the first lane, 1 is the second lane ... length - 1 is the last lane
+	 * 
+	 * to represent an "empty" request, this method will return a data priority with a null
+	 * data field (the spawner body data will be null)
+	 * 
+	 * @return an array of data priority representing the spawn requests in each row
+	 */
+	public final DataPriority[] requestSpawnList() {
+		
+		editSpawnList();
+		
+		return spawnList;
+	}
+	
+	/**
+	 * This method gets the data priority in the spawn list
+	 * at the specified index
+	 * 
+	 * @param index from where to retrieve the data priority from the spawn list
+	 * @return the data priority in the spawn list at the index
+	 */
+	protected final DataPriority get(int index) {
+		
+		return spawnList[index];
+	}
+	
+	/**
+	 * Called whenever a spawn list is requested
+	 * Change the data priority returned by the indices from 
+	 * the get method
+	 * 
+	 */
+	abstract protected void editSpawnList();
+	
+	public void act(SpawnerBodyData data) {
+		
+	}
+	
+	public void onDestroy(SpawnerBodyData data) {
+		
+	}
+	
+	abstract public Drawable getDrawable(SpawnerBodyData data);
+	
+	abstract public float getWidth(SpawnerBodyData data);
+	
+	abstract public float getHeight(SpawnerBodyData data);
+	
+	abstract public BodyDef getBodyDef();
+	
+	abstract public Shape getShape();
+	
+	public final void dispose() {
+
+		if (!disposed) {
+			
+			mDispose();
+			
+			disposed = true;
+		}
+	}
+	
+	/**
+	 * You should dispose shape and other disposable stuff
+	 */
+	abstract protected void mDispose();
+}

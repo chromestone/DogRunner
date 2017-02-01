@@ -41,8 +41,9 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	//game over
 	public boolean playerCarTotalled;
 
-	public CarSpawner carSpawner;
+	//public CarSpawner carSpawner;
 	public RoadManager roadManager;
+	public SpawnManager spawnManager;
 	
 	public int crashes;
 	
@@ -62,10 +63,12 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		
 		crashes = 0;
 
-		carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
+		//carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
 		roadManager = new RoadManager(meterWidth, meterHeight, 165f);
 		
 		init();
+		
+		spawnManager = new SpawnManager(this, meterWidth, meterHeight, (carWidth - meterWidth * (12f / 500f)) * 1.5f);
 	}
 
 	@Override
@@ -86,7 +89,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 
 		// Create a body from the definition and add it to the world
 		Body lBoundBody = world.createBody(lBoundDef); 
-		lBoundBody.setUserData(new NPCBodyData(PhysicsBodyType.WALL));
+		lBoundBody.setUserData(new PhysicsBodyData(PhysicsBodyType.WALL));
 
 		// Create a polygon shape
 		PolygonShape lowerBox = new PolygonShape();  
@@ -107,7 +110,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 
 		// Create a body from the definition and add it to the world
 		Body uBoundBody = world.createBody(uBoundDef);  
-		uBoundBody.setUserData(new NPCBodyData(PhysicsBodyType.WALL));
+		uBoundBody.setUserData(new PhysicsBodyData(PhysicsBodyType.WALL));
 
 		// Create a polygon shape
 		PolygonShape upperBox = new PolygonShape();  
@@ -121,14 +124,28 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	@Override
 	protected void perAct() {
 
-		carSpawner.act(STEP_RATE);
+		//carSpawner.act(STEP_RATE);
 		roadManager.act(STEP_RATE);
+		spawnManager.act(STEP_RATE);
 	}
 
 	@Override
 	protected void postAct(float delta) {
 
-		carSpawner.clean();
+		spawnManager.clean();
+		//carSpawner.clean();
+	}
+	
+
+	@Override
+	public void dispose() {
+		
+		super.dispose();
+		
+		if (isDisposed()) {
+			
+			spawnManager.dispose();
+		}
 	}
 	
 	private void createCarBody() {
@@ -148,6 +165,16 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		shape.dispose();
 		
 		carBody.setUserData(PhysicsBodyType.PLAYER_CAR);
+	}
+	
+	public Body createBody(BodyDef bodyDef) {
+		
+		return world.createBody(bodyDef);
+	}
+	
+	public void destroyBody(Body body) {
+		
+		world.destroyBody(body);
 	}
 	
 	private class MyContactListener implements ContactListener {

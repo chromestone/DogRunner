@@ -5,14 +5,14 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
  * @author Derek Zhang
  *
  */
-class NPCBodyData extends PhysicsBodyData {
+class NPCBodyData extends SpawnerBodyData {
 	
 	public boolean crashed;
 	public boolean soundPlayed;
 
-	public NPCBodyData(PhysicsBodyType type) {
+	public NPCBodyData(PhysicsBodyType type, Spawner spawner) {
 		
-		super(type);
+		super(type, spawner);
 		
 		crashed = false;
 		soundPlayed = false;
