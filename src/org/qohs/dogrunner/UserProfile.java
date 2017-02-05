@@ -11,8 +11,9 @@ package org.qohs.dogrunner;
 public class UserProfile {
 	
 	public int score = 0;
+	public boolean spin = false;
 
-	//don't instantiate this class outside of Fairies
+	//don't instantiate this class outside of DogRunner
 	protected UserProfile() {
 	}
 }

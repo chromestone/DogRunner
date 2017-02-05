@@ -46,10 +46,11 @@ public class SpawnManager {
 	//whether or not a car wave is next
 	private boolean pendingCarWave;
 	
-	private Array<Spawner> carWaveSpawner;
-	private Array<Spawner> betweenWaveSpawner;
+	private final Spawner[] carWaveSpawner;
+	private final Spawner[] betweenWaveSpawner;
 	
-	private DataPriority[] spawnList;
+	private final DataPriority[] emptySpawnList;
+	private final DataPriority[] spawnList;
 	
 	private Array<Body> bodiesArray;
 	
@@ -66,31 +67,48 @@ public class SpawnManager {
 		this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
 		
-		accumulator = 0f;
-		
 		this.world = world;
 		
-		pendingCarWave = false;
+		pendingCarWave = true;
 		
-		carWaveSpawner = new Array<Spawner>(10);
+		//carWaveSpawner = new Array<Spawner>(10);
 		
-		betweenWaveSpawner = new Array<Spawner>(10);
+		//betweenWaveSpawner = new Array<Spawner>(10);
 		
 		//spawnList = new DataPriority[6];
 		
 		bodiesArray = new Array<Body>(20);
-			
+		
+		////////////////////////////////
+		
 		CarSpawner cSp = new CarSpawner(gameWidth, gameHeight);
+		//carWaveSpawner.add(cSp);
+		////////////////////////////////
 		
 		carWaveTime = cSp.getWidth() / VELOCITY;
 		
 		betweenWaveTime = occuringLength / VELOCITY;
+		////////////////////////////////
+
+		//betweenWaveSpawner.add(null);
+		////////////////////////////////
 		
-		carWaveSpawner.add(cSp);
+		//I mean the first row should spawn in a reasonable time when the game starts
+		accumulator = betweenWaveTime;
 		
-		spawnList = Arrays.copyOf(cSp.requestSpawnList(), ROWS);
+		carWaveSpawner = new Spawner[]{cSp};
 		
-		spawnThem();
+		betweenWaveSpawner = new Spawner[]{};
+		
+		//spawnList = Arrays.copyOf(cSp.requestSpawnList(), ROWS);
+		
+		//spawnThem();
+		
+		emptySpawnList = new DataPriority[ROWS];
+		Arrays.fill(emptySpawnList, new DataPriority(null, 0));
+		
+		spawnList = new DataPriority[ROWS];
+		System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
 	}
 	
 	public void act(float delta) {
@@ -104,6 +122,8 @@ public class SpawnManager {
 				
 				spawnThem();
 				
+				System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
+				
 				accumulator -= betweenWaveTime;
 				
 				pendingCarWave = !pendingCarWave;
@@ -116,6 +136,8 @@ public class SpawnManager {
 				requestSpawn(betweenWaveSpawner);
 
 				spawnThem();
+				
+				System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
 				
 				accumulator -= carWaveTime;
 				
@@ -163,12 +185,12 @@ public class SpawnManager {
 		}
 	}
 	
-	private void requestSpawn(Array<Spawner> spawners) {
+	private void requestSpawn(Spawner[] spawners) {
 		
 		for (Spawner spawner : spawners) {
 			
 			DataPriority[] reqSpawnList = spawner.requestSpawnList();
-			
+			//System.out.println(Arrays.toString(reqSpawnList));
 			for (int i = 0; i < ROWS; i++) {
 				
 				if (spawnList[i].data == null) {
@@ -181,6 +203,8 @@ public class SpawnManager {
 						
 						spawnList[i] = reqSpawnList[i];
 					}
+					
+					//spawnList[i].data = null;
 				}
 			}
 		}
@@ -198,7 +222,7 @@ public class SpawnManager {
 				
 				BodyDef bodyDef = spawner.getBodyDef();
 				
-				bodyDef.position.set(gameWidth + (spawner.getWidth(dataPriority.data) - gameWidth * (21f / 500f)) / 2f, ((i+1) * 2f + 1f) * gameHeight / 12f);
+				bodyDef.position.set(gameWidth + (spawner.getWidth(dataPriority.data) - gameWidth * (21f / 500f)) / 2f, ((i) * 2f + 1f) * gameHeight / 12f);
 				bodyDef.linearVelocity.set(-VELOCITY, 0f);
 				
 				Body body = world.createBody(bodyDef);
@@ -209,7 +233,7 @@ public class SpawnManager {
 				bodiesArray.add(body);
 			}
 			
-			spawnList[i].data = null;
+			//spawnList[i].data = null;
 		}
 	}
 	

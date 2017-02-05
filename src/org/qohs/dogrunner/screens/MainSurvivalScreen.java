@@ -157,7 +157,7 @@ public class MainSurvivalScreen extends StageScreen {
 	public void show() {
 		
 		super.show();
-		
+				
 		//set screen units
 		//note that these directly apply to drawing and must be set back once screen changes [this.hide()]
 		dogRunner.batch.setProjectionMatrix(cam.combined);
@@ -185,6 +185,8 @@ public class MainSurvivalScreen extends StageScreen {
 		pauseButton.setVisible(false);
 		pauseButton.setTouchable(Touchable.disabled);
 		textRenderer.add(countdownText);
+		
+		com.badlogic.gdx.Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 	}
 	
 	@Override
@@ -232,12 +234,22 @@ public class MainSurvivalScreen extends StageScreen {
 				
 				backMusic.stop();
 				
+				if (dogRunner.userProfile.spin) {
+
+					cam.setToOrtho(true, meterWidth, meterHeight);
+				}
+				
 				break;
 			}
 			
 			if (pauseButton.queryClicked()) {
 				
 				pause();
+			}
+			
+			if (dogRunner.userProfile.spin) {
+
+				cam.rotate(0.1f);
 			}
 			
 			break;
@@ -287,7 +299,7 @@ public class MainSurvivalScreen extends StageScreen {
 			break;
 		}
 		case GAME_OVER: {
-			
+
 			if (nextButton.queryClicked()) {
 				
 				pauseButton.setVisible(true);
@@ -358,7 +370,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		//draws the player's car
 		//dogRunner.batch.begin();
-		dogRunner.batch.draw(car, 0f, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
+		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
 		//dogRunner.batch.end();
 		
 		/*
@@ -401,9 +413,9 @@ public class MainSurvivalScreen extends StageScreen {
 		 * pressed, then the player's car will stop moving
 		 */
 		//exclusive or
-		if (upperHandler.isPressed() ^ lowerHandler.isPressed()) {
+		if ((upperHandler.isPressed() || com.badlogic.gdx.Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) ^ (lowerHandler.isPressed() || com.badlogic.gdx.Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.DOWN))) {
 			
-			if (upperHandler.isPressed()) {
+			if (upperHandler.isPressed() || com.badlogic.gdx.Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) {
 				
 				physicsWorld.carBody.setLinearVelocity(0f, -120f);
 				upperClickHandler.activated = true;
@@ -440,6 +452,8 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		physicsWorld.dispose();
 		physicsWorld = null;
+		
+		com.badlogic.gdx.Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 	}
 
 	@Override

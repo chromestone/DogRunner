@@ -55,7 +55,7 @@ public class CarSpawner extends Spawner {
 
 		prevFormation = new boolean[SpawnManager.ROWS];
 		currentFormation = new boolean[SpawnManager.ROWS];
-		openRows = new byte[6];
+		openRows = new byte[SpawnManager.ROWS];
 		Arrays.fill(openRows, (byte) -1);
 		
 		firstEditCall = true;
@@ -133,6 +133,7 @@ public class CarSpawner extends Spawner {
 					else {
 
 						currentFormation[row] = false;
+						super.get(row).data = null;
 					}
 				}
 				//there is an opening in the previous wave
@@ -140,6 +141,7 @@ public class CarSpawner extends Spawner {
 				else {
 
 					currentFormation[row] = false;
+					super.get(row).data = null;
 					openRows[openRowCount++] = row;
 				}
 			}
@@ -163,6 +165,7 @@ public class CarSpawner extends Spawner {
 					else {
 
 						currentFormation[row] = false;
+						super.get(row).data = null;
 					}
 				}
 				//there is an opening in the previous wave
@@ -170,6 +173,7 @@ public class CarSpawner extends Spawner {
 				else {
 
 					currentFormation[row] = false;
+					super.get(row).data = null;
 					openRows[openRowCount++] = row;
 				}
 			}
@@ -179,7 +183,7 @@ public class CarSpawner extends Spawner {
 			
 			//checks if the previous and next row is not accessible to the player (a car or "wall" present)
 			boolean previousFilled = (openRows[i] - 1 < 0) || currentFormation[openRows[i] - 1];
-			boolean nextFilled = (openRows[i] + 1 >= 6) || currentFormation[openRows[i] + 1];
+			boolean nextFilled = (openRows[i] + 1 >= SpawnManager.ROWS) || currentFormation[openRows[i] + 1];
 			
 			//if the player is not blocked both above and below the current row
 			if (!previousFilled || !nextFilled) {
@@ -197,7 +201,9 @@ public class CarSpawner extends Spawner {
 		}
 
 		//copy current wave into the previous wave
-		System.arraycopy(currentFormation, 0, prevFormation, 0, 6);
+		System.arraycopy(currentFormation, 0, prevFormation, 0, SpawnManager.ROWS);
+		
+		//System.out.println(Arrays.toString(prevFormation));
 	}
 	
 	@Override

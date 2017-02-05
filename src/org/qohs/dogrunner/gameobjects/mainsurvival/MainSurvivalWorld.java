@@ -68,7 +68,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		
 		init();
 		
-		spawnManager = new SpawnManager(this, meterWidth, meterHeight, (carWidth - meterWidth * (12f / 500f)) * 1.5f);
+		spawnManager = new SpawnManager(this, meterWidth, meterHeight, carWidth * 1.5f);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		
 		BodyDef bdef = new BodyDef();
 		//bdef.position.set(5f * carWidth / 8f, (meterHeight - carHeight) / 2);
-		bdef.position.set(carWidth / 2f, (meterHeight - carHeight) / 2f);
+		bdef.position.set(carWidth / 2f + carWidth / 5f, (meterHeight - carHeight) / 2f);
 		bdef.type = BodyType.DynamicBody;
 		bdef.bullet = true;
 		
