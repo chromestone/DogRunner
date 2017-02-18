@@ -1,5 +1,10 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class SpawnerBodyData extends PhysicsBodyData {
 
 	public Spawner spawner;

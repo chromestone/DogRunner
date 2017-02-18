@@ -1,7 +1,12 @@
 package org.qohs.dogrunner.util;
 
-import java.util.LinkedList;
+import java.util.*;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class HighScore {
 	
 	public static int MAX_HIGH_SCORES = 5;

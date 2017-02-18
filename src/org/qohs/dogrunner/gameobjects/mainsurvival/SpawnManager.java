@@ -7,6 +7,7 @@ import org.qohs.dogrunner.DogRunner;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -27,14 +28,14 @@ public class SpawnManager {
 	
 	//THESE SHOULD BE USED/SET BY THE MAIN SURVIVAL WORLD
 	//AND THUS ARE IN --->METERS<---
-	private final float gameWidth, gameHeight;
+	private final float gameHeight;//, gameWidth;
 	
 	//how much time for a car wave (determined by length of NPC car)
 	private float carWaveTime;
 	//how much time between waves (determined by player car length)
 	private float betweenWaveTime;
 	
-	/*
+	/**
 	 * used to accumulate time
 	 * is "subtracted" from when a car is spawned
 	 * this ensures accuracy of spawning
@@ -43,7 +44,9 @@ public class SpawnManager {
 	
 	private final MainSurvivalWorld world;
 	
-	//whether or not a car wave is next
+	/**
+	 * whether or not a car wave is next
+	 */
 	private boolean pendingCarWave;
 	
 	private final Spawner[] carWaveSpawner;
@@ -55,6 +58,11 @@ public class SpawnManager {
 	private Array<Body> bodiesArray;
 	
 	/**
+	 * Pre-calculated positions
+	 */
+	private float carWavePos, betweenWavePos;
+	
+	/**
 	 * 
 	 * @param gameWidth
 	 * @param gameHeight
@@ -64,7 +72,7 @@ public class SpawnManager {
 		
 		this.dogRunner = DogRunner.getInstance();
 		
-		this.gameWidth = gameWidth;
+		//this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
 		
 		this.world = world;
@@ -85,6 +93,9 @@ public class SpawnManager {
 		//carWaveSpawner.add(cSp);
 		////////////////////////////////
 		
+		carWavePos = gameWidth + cSp.getWidth() / 2f;// + gameWidth / 5f;
+		betweenWavePos = gameWidth + occuringLength / 2f;// + gameWidth / 5f;
+		
 		carWaveTime = cSp.getWidth() / VELOCITY;
 		
 		betweenWaveTime = occuringLength / VELOCITY;
@@ -96,9 +107,10 @@ public class SpawnManager {
 		//I mean the first row should spawn in a reasonable time when the game starts
 		accumulator = betweenWaveTime;
 		
+		//JAMES, LOOK HERE
 		carWaveSpawner = new Spawner[]{cSp};
 		
-		betweenWaveSpawner = new Spawner[]{};
+		betweenWaveSpawner = new Spawner[]{new GasStationSpawner(gameWidth, gameHeight)};
 		
 		//spawnList = Arrays.copyOf(cSp.requestSpawnList(), ROWS);
 		
@@ -179,7 +191,7 @@ public class SpawnManager {
 
 			Body body = iterator.next();
 			SpawnerBodyData data = (SpawnerBodyData) body.getUserData();
-			Spawner spawner = (data).spawner;
+			Spawner spawner = data.spawner;
 			
 			spawner.getDrawable(data).draw(dogRunner.batch, body.getPosition().x - spawner.getWidth(data) / 2f, body.getPosition().y - spawner.getHeight(data) / 2f,  spawner.getWidth(data), spawner.getHeight(data));
 		}
@@ -222,7 +234,16 @@ public class SpawnManager {
 				
 				BodyDef bodyDef = spawner.getBodyDef();
 				
-				bodyDef.position.set(gameWidth + (spawner.getWidth(dataPriority.data) - gameWidth * (21f / 500f)) / 2f, ((i) * 2f + 1f) * gameHeight / 12f);
+				bodyDef.type = BodyType.KinematicBody;
+				//bodyDef.position.set(gameWidth + (spawner.getWidth(dataPriority.data) - gameWidth * (21f / 500f)) / 2f, ((i) * 2f + 1f) * gameHeight / 12f);
+				if (pendingCarWave) {
+					
+					bodyDef.position.set(carWavePos, ((i) * 2f + 1f) * gameHeight / 12f);
+				}
+				else {
+					
+					bodyDef.position.set(betweenWavePos, ((i) * 2f + 1f) * gameHeight / 12f);
+				}
 				bodyDef.linearVelocity.set(-VELOCITY, 0f);
 				
 				Body body = world.createBody(bodyDef);
