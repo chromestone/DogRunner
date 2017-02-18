@@ -9,5 +9,6 @@ enum PhysicsBodyType {
 
 	PLAYER_CAR,
 	NPC_CAR,
-	WALL;
+	WALL,
+	GAS_STATION;
 }
