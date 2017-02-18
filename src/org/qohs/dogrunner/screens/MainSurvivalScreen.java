@@ -74,9 +74,9 @@ public class MainSurvivalScreen extends StageScreen {
 	
 	private Music backMusic;
 	
-	public MainSurvivalScreen(Batch batch) {
+	public MainSurvivalScreen() {
 		
-		super(batch);
+		super();
 		
 		////////////////////////////////
 		//calculated width
@@ -160,8 +160,8 @@ public class MainSurvivalScreen extends StageScreen {
 				
 		//set screen units
 		//note that these directly apply to drawing and must be set back once screen changes [this.hide()]
-		dogRunner.batch.setProjectionMatrix(cam.combined);
-		dogRunner.renderer.setProjectionMatrix(cam.combined);
+		//dogRunner.batch.setProjectionMatrix(cam.combined);
+		//dogRunner.renderer.setProjectionMatrix(cam.combined);
 		
 		//set up parameters for the physics world
 		MainSurvivalWorld.Definition def = new MainSurvivalWorld.Definition();
@@ -210,47 +210,7 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			act(delta);
 
-			if (physicsWorld.playerCarTotalled) {
-
-				dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
-				dogRunner.assetManager.get(DogSound.CRASH_DEATH.FILE_NAME, Sound.class).play();
-
-				//dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
-				//return;
-				
-				pauseButton.setVisible(false);
-				pauseButton.setTouchable(Touchable.disabled);
-				upperClickHandler.setVisible(false);
-				upperClickHandler.setTouchable(Touchable.disabled);
-				lowerClickHandler.setVisible(false);
-				lowerClickHandler.setTouchable(Touchable.disabled);
-				
-				stage.addActor(nextButton);
-				
-				textRenderer.remove(scoreText);
-				textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
-				
-				gameState = GameState.GAME_OVER;
-				
-				backMusic.stop();
-				
-				if (dogRunner.userProfile.spin) {
-
-					cam.setToOrtho(true, meterWidth, meterHeight);
-				}
-				
-				break;
-			}
-			
-			if (pauseButton.queryClicked()) {
-				
-				pause();
-			}
-			
-			if (dogRunner.userProfile.spin) {
-
-				cam.rotate(0.1f);
-			}
+			doGameResumed();
 			
 			break;
 		}
@@ -320,6 +280,7 @@ public class MainSurvivalScreen extends StageScreen {
 				}
 				else {
 					
+					dogRunner.userProfile.reset();
 					dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
 				}
 				
@@ -332,25 +293,7 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			act(delta);
 
-			if (physicsWorld.playerCarTotalled) {
-
-				dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
-				
-				pauseButton.setVisible(false);
-				upperClickHandler.setVisible(false);
-				lowerClickHandler.setVisible(false);
-				
-				textRenderer.remove(scoreText);
-				textRenderer.add(new GameOverScore(dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
-				
-				gameState = GameState.GAME_OVER;
-				break;
-			}
-			
-			if (pauseButton.queryClicked()) {
-				
-				pause();
-			}
+			doGameResumed();
 			
 			break;
 		}
@@ -390,11 +333,59 @@ public class MainSurvivalScreen extends StageScreen {
 			dogRunner.batch.setColor(color);
 		}
 		
+		//dogRunner.batch.draw(dogRunner.gudrunThingFM.donutThings.get((int) (Math.random() * dogRunner.gudrunThingFM.donutThings.size())), 0, 0);
+		
 		dogRunner.batch.end();
+		
+		//physicsWorld.method(cam);
 		
 		stage.draw();
 		
 		textRenderer.render();
+	}
+	
+	private void doGameResumed() {
+
+		if (dogRunner.userProfile.lives <= 0){//physicsWorld.playerCarTotalled) {
+
+			dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
+			dogRunner.assetManager.get(DogSound.CRASH_DEATH.FILE_NAME, Sound.class).play();
+
+			//dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
+			//return;
+			
+			pauseButton.setVisible(false);
+			pauseButton.setTouchable(Touchable.disabled);
+			upperClickHandler.setVisible(false);
+			upperClickHandler.setTouchable(Touchable.disabled);
+			lowerClickHandler.setVisible(false);
+			lowerClickHandler.setTouchable(Touchable.disabled);
+			
+			stage.addActor(nextButton);
+			
+			textRenderer.remove(scoreText);
+			textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
+			
+			gameState = GameState.GAME_OVER;
+			
+			backMusic.stop();
+			
+			if (dogRunner.userProfile.spin) {
+
+				cam.setToOrtho(true, meterWidth, meterHeight);
+			}
+			return;
+		}
+		
+		if (pauseButton.queryClicked()) {
+			
+			pause();
+		}
+		
+		if (dogRunner.userProfile.spin) {
+
+			cam.rotate(.1f);
+		}
 	}
 	
 	@Override
@@ -445,8 +436,8 @@ public class MainSurvivalScreen extends StageScreen {
 		super.hide();
 		
 		//set display units back to normal
-		dogRunner.batch.setProjectionMatrix(dogRunner.cam.combined);
-		dogRunner.renderer.setProjectionMatrix(dogRunner.cam.combined);
+		//dogRunner.batch.setProjectionMatrix(dogRunner.cam.combined);
+		//dogRunner.renderer.setProjectionMatrix(dogRunner.cam.combined);
 
 		textRenderer.remove(countdownText);
 		
@@ -487,10 +478,10 @@ public class MainSurvivalScreen extends StageScreen {
 	public void dispose() {
 
 		super.dispose();
+		
 		if (physicsWorld != null) {
 			
 			physicsWorld.dispose();
 		}
 	}
-
 }

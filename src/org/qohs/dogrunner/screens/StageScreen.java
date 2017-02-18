@@ -4,7 +4,6 @@ import org.qohs.dogrunner.DogRunner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -21,12 +20,12 @@ public abstract class StageScreen implements Screen {
 	protected final DogRunner dogRunner;
 	protected final Stage stage;
 	
-	public StageScreen(Batch batch) {
+	public StageScreen() {
 
 		dogRunner = DogRunner.getInstance();
 		stage = new Stage(
 				new FitViewport(dogRunner.GAME_WIDTH, dogRunner.GAME_HEIGHT, dogRunner.cam),
-				batch);
+				dogRunner.batch);
 	}
 
 	@Override

@@ -32,9 +32,9 @@ public class InputHighScoreScreen extends StageScreen {
 	
 	private MyWarningDialog warningDialog;
 	
-	public InputHighScoreScreen(Batch batch) {
+	public InputHighScoreScreen() {
 		
-		super(batch);
+		super();
 
 		BitmapFont font = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
 		BitmapFont smallFont = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_M.FILE_NAME, BitmapFont.class);
@@ -163,6 +163,8 @@ public class InputHighScoreScreen extends StageScreen {
 				dogRunner.highScoreFM.highScore.updateScores(temp, dogRunner.userProfile.score);
 				
 				dogRunner.highScoreFM.save();
+				
+				dogRunner.userProfile.reset();
 				
 				dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
 				

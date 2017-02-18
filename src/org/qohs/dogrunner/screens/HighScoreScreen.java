@@ -28,18 +28,20 @@ public class HighScoreScreen extends StageScreen {
 	private LabelStyle labelStyle2;
 	private QueryButton continueButton;
 
-	public HighScoreScreen(Batch batch) {
+	public HighScoreScreen() {
 		
-		super(batch);
+		super();
 		
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Arial.ttf"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("square.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		BitmapFont font = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
 		GlyphLayout glyphLayout = new GlyphLayout(font, "A");
 		parameter.size = (int) (dogRunner.GAME_HEIGHT / (HighScore.MAX_HIGH_SCORES + 1.0) * glyphLayout.width / glyphLayout.height);
-		parameter.color = Color.YELLOW;
+		parameter.color = Color.WHITE;
 		parameter.borderColor = Color.BLACK;
 		parameter.flip = true;
+		//parameter.borderWidth = 1f;
+		//parameter.borderColor = Color.WHITE;
 		BitmapFont theFont = generator.generateFont(parameter);
 		generator.dispose();
 		
@@ -49,6 +51,9 @@ public class HighScoreScreen extends StageScreen {
 		title = new Label("High Scores", labelStyle);
 		title.setX(dogRunner.GAME_WIDTH / 2f - title.getPrefWidth() / 2f);
 		title.setY(0f);
+		Color color = new Color(Color.GOLD);
+		color.a = .9f;
+		title.setColor(color);
 		
 		stage.addActor(title);
 		
@@ -57,7 +62,7 @@ public class HighScoreScreen extends StageScreen {
 		stage.addActor(continueButton);
 		
 		labelStyle2 = new LabelStyle(labelStyle);
-		labelStyle2.fontColor = Color.GREEN;
+		labelStyle2.fontColor = Color.WHITE;
 	}
 	
 	@Override
@@ -73,12 +78,22 @@ public class HighScoreScreen extends StageScreen {
 		final int height = dogRunner.GAME_HEIGHT / (HighScore.MAX_HIGH_SCORES + 1);
 		int drawHeight = height;
 		
+		Color color = new Color(Color.CYAN);
+		color.a = .50f;
+		
 		Iterator<String> it2 = dogRunner.highScoreFM.highScore.names.iterator();
 		while (it2.hasNext() && drawHeight < dogRunner.GAME_HEIGHT) {
 			
 			Label label = new Label(it2.next(), labelStyle);
 			label.setX(0f);
 			label.setY(drawHeight);
+			
+			label.setColor(color);
+			
+			if (label.getWidth() > dogRunner.GAME_WIDTH / 2f) {
+
+				label.setFontScale(dogRunner.GAME_WIDTH / 2f / label.getWidth());
+			}
 			
 			stage.addActor(label);
 			
@@ -87,12 +102,22 @@ public class HighScoreScreen extends StageScreen {
 		
 		drawHeight = height;
 		
+		color = new Color(Color.GOLD);
+		color.a = .9f;
+		
 		Iterator<Integer> it = dogRunner.highScoreFM.highScore.scores.iterator();
 		while (it.hasNext() && drawHeight < dogRunner.GAME_HEIGHT) {
 			
 			Label label = new Label(it.next().toString(), labelStyle2);
 			label.setX(dogRunner.GAME_WIDTH - label.getPrefWidth());
 			label.setY(drawHeight);
+			
+			label.setColor(color);
+			
+			if (label.getWidth() > dogRunner.GAME_WIDTH / 2f) {
+
+				label.setFontScale(dogRunner.GAME_WIDTH / 2f / label.getWidth());
+			}
 			
 			stage.addActor(label);
 			
