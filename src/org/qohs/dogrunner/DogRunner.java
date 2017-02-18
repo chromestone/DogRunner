@@ -1,10 +1,12 @@
 package org.qohs.dogrunner;
 
 import org.qohs.dogrunner.io.*;
+import org.qohs.dogrunner.screens.LoadingScreen;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.*;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * I wrote all of this class; thug life.
@@ -42,6 +45,8 @@ public class DogRunner extends Game {
 	public SpriteBatch batch;
 	public ShapeRenderer renderer;
 	
+	private Creator creator;
+	
 	//screens should not be able to use this
 	//since screens should only communicate by switching screens
 	//and the user profile
@@ -50,6 +55,8 @@ public class DogRunner extends Game {
 	public UserProfile userProfile;
 	
 	public HighScoreFileManager highScoreFM;
+	public StorylineFileManager storyFM;
+	public DonutThingManager gudrunThingFM;
 	
 	//FPSLogger log = new FPSLogger();
 	
@@ -63,9 +70,11 @@ public class DogRunner extends Game {
 		//Setup assets and load
 		assetManager = new AssetManager();
 		
+		forceLoad();
+		
 		load();
 
-		assetManager.finishLoading();
+		//assetManager.finishLoading();
 		
 		////////////////////////////////
 		//Camera setup
@@ -80,25 +89,69 @@ public class DogRunner extends Game {
 		renderer = new ShapeRenderer();
 		renderer.setProjectionMatrix(cam.combined);
 		
+		this.setScreen(new LoadingScreen(creator = new Creator()));
+		
+		//sets the initial clear color for the screen
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+	}
+	
+	/**
+	 * Blocking IO
+	 */
+	private void createWithIO() {
+	
+		////////////////////////////////
+		//Instantiates the Box2D "engine"
+		//Box2D.init();
+	
+		////////////////////////////////
+		//Instantiates the screens
+		//dogScreens = new DogScreens(batch);
+	
+		////////////////////////////////
+		//Sets the first screen users will see
+		//this.setScreen(new LoadingScreen(new Creator()));
+	
+		////////////////////////////////
+		//userProfile = new UserProfile();
+	
+		////////////////////////////////
+		highScoreFM = new HighScoreFileManager();
+		highScoreFM.load();
+	
+		storyFM = new StorylineFileManager();
+		storyFM.load();
+	
+		gudrunThingFM = new DonutThingManager();
+		gudrunThingFM.load();
+	}
+	
+	private void m_create() {
+		
 		////////////////////////////////
 		//Instantiates the Box2D "engine"
 		Box2D.init();
 		
 		////////////////////////////////
+		userProfile = new UserProfile();
+	
+		////////////////////////////////
 		//Instantiates the screens
 		dogScreens = new DogScreens(batch);
-		
+	
 		////////////////////////////////
 		//Sets the first screen users will see
-		this.setScreen(DogScreens.Type.START_SCREEN.getStageScreen(dogScreens));
+		//this.setScreen(new LoadingScreen(new Creator()));
+	}
+
+	private void forceLoad() {
 		
-		userProfile = new UserProfile();
+		assetManager.load(DogRunner.PARENT_DIR + "uiskin/uiskin.atlas", TextureAtlas.class);
+
+		assetManager.load(DogCustomGraphic.UI_SKIN.FILE_NAME, Skin.class,
+				new SkinLoader.SkinParameter(DogRunner.PARENT_DIR + "uiskin/uiskin.atlas"));
 		
-		highScoreFM = new HighScoreFileManager();
-		highScoreFM.load();
-		
-		//sets the initial clear color for the screen
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+		assetManager.finishLoading();
 	}
 	
 	//load all the "assets" here (pictures, fonts, etc.)
@@ -232,12 +285,17 @@ public class DogRunner extends Game {
 	@Override
 	public void dispose() {
 		
-		highScoreFM.save();
-		
-		assetManager.dispose();
-		
 		batch.dispose();
 		renderer.dispose();
+		assetManager.dispose();
+		
+		if (!creator.finished) {
+			
+			return;
+		}
+		
+		highScoreFM.save();
+		
 		
 		////////////////////////////////
 		//Disposes screens
@@ -271,5 +329,72 @@ public class DogRunner extends Game {
 	public AtlasRegion getAtlasRegion(DogAtlasRegion dTA) {
 		
 		return assetManager.get(dTA.ENCLOSING_ATLAS.FILE_NAME, TextureAtlas.class).findRegion(dTA.NAME);
+	}
+	
+	public class Creator {
+		
+		private boolean created;
+		private boolean finished;
+		
+		private Creator(){
+			
+			created = false;
+			finished = false;
+		}
+		
+		public void create() {
+			
+			if (created) {
+				
+				return;
+			}
+			
+			Thread thread = new Thread(new CallCreate(this));
+			
+			thread.start();
+
+			created = true;
+		}
+		
+		public boolean finished() {
+			
+			return finished;
+		}
+	}
+	
+	private class CallCreate implements Runnable {
+
+		private final Creator creator;
+		
+		public CallCreate(Creator creator) {
+			
+			this.creator = creator;
+		}
+		
+		@Override
+		public void run() {
+			
+			DogRunner.this.createWithIO();
+
+			Gdx.app.postRunnable(new CallCreator(creator));
+		}
+	}
+	
+	private class CallCreator implements Runnable {
+
+		private final Creator creator;
+		
+		public CallCreator(Creator creator) {
+			
+			this.creator = creator;
+		}
+		
+		@Override
+		public void run() {
+			
+			DogRunner.this.m_create();
+			
+			creator.finished = true;
+		}
 	}
 }
