@@ -1,5 +1,6 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
+import org.qohs.dogrunner.DogRunner;
 import org.qohs.dogrunner.gameobjects.*;
 
 import com.badlogic.gdx.math.Vector2;
@@ -39,13 +40,15 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	private float carHeight = 0f;
 	
 	//game over
-	public boolean playerCarTotalled;
+	//public boolean playerCarTotalled;
 
 	//public CarSpawner carSpawner;
 	public RoadManager roadManager;
 	public SpawnManager spawnManager;
 	
-	public int crashes;
+	//public int crashes;
+	
+	private Box2DDebugRenderer b2DRenderer = new Box2DDebugRenderer();
 	
 	public MainSurvivalWorld(Vector2 gravity, boolean doSleep, Definition def) {
 		
@@ -59,9 +62,9 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		this.carWidth = def.carWidth;
 		this.carHeight = def.carHeight;
 		
-		playerCarTotalled = false;
+		//playerCarTotalled = false;
 		
-		crashes = 0;
+		//crashes = 0;
 
 		//carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
 		roadManager = new RoadManager(meterWidth, meterHeight, 165f);
@@ -159,13 +162,34 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		carBody = world.createBody(bdef);
 		
 		PolygonShape shape = new PolygonShape();
+		
+		/*
 		//it's actually a "radius"
 		shape.setAsBox(carWidth / 2f, carHeight / 2f);
+		Vector2 v = new Vector2();
+		for (int i = 0; i < shape.getVertexCount(); i++) {
+		shape.getVertex(i, v);
+		System.out.println(v);
+		System.out.println(System.identityHashCode(v));}*/
+		
+		shape.set(new Vector2[]{new Vector2(-carWidth / 2f, -carHeight / 2f),
+				new Vector2(-carWidth / 2f, carHeight / 2f),
+				new Vector2(carWidth / 2f, carHeight / 2f),
+				new Vector2(carWidth / 2f, 0f),
+				new Vector2(0, -carHeight / 2f)});
+		
 		carBody.createFixture(shape, 0f);
 		shape.dispose();
 		
 		carBody.setUserData(PhysicsBodyType.PLAYER_CAR);
 	}
+	
+	
+	public void method(com.badlogic.gdx.graphics.Camera cam) {
+		
+		b2DRenderer.render(world, cam.combined);
+	}
+	
 	
 	public Body createBody(BodyDef bodyDef) {
 		
@@ -179,6 +203,8 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	
 	private class MyContactListener implements ContactListener {
 
+		private DogRunner dogRunner = DogRunner.getInstance();
+		
 		@Override
 		public void beginContact(Contact contact) {
 			
@@ -197,15 +223,18 @@ public class MainSurvivalWorld extends PhysicsWorld {
 				case NPC_CAR: {
 					
 					//MainSurvivalWorld.this.playerCarTotalled = true;
-					MainSurvivalWorld.this.crashes++;
+					//MainSurvivalWorld.this.crashes++;
+					dogRunner.userProfile.lives--;
 					NPCBodyData npcData = ((NPCBodyData) data);
 					npcData.crashed = true;
 					
 					
+					/*
 					if (MainSurvivalWorld.this.crashes >= 3) {
 						
 						MainSurvivalWorld.this.playerCarTotalled = true;
 					}
+					*/
 					break;
 				}
 				case WALL: {
@@ -253,6 +282,11 @@ public class MainSurvivalWorld extends PhysicsWorld {
 				PhysicsBodyData data = (PhysicsBodyData) crashedBody.getUserData();
 				PhysicsBodyType type = data.type;
 				
+				if (type != PhysicsBodyType.WALL) {
+					
+					contact.setEnabled(false);
+				}
+				/*
 				switch (type) {
 				
 				case NPC_CAR: {
@@ -273,6 +307,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 					break;
 				}
 				}
+				*/
 			}
 		}
 

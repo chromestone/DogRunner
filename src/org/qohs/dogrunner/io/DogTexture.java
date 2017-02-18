@@ -10,8 +10,11 @@ import org.qohs.dogrunner.DogRunner;
  */
 public enum DogTexture {
 
-	DOG("placeholder/dog.png"),
-	ROAD_IMG("texture/road.png");
+	//DOG("placeholder/dog.png"),
+	ROAD_IMG("texture/road.png"),
+	GAS_STATION("texture/gas_station_car.png"),
+	START_BACKGROUND("texture/start_background.png"),
+	DONUT_TYPES("texture/types.png");
 
 	public final String FILE_NAME;
 

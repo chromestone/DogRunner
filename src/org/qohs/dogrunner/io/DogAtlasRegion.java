@@ -1,5 +1,10 @@
 package org.qohs.dogrunner.io;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public enum DogAtlasRegion {
 
 	PORSCHE_CAR("porsche_car", DogTextureAtlas.ATLAS_1),

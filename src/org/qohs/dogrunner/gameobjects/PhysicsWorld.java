@@ -1,9 +1,7 @@
 package org.qohs.dogrunner.gameobjects;
 
-//import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.Vector2;
-//import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 
 /**
  * Wrapper class for the Box2D World
@@ -20,8 +18,8 @@ public abstract class PhysicsWorld {
 	private boolean disposed;
 	private float accumulator;
 	
-//	private Box2DDebugRenderer b2DRenderer;
-//	private Camera cam = new OrthographicCamera(800f / 400f * 100f, 100f);
+	//private Box2DDebugRenderer b2DRenderer;
+	//private Camera cam = new OrthographicCamera(800f / 400f * 100f, 100f);
 	
 	/**
 	 * Note to children classes: call init in the constructor!!! (if you want it to run)
@@ -32,7 +30,7 @@ public abstract class PhysicsWorld {
 	public PhysicsWorld(Vector2 gravity, boolean doSleep) {
 		
 		world = new World(gravity, doSleep);
-//		b2DRenderer = new Box2DDebugRenderer();
+		//b2DRenderer = new Box2DDebugRenderer();
 		
 		disposed = false;
 		accumulator = 0f;

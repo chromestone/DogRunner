@@ -7,7 +7,6 @@ import org.qohs.dogrunner.io.*;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -69,7 +68,7 @@ public class CarSpawner extends Spawner {
 		shape.setAsBox((carWidth - gameWidth * (21f / 500f)) / 2, carHeight / 2f - 2f);
 		
 		bodyDef = new BodyDef(); 
-		bodyDef.type = BodyType.DynamicBody;
+		//bodyDef.type = BodyDef.BodyType.KinematicBody;
 	}
 	
 	@Override

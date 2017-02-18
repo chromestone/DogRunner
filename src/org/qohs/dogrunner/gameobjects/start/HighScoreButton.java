@@ -2,24 +2,25 @@ package org.qohs.dogrunner.gameobjects.start;
 
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.GameObject;
-import org.qohs.dogrunner.io.*;
+import org.qohs.dogrunner.io.DogAsset;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 /**
  * 
  * @author Derek Zhang
  *
  */
-public class StartButton extends GameObject {
+public class HighScoreButton extends GameObject {
 	
 	private Color color;
 	private float fontX, fontY;
 	private BitmapFont font;
 	
-	public StartButton(float x, float y, float width, float height) {
+	public HighScoreButton(float x, float y, float width, float height) {
 		
 		super(x, y, width, height);
 		
@@ -33,7 +34,7 @@ public class StartButton extends GameObject {
 		
 		////////////////////////////////
 		//
-		String text = "Start";
+		String text = "High Score";
 		
 		GlyphLayout glyphLayout = new GlyphLayout();
 		glyphLayout.setText(font, text);
@@ -62,7 +63,7 @@ public class StartButton extends GameObject {
 		
 		font.setColor(color);
 
-		font.draw(batch, "Start", fontX, fontY);
+		font.draw(batch, "High Score", fontX, fontY);
 		
 		font.setColor(origColor);
 		
@@ -81,10 +82,6 @@ public class StartButton extends GameObject {
 	
 	public void clicked() {
 		
-		font.setColor(color);
-		//dogRunner.userProfile.score = 0;
-		dogRunner.userProfile.reset();
-		dogRunner.assetManager.get(DogSound.IGNITION_REV.FILE_NAME, Sound.class).play(1f);
-		dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
+		dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
 	}
 }
