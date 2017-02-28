@@ -11,13 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  * Instead it is requested by a spawn manager to generate
  * spawn requests per cycle in the form of metadata (user object or body data)
  * encased in the data priority class. 
- * 
+ * <br><br>
  * A body created by a spawner should have a constant body definition
  * and a constant shape.
- * 
+ * <br><br>
  * For memory conservation purposes, NONE of the abstract methods
  * of this class should be implemented with creating "new instances" of classes.
- * It is recommended not to do heavy calculations or create new numbers.
+ * Except the editSpawnList method when a new "metadata" should be created.
+ * It is recommended not to do heavy calculations or create new numbers (width/height).
+ * 
+ * @see SpawnManager
  * 
  * @author Derek Zhang
  *
@@ -84,6 +87,14 @@ public abstract class Spawner {
 		return spawnList[index];
 	}
 	
+	protected final void clear() {
+		
+		for (DataPriority dataPriority : spawnList) {
+			
+			dataPriority.data = null;
+		}
+	}
+	
 	/**
 	 * Called whenever a spawn list is requested
 	 * Change the data priority returned by the indices from 
@@ -92,22 +103,63 @@ public abstract class Spawner {
 	 */
 	abstract protected void editSpawnList();
 	
+	/**
+	 * Call once for EVERY entity corresponding to
+	 * this spawner EVERY frame cycle.
+	 * 
+	 * @param data
+	 */
 	public void act(SpawnerBodyData data) {
 		
 	}
 	
+	/**
+	 * Called whenever an entity corresponding to the spawner
+	 * is destroyed. More specifically WHEN THE ENTITY IS
+	 * OFF THE SCREEN.
+	 * <br><br>
+	 * NOTE: If destroying was due to data.destroyed = true,
+	 * then this method will NOT be called.
+	 * 
+	 * @param data
+	 */
 	public void onDestroy(SpawnerBodyData data) {
 		
 	}
 	
+	/**
+	 * What I look like. lolz :)
+	 * 
+	 * @param data
+	 * @return drawable (sprite of what I look like)
+	 */
 	abstract public Drawable getDrawable(SpawnerBodyData data);
 	
+	/**
+	 * How wide I am.
+	 * 
+	 * @param data
+	 * @return width of me
+	 */
 	abstract public float getWidth(SpawnerBodyData data);
 	
+	/**
+	 * How tall I am.
+	 * 
+	 * @param data
+	 * @return height of me
+	 */
 	abstract public float getHeight(SpawnerBodyData data);
 	
 	abstract public BodyDef getBodyDef();
 	
+	/**
+	 * Used by the spawn manager when an entity is to be spawned.
+	 * <br><br>
+	 * Are you in love with this method? Get the reference? (Ed Sheeran)
+	 * 
+	 * @return shape of me
+	 */
 	abstract public Shape getShape();
 	
 	public final void dispose() {

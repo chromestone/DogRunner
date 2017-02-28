@@ -11,16 +11,44 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 
 /**
+ * Handles all spawning for the Main Survival World.
+ * There are two types of spawning: car waves and between car waves.
+ * <br><br>
+ * Car wave spawns are spawned in the wave that cars are spawned.
+ * Please keep the width less than the NPC car width.
+ * <br><br>
+ * Between car wave spawns are spawned between the waves that cars are spawned.
+ * (IKR, totally not obvious?) Please also keep the width less than
+ * approx. 1.5 * player car width.
+ * <br><br>
+ * Each time a wave is about to be spawned, the spawn manager calls
+ * for requesting spawns to all the designated spawners (car wave or in between).
+ * <br><br>
+ * Once the request is processed and a spawn list is "compiled" based on priorities,
+ * the spawns with the highest priorities will be spawned.
+ * (yes an actual entity (body) in the world)
+ * <br><br>
+ * Afterward, ALL ENTITIES SPAWNED (in the same loop, even those just spawned) will have
+ * their corresponding spawner's act method called.
+ * <br><br>
+ * The following processes happen EVERY FRAME CYCLE:
+ * (regardless if there was a spawn request, but if there was, always AFTER)
+ * <br><br>
+ * Then "house cleaning" is done. Those entities off the screen are cleared, and the corresponding
+ * spawner's "onDestroy" method is called
+ * <br><br>
+ * Finally, the entity is rendered using the spawner's "getDrawable" method and the cycle is done :)
  * 
  * @author Derek Zhang
  *
  */
+//note to programmers looking to register spawner find "PROGRAMMERS LOOK HERE - #DANKMEMES"
 public class SpawnManager {
 	
 	/**
 	 * The velocity of all bodies (entities) spawned by this spawn manager
 	 */
-	public static final float VELOCITY = 75f;
+	public static final float VELOCITY = 75f;//75f
 
 	public static int ROWS = 6;
 	
@@ -91,6 +119,7 @@ public class SpawnManager {
 		
 		CarSpawner cSp = new CarSpawner(gameWidth, gameHeight);
 		//carWaveSpawner.add(cSp);
+		
 		////////////////////////////////
 		
 		carWavePos = gameWidth + cSp.getWidth() / 2f;// + gameWidth / 5f;
@@ -99,22 +128,21 @@ public class SpawnManager {
 		carWaveTime = cSp.getWidth() / VELOCITY;
 		
 		betweenWaveTime = occuringLength / VELOCITY;
-		////////////////////////////////
-
-		//betweenWaveSpawner.add(null);
+		
 		////////////////////////////////
 		
 		//I mean the first row should spawn in a reasonable time when the game starts
 		accumulator = betweenWaveTime;
 		
-		//JAMES, LOOK HERE
+		////////////////////////////////
+		//PROGRAMMERS LOOK HERE - #DANKMEMES
+		
 		carWaveSpawner = new Spawner[]{cSp};
 		
-		betweenWaveSpawner = new Spawner[]{new GasStationSpawner(gameWidth, gameHeight)};
+		betweenWaveSpawner = new Spawner[]{new GhostSpawner(gameWidth, gameHeight),
+				new GasStationSpawner(gameWidth, gameHeight)};
 		
-		//spawnList = Arrays.copyOf(cSp.requestSpawnList(), ROWS);
-		
-		//spawnThem();
+		////////////////////////////////
 		
 		emptySpawnList = new DataPriority[ROWS];
 		Arrays.fill(emptySpawnList, new DataPriority(null, 0));
@@ -157,13 +185,31 @@ public class SpawnManager {
 			}
 		}
 		
-		for (Body body : bodiesArray) {
+		Iterator<Body> iterator = bodiesArray.iterator();
+		while (iterator.hasNext()) {
 			
+			Body body = iterator.next();
 			SpawnerBodyData data = (SpawnerBodyData) body.getUserData();
 			data.spawner.act(data);
+			
+			if (data.destroy == true) {
+				
+				iterator.remove();
+				
+				world.destroyBody(body);
+			}
+			else if (body.getPosition().x + data.spawner.getWidth(data) / 2 < 0) {
+
+				iterator.remove();
+
+				data.spawner.onDestroy(data);
+
+				world.destroyBody(body);
+			}
 		}
 	}
 	
+	/*
 	public void clean() {
 		
 		Iterator<Body> iterator = bodiesArray.iterator();
@@ -183,6 +229,7 @@ public class SpawnManager {
 			}
 		}
 	}
+	*/
 	
 	public void render() {
 		

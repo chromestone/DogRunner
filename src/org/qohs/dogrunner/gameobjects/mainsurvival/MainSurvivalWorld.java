@@ -123,22 +123,29 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		// Clean up after ourselves
 		upperBox.dispose();
 	}
+	
+	@Override
+	protected void preAct(float delta) {
+		
+		spawnManager.act(delta);
+	}
 
 	@Override
 	protected void perAct() {
 
 		//carSpawner.act(STEP_RATE);
-		roadManager.act(STEP_RATE);
-		spawnManager.act(STEP_RATE);
+		roadManager.act();//STEP_RATE);
+		//spawnManager.act(STEP_RATE);
 	}
 
+	/*
 	@Override
 	protected void postAct(float delta) {
 
 		spawnManager.clean();
 		//carSpawner.clean();
 	}
-	
+	*/
 
 	@Override
 	public void dispose() {
@@ -181,7 +188,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		carBody.createFixture(shape, 0f);
 		shape.dispose();
 		
-		carBody.setUserData(PhysicsBodyType.PLAYER_CAR);
+		carBody.setUserData(new PhysicsBodyData(PhysicsBodyType.PLAYER_CAR));
 	}
 	
 	
@@ -222,12 +229,17 @@ public class MainSurvivalWorld extends PhysicsWorld {
 				
 				case NPC_CAR: {
 					
+					if (dogRunner.userProfile.invincible > 0) {
+						
+						break;
+					}
+					
 					//MainSurvivalWorld.this.playerCarTotalled = true;
 					//MainSurvivalWorld.this.crashes++;
 					dogRunner.userProfile.lives--;
-					NPCBodyData npcData = ((NPCBodyData) data);
-					npcData.crashed = true;
-					
+					//NPCBodyData npcData = ((NPCBodyData) data);
+					//npcData.crashed = true;
+					((SpawnerBodyData) data).crashed = true;
 					
 					/*
 					if (MainSurvivalWorld.this.crashes >= 3) {
@@ -244,6 +256,23 @@ public class MainSurvivalWorld extends PhysicsWorld {
 				case PLAYER_CAR: {
 					
 					throw new IllegalStateException("A player car crashed into another player car.");
+				}
+				case GAS_STATION: {
+					
+					break;
+				}
+				case GHOST: {
+					
+					if (dogRunner.userProfile.invincible > 0) {
+						
+						break;
+					}
+					
+					((SpawnerBodyData) data).crashed = true;
+					//((SpawnerBodyData) data).crashed = true;
+					
+					//20 seconds of invisibility
+					Invincibility.scheduleInvinciblity(20, 5);
 				}
 				default: {
 					

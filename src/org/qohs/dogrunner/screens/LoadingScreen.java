@@ -5,7 +5,8 @@ import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.DogRunner.Creator;
 import org.qohs.dogrunner.io.DogCustomGraphic;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
+ * Not a registered screen (it's rogue :)
  * 
  * @author Derek Zhang
  *
@@ -22,7 +24,7 @@ public class LoadingScreen extends StageScreen {
 	private ProgressBar progressBar;
 	private final Creator creator;
 	
-	private boolean assetsLoaded;
+	//private boolean assetsLoaded;
 	
 	public LoadingScreen(Creator creator) {
 		
@@ -63,16 +65,25 @@ public class LoadingScreen extends StageScreen {
 		
 		this.creator = creator;
 		
-		assetsLoaded = false;
+		//assetsLoaded = false;
 	}
 
+	@Override
+	public void show() {
+		
+		super.show();
+		
+		progressBar.setValue(dogRunner.assetManager.getProgress());
+	
+		Gdx.gl.glClearColor(.5f, .5f, .5f, 1f);
+	}
 	
 	@Override
 	public void render(float delta) {
 		
-		if (assetsLoaded) {
+		if (dogRunner.assetManager.update()) {
 
-			if (creator.finished()) {
+			if (creator.create()) {
 
 				dogRunner.setScreen(DogScreens.Type.START_SCREEN);
 				
@@ -82,13 +93,16 @@ public class LoadingScreen extends StageScreen {
 		else {
 			
 			progressBar.setValue(dogRunner.assetManager.getProgress());
-			
-			if (assetsLoaded = dogRunner.assetManager.update()) {
-				
-				creator.create();
-			}
 		}
 		
 		stage.draw();
+	}
+	
+	@Override
+	public void hide() {
+
+		super.hide();
+		
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 	}
 }

@@ -109,15 +109,16 @@ public class HighScoreScreen extends StageScreen {
 		while (it.hasNext() && drawHeight < dogRunner.GAME_HEIGHT) {
 			
 			Label label = new Label(it.next().toString(), labelStyle2);
-			label.setX(dogRunner.GAME_WIDTH - label.getPrefWidth());
-			label.setY(drawHeight);
-			
-			label.setColor(color);
 			
 			if (label.getWidth() > dogRunner.GAME_WIDTH / 2f) {
 
 				label.setFontScale(dogRunner.GAME_WIDTH / 2f / label.getWidth());
 			}
+			
+			label.setX(dogRunner.GAME_WIDTH - label.getPrefWidth());
+			label.setY(drawHeight);
+			
+			label.setColor(color);
 			
 			stage.addActor(label);
 			

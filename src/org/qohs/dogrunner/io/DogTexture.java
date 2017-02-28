@@ -14,7 +14,8 @@ public enum DogTexture {
 	ROAD_IMG("texture/road.png"),
 	GAS_STATION("texture/gas_station_car.png"),
 	START_BACKGROUND("texture/start_background.png"),
-	DONUT_TYPES("texture/types.png");
+	DONUT_TYPES("texture/types.png"),
+	GHOST("texture/ghost.png");
 
 	public final String FILE_NAME;
 

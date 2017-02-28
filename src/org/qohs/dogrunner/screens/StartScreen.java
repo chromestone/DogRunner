@@ -4,6 +4,7 @@ import org.qohs.dogrunner.gameobjects.*;
 import org.qohs.dogrunner.gameobjects.start.*;
 import org.qohs.dogrunner.io.*;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -18,6 +19,8 @@ import com.badlogic.gdx.utils.Scaling;
 public class StartScreen extends StageScreen {
 	
 	private TextureRegion background;
+	
+	private Music backMusic;
 	
 	public StartScreen() {
 		
@@ -63,11 +66,31 @@ public class StartScreen extends StageScreen {
 		stage.addActor(new HighScoreButton((dogRunner.GAME_WIDTH * 150f / 192f) - (width / 2f),
         		(dogRunner.GAME_HEIGHT * 52f / 108f) - (height / 2f),
         		width, height));
+		
+		backMusic = dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class);
+		backMusic.setVolume(.4f);
+		backMusic.setLooping(true);
+	}
+	
+	@Override
+	public void show() {
+		
+		super.show();
+		
+		backMusic.play();
 	}
 	
 	@Override
 	public void render(float delta) {
 		
 		stage.draw();
+	}
+	
+	@Override
+	public void hide() {
+		
+		super.hide();
+		
+		backMusic.stop();
 	}
 }

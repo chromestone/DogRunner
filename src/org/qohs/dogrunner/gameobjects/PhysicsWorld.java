@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public abstract class PhysicsWorld {
 
-	public static final float STEP_RATE = 1/60f;
+	public static final float STEP_RATE = 1/120f;
 
 	protected World world;
 	

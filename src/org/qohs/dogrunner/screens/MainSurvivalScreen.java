@@ -1,6 +1,7 @@
 package org.qohs.dogrunner.screens;
 
 import org.qohs.dogrunner.DogScreens;
+import org.qohs.dogrunner.gameobjects.GameObject;
 import org.qohs.dogrunner.gameobjects.QueryButton;
 import org.qohs.dogrunner.gameobjects.mainsurvival.*;
 import org.qohs.dogrunner.io.*;
@@ -130,6 +131,10 @@ public class MainSurvivalScreen extends StageScreen {
 				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		stage.addActor(playButton);
 		
+		GameObject ghost = new InvincibilityIndicator(0, 0, meterWidth, meterHeight);
+		ghost.setTouchable(Touchable.disabled);
+		stage.addActor(ghost);
+		
 		////////////////////////////////
 		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
@@ -241,6 +246,8 @@ public class MainSurvivalScreen extends StageScreen {
 					
 					countdownText.text = "GO";
 				}
+				
+				//dogRunner.timer.delay((long) (delta * 1000L));
 			}
 			else {
 				
@@ -254,6 +261,9 @@ public class MainSurvivalScreen extends StageScreen {
 				pauseButton.setVisible(true);
 				
 				backMusic.play();
+				
+				
+				dogRunner.timerHelper.resume();
 			}
 			
 			break;
@@ -301,7 +311,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		////////////////////////////////
 		//rendering starts here
-		
+
 		////////////////////////////////
 		//SpriteBatch is used to render starting here
 		
@@ -333,7 +343,7 @@ public class MainSurvivalScreen extends StageScreen {
 			dogRunner.batch.setColor(color);
 		}
 		
-		//dogRunner.batch.draw(dogRunner.gudrunThingFM.donutThings.get((int) (Math.random() * dogRunner.gudrunThingFM.donutThings.size())), 0, 0);
+		//dogRunner.batch.draw(dogRunner.gudrunThingFM.donutThings.get(3), 0, 0);//(int) (Math.random() * dogRunner.gudrunThingFM.donutThings.size())), 0, 0);
 		
 		dogRunner.batch.end();
 		
@@ -344,6 +354,11 @@ public class MainSurvivalScreen extends StageScreen {
 		textRenderer.render();
 	}
 	
+	/**
+	 * Called every cycle the game is resumed.
+	 * I really just implemented it for convenience since both the default and RESUMED case
+	 * runs this segment of code.
+	 */
 	private void doGameResumed() {
 
 		if (dogRunner.userProfile.lives <= 0){//physicsWorld.playerCarTotalled) {
@@ -380,6 +395,8 @@ public class MainSurvivalScreen extends StageScreen {
 		if (pauseButton.queryClicked()) {
 			
 			pause();
+			
+			return;
 		}
 		
 		if (dogRunner.userProfile.spin) {
@@ -428,6 +445,8 @@ public class MainSurvivalScreen extends StageScreen {
 		//physics (Box2D) related acting
 		
 		physicsWorld.act(delta);
+		
+		stage.act(delta);
 	}
 
 	@Override
@@ -441,8 +460,12 @@ public class MainSurvivalScreen extends StageScreen {
 
 		textRenderer.remove(countdownText);
 		
+		backMusic.stop();
+		
 		physicsWorld.dispose();
 		physicsWorld = null;
+		
+		dogRunner.timer.clear();
 		
 		com.badlogic.gdx.Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 	}
@@ -469,6 +492,8 @@ public class MainSurvivalScreen extends StageScreen {
 			pauseButton.setVisible(false);
 			playButton.setTouchable(Touchable.enabled);
 			playButton.setVisible(true);
+			
+			dogRunner.timerHelper.pause();
 			
 			backMusic.pause();
 		}

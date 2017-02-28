@@ -2,6 +2,7 @@ package org.qohs.dogrunner;
 
 import org.qohs.dogrunner.io.*;
 import org.qohs.dogrunner.screens.LoadingScreen;
+import org.qohs.dogrunner.util.TimerHelper;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoa
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Timer;
 
 /**
  * I wrote all of this class; thug life.
@@ -58,6 +60,9 @@ public class DogRunner extends Game {
 	public StorylineFileManager storyFM;
 	public DonutThingManager gudrunThingFM;
 	
+	public Timer timer;
+	public TimerHelper timerHelper;
+	
 	//FPSLogger log = new FPSLogger();
 	
 	@Override
@@ -73,8 +78,12 @@ public class DogRunner extends Game {
 		forceLoad();
 		
 		load();
-
+		
 		//assetManager.finishLoading();
+		
+		////////////////////////////////
+		Thread thread = new Thread(new CallCreateIO());
+		thread.start();
 		
 		////////////////////////////////
 		//Camera setup
@@ -89,10 +98,13 @@ public class DogRunner extends Game {
 		renderer = new ShapeRenderer();
 		renderer.setProjectionMatrix(cam.combined);
 		
-		this.setScreen(new LoadingScreen(creator = new Creator()));
+		timer = new Timer();
+		timerHelper = new TimerHelper(timer);
 		
 		//sets the initial clear color for the screen
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+		
+		this.setScreen(new LoadingScreen(creator = new Creator(thread)));
 	}
 	
 	/**
@@ -121,12 +133,15 @@ public class DogRunner extends Game {
 	
 		storyFM = new StorylineFileManager();
 		storyFM.load();
-	
-		gudrunThingFM = new DonutThingManager();
-		gudrunThingFM.load();
 	}
 	
+	/**
+	 * Mainly graphics and other stuff
+	 */
 	private void m_create() {
+		
+		gudrunThingFM = new DonutThingManager();
+		gudrunThingFM.load();
 		
 		////////////////////////////////
 		//Instantiates the Box2D "engine"
@@ -231,6 +246,14 @@ public class DogRunner extends Game {
 		//name of this does not matter, however must end in .ttf
 		assetManager.load(DogAsset.ARIAL_WHITE_M.FILE_NAME, BitmapFont.class, fTFLP);
 		
+		fTFLP = new FreeTypeFontLoaderParameter();
+		fTFLP.fontFileName = arial;
+		fTFLP.fontParameters.size = (int) (GAME_WIDTH * 20d / 800d);
+		fTFLP.fontParameters.color = Color.WHITE;
+		fTFLP.fontParameters.flip = true;
+		
+		assetManager.load(DogAsset.ARIAL_WHITE_S.FILE_NAME, BitmapFont.class, fTFLP);
+		
 		////////////////////////////////
 		//loads picture assets
 
@@ -289,7 +312,7 @@ public class DogRunner extends Game {
 		renderer.dispose();
 		assetManager.dispose();
 		
-		if (!creator.finished) {
+		if (!creator.create()) {
 			
 			return;
 		}
@@ -333,53 +356,58 @@ public class DogRunner extends Game {
 	
 	public class Creator {
 		
+		private final Thread thread;
 		private boolean created;
-		private boolean finished;
 		
-		private Creator(){
+		/**
+		 * 
+		 * @param thread the thread running the blocking IO
+		 */
+		private Creator(Thread thread) {
 			
+			this.thread = thread;
 			created = false;
-			finished = false;
 		}
 		
-		public void create() {
+		/**
+		 * Returns true when creation is allowed
+		 * (when blocking IO has finished)
+		 * @return
+		 */
+		public boolean create() {
 			
 			if (created) {
 				
-				return;
+				return true;
 			}
 			
-			Thread thread = new Thread(new CallCreate(this));
-			
-			thread.start();
-
-			created = true;
-		}
-		
-		public boolean finished() {
-			
-			return finished;
+			if (thread.isAlive()) {
+				
+				return false;
+			}
+			else {
+				
+				DogRunner.this.m_create();
+				
+				created = true;
+				
+				return true;
+			}
 		}
 	}
 	
-	private class CallCreate implements Runnable {
-
-		private final Creator creator;
-		
-		public CallCreate(Creator creator) {
-			
-			this.creator = creator;
-		}
+	private class CallCreateIO implements Runnable {
 		
 		@Override
 		public void run() {
 			
 			DogRunner.this.createWithIO();
 
-			Gdx.app.postRunnable(new CallCreator(creator));
+			//Gdx.app.postRunnable(new CallCreator(creator));
 		}
 	}
 	
+	/*
 	private class CallCreator implements Runnable {
 
 		private final Creator creator;
@@ -397,4 +425,5 @@ public class DogRunner extends Game {
 			creator.finished = true;
 		}
 	}
+	*/
 }

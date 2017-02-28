@@ -1,6 +1,8 @@
 package org.qohs.dogrunner.screens;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
+import org.qohs.dogrunner.gameobjects.clicker.Donut;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * 
@@ -9,9 +11,25 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  */
 public class ClickerScreen extends StageScreen {
 
-	public ClickerScreen(Batch batch) {
+	public ClickerScreen() {
 		
 		super();
+		
+		TextureRegion tr = dogRunner.gudrunThingFM.donutThings.get(2);
+		
+		float origWidth, origHeight;
+		
+		origWidth = dogRunner.GAME_HEIGHT * tr.getRegionWidth() /tr.getRegionHeight();
+		origHeight = dogRunner.GAME_HEIGHT;
+		
+		float newWidth = origWidth * 9f / 10f;
+		float newHeight = origHeight * 9f / 10f;
+		
+		Donut donut = new Donut((origWidth - newWidth) / 2f, (origHeight - newHeight) /2f, newWidth, newHeight, tr);
+		stage.addActor(donut);
+		
+		
+		
 	}
 
 }

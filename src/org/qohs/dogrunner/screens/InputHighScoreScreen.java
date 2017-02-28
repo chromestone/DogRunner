@@ -1,5 +1,6 @@
 package org.qohs.dogrunner.screens;
 
+import org.qohs.dogrunner.DogRunner;
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.QueryButton;
 import org.qohs.dogrunner.io.*;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -51,14 +51,25 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		////////////////////////////////
 
-		TextFieldStyle tFStyle = new TextFieldStyle();
+		/*TextFieldStyle tFStyle = new TextFieldStyle();
 		tFStyle.font = smallFont;
 		tFStyle.fontColor = smallFont.getColor();
 		tFStyle.background = new TextureRegionDrawable(
 				dogRunner.getAtlasRegion(DogAtlasRegion.BLANK)
-				);
+				);*/
 		
-		textField = new TextField("", tFStyle);
+		Skin skin = dogRunner.assetManager.get(DogCustomGraphic.UI_SKIN.FILE_NAME, Skin.class);
+		
+		//textField = new TextField("", tFStyle);
+		textField = new TextField("", skin);
+		textField.getStyle().font = smallFont;
+		textField.getStyle().fontColor = smallFont.getColor();
+		//textField.getStyle().cursor.setMinHeight(name.getPrefHeight() * 2f);
+		//textField.setScale(2f);
+		//textField.scaleBy(2f);
+		textField.getStyle().cursor = (new TextureRegionDrawable(
+				dogRunner.assetManager.get(DogRunner.PARENT_DIR + "uiskin/uiskin.atlas", TextureAtlas.class)
+				.findRegion("default-round")));
 		textField.setWidth(dogRunner.GAME_WIDTH);
 		textField.setHeight(name.getPrefHeight() * 2f);
 		textField.setX(0f);
@@ -102,8 +113,12 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		WindowStyle windowStyle = new WindowStyle();
 		windowStyle.titleFont = dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
+		BitmapFont titleFont = dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
 		
-		warningDialog = new MyWarningDialog("", windowStyle);
+		//apparently titles don't work very well
+		//(also due to change of coordinates, dialogs draw "inverted" but text is upright? :(
+		//warningDialog = new MyWarningDialog("Derek programmed most of this.", windowStyle);//, skin);
+		warningDialog = new MyWarningDialog("", windowStyle);//, skin);
 		
 		labelStyle = new LabelStyle();
 		labelStyle.font = dogRunner.assetManager.get(DogAsset.ARIAL_RED_S.FILE_NAME, BitmapFont.class);
@@ -114,12 +129,15 @@ public class InputHighScoreScreen extends StageScreen {
 		//warningDialog.text(dialogLabel);
 		
 		TextButtonStyle buttonStyle = new TextButtonStyle();
-		buttonStyle.font = windowStyle.titleFont;
+		buttonStyle.font = titleFont;
 		buttonStyle.downFontColor = Color.BLUE;
-		buttonStyle.fontColor = windowStyle.titleFont.getColor();
+		buttonStyle.fontColor = titleFont.getColor();
 		
 		warningDialog.button("No     ", false, buttonStyle);  //sends "false" as the result
 		warningDialog.button("     Yes", true, buttonStyle); //sends "true" as the result
+		
+		//warningDialog.button("No     ", false);
+		//warningDialog.button("     Yes", true);
 		
 		Color backColor = new Color(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0.85f);
 		
@@ -138,6 +156,10 @@ public class InputHighScoreScreen extends StageScreen {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		
 		score.setText(String.valueOf(dogRunner.userProfile.score));
+		if (score.getWidth() > dogRunner.GAME_WIDTH) {
+
+			score.setFontScale(dogRunner.GAME_WIDTH / score.getWidth());
+		}
 		score.setX(dogRunner.GAME_WIDTH / 2f - score.getPrefWidth() / 2f);
 		score.setY(underTitleY);
 		
@@ -189,6 +211,11 @@ public class InputHighScoreScreen extends StageScreen {
 		public MyWarningDialog(String title, WindowStyle windowStyle) {
 			
 			super(title, windowStyle);	
+		}
+		
+		public MyWarningDialog(String title, Skin skin) {
+			
+			super(title, skin);
 		}
 		
 		@Override

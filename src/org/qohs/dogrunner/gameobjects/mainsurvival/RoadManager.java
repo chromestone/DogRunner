@@ -1,8 +1,9 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
-import java.util.Iterator;
+import java.util.*;
 
 import org.qohs.dogrunner.DogRunner;
+import org.qohs.dogrunner.gameobjects.PhysicsWorld;
 import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -30,6 +31,7 @@ public class RoadManager {
 	private float distance;
 	
 	private Array<Point> tRegionPoints;
+	//private Queue<Point> pointPool;
 	
 	//private float accumulator;
 	
@@ -53,19 +55,24 @@ public class RoadManager {
 		this.roadHeight = roadHeight;
 		this.roadWidth = roadHeight * road.getRegionWidth() / road.getRegionHeight();
 		
-		distance = speed / 60f;
+		distance = speed * PhysicsWorld.STEP_RATE;
 		
 		road = new TextureRegion(dogRunner.assetManager.get(DogTexture.ROAD_IMG.FILE_NAME, Texture.class));
 		road.flip(false, true);
 		
 		tRegionPoints = new Array<Point>(4);
 		
-		tRegionPoints.add(new Point(0f, 0f));
+		Point p = new Point(0f, 0f);
+		tRegionPoints.add(p);
+		addMoreRoad(p);
 		
 		//accumulator = 0f;
+		
+		//pointPool = new LinkedList<>();
 	}
 	
-	public void act(float delta) {
+	//public void act(float delta) {
+	public void act() {
 		
 		/*
 		float frameTime = Math.min(delta, 0.25f);
@@ -90,6 +97,9 @@ public class RoadManager {
 			p.x -= distance;
 			if (p.x + roadWidth <= 0) {
 
+				//p.x = 0;
+				//p.y = 0;
+				//pointPool.add(p);
 				iterator.remove();
 				p = null;
 			}
@@ -97,13 +107,19 @@ public class RoadManager {
 
 		if (p == null) {
 
-			tRegionPoints.add(p = new Point(0f, 0f));
+			p = new Point(0f, 0f);//getPoint();
+			tRegionPoints.add(p);
 		}
 
+		addMoreRoad(p);
+		/*
 		if (p.x + roadWidth < screenWidth) {
 
+			//Point newPoint = getPoint();
+			//newPoint.x = p.x + roadWidth;
 			tRegionPoints.add(new Point(p.x + roadWidth, 0f));
 		}
+		*/
 	}
 	
 	public void render() {
@@ -120,8 +136,33 @@ public class RoadManager {
 		
 		//dogRunner.batch.end();
 	}
+	
+	private void addMoreRoad(Point p) {
+		
+		while (p.x + roadWidth < screenWidth) {
 
-	private class Point {
+			//Point newPoint = getPoint();
+			//newPoint.x = p.x + roadWidth;
+			tRegionPoints.add(p = new Point(p.x + roadWidth, 0f));
+		}
+	}
+	
+	/*
+	private Point getPoint() {
+		
+		System.out.println(pointPool.size());
+		Point p = pointPool.poll();
+		
+		if (p == null) {
+			
+			return new Point(0f, 0f);
+		}
+		
+		return p;
+	}
+	*/
+
+	private static class Point {
 		
 		public float x, y;
 		

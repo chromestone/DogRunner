@@ -1,7 +1,6 @@
 package org.qohs.dogrunner.io;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -20,12 +19,12 @@ import com.badlogic.gdx.files.FileHandle;
  */
 public class StorylineFileManager implements FileManager {
 
-	public HashMap<Integer, LinkedList<String>> scoreToStoryline = null;
+	public LinkedList<LinkedList<String>> storylineDialogList = null;
 
 	@Override
 	public void load() {
 		
-		scoreToStoryline = new HashMap<>();
+		storylineDialogList = new LinkedList<>();
 		try {	
 			FileHandle inputFile = Gdx.files.local(FileManager.PARENT_DIR + "storyline.xml");
 			SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -47,7 +46,7 @@ public class StorylineFileManager implements FileManager {
 		
 		private ElementType elementType = ElementType.UNDEFINED;
 		
-		private Integer score = null;
+		//private Integer score = null;
 		private LinkedList<String> dialogs = null;
 		
 		@Override
@@ -57,7 +56,7 @@ public class StorylineFileManager implements FileManager {
 				
 				elementType = ElementType.CHAPTER;
 				
-				score = new Integer(attributes.getValue("score"));
+				//score = new Integer(attributes.getValue("score"));
 				dialogs = new LinkedList<String>();
 			}
 			else if (qName.equals("d")) {
@@ -75,7 +74,8 @@ public class StorylineFileManager implements FileManager {
 			
 			if (qName.equals("chapter")) {
 				
-				StorylineFileManager.this.scoreToStoryline.put(score, dialogs);
+				//StorylineFileManager.this.scoreToStoryline.put(score, dialogs);
+				StorylineFileManager.this.storylineDialogList.add(dialogs);
 			}
 		}
 

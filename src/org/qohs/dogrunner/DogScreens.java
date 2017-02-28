@@ -21,6 +21,7 @@ public class DogScreens {
 	private final StageScreen highScoreScreen;
 	private final StageScreen inputHighScoreScreen;
 	private final StageScreen storylineScreen;
+	private final StageScreen clickerScreen;
 
 	//don't instantiate this class outside of DogRunner
 	protected DogScreens(Batch batch) {
@@ -30,6 +31,7 @@ public class DogScreens {
 		highScoreScreen = new HighScoreScreen();
 		inputHighScoreScreen = new InputHighScoreScreen();
 		storylineScreen = new StorylineScreen();
+		clickerScreen = new ClickerScreen();
 	}
 	
 	//dispose screens here
@@ -40,6 +42,7 @@ public class DogScreens {
 		highScoreScreen.dispose();
 		inputHighScoreScreen.dispose();
 		storylineScreen.dispose();
+		clickerScreen.dispose();
 	}
 	
 	public enum Type {
@@ -49,7 +52,8 @@ public class DogScreens {
 		MAIN_SURVIVE_SCREEN,
 		HIGH_SCORE_SCREEN,
 		INPUT_HIGH_SCORE_SCREEN,
-		STORYLINE_SCREEN;		
+		STORYLINE_SCREEN,
+		CLICKER_SCREEN;		
 		/**
 		 * 
 		 * @param dogScreens
@@ -81,6 +85,10 @@ public class DogScreens {
 			case STORYLINE_SCREEN:
 				
 				stageScreen = dogScreens.storylineScreen;
+				break;
+			case CLICKER_SCREEN:
+				
+				stageScreen = dogScreens.clickerScreen;
 				break;
 			default:
 				

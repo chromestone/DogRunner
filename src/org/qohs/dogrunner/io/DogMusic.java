@@ -10,7 +10,8 @@ import org.qohs.dogrunner.DogRunner;
  */
 public enum DogMusic {
 
-	BACKGROUND_THEME("sound/backtheme.wav");
+	BACKGROUND_THEME("sound/backtheme.wav"),
+	START_THEME("sound/start_theme.wav");
 	
 	public final String FILE_NAME;
 	

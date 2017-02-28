@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
+ * Does not do blocking IO
+ * Requires assets to be loaded!
  * 
  * @author Derek Zhang
  * @author Gudrun T.

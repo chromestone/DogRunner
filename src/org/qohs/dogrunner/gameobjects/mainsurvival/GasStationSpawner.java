@@ -27,6 +27,15 @@ public class GasStationSpawner extends Spawner {
 	
 	private final BodyDef bodydef;
 	private final float width, height;
+	
+	//private int spawnScore;
+	private int waves;
+	
+	/*
+	private int prevSpawnScore;
+	private int spawnAgainTarget;//number of spawn retries
+	private int spawnAgainCountdown;
+	*/
 
 	public GasStationSpawner(float gameWidth, float gameHeight) {
 		
@@ -46,15 +55,84 @@ public class GasStationSpawner extends Spawner {
 		shape = new PolygonShape();
 		shape.setAsBox(width / 2f, height / 2f);
 		//shape.setAsBox((jrockTRegion.getRegionWidth() - gameWidth * (21f / 500f)) / 2, jrockTRegion.getRegionHeight() / 2f - 2f);
+		
+		//spawnScore = dogRunner.userProfile.previousGasScore;
+			
+		//dogRunner.userProfile.previousGasScore += 100 * (int) Math.pow(1.5, dogRunner.userProfile.gasStops);
+		//dogRunner.userProfile.gasStops++;
+		
+		/*
+		prevSpawnScore = 0;
+		if (dogRunner.storyFM.scoreToStoryline.containsKey(dogRunner.userProfile.score - prevSpawnScore)) {
+
+			prevSpawnScore = spawnScore;
+			spawnScore = dogRunner.userProfile.score;
+		}
+		else {
+
+			Integer score = dogRunner.storyFM.scoreToStoryline.higherKey(dogRunner.userProfile.score - prevSpawnScore);
+			if (score == null) {
+
+				spawnScore = -1;
+			}
+			else {
+
+				prevSpawnScore = spawnScore;
+				spawnScore = score.intValue() + dogRunner.userProfile.score;
+			}
+		}
+		
+		spawnAgainTarget = 1;
+		spawnAgainCountdown = spawnAgainTarget;
+		*/
+		
+		waves = 0;
 	}
 
 	@Override
 	protected void editSpawnList() {
+		
+		waves++;
+
+		super.get(3).data = null;
+		
+		if (waves > 95) {
+
+			DataPriority data = super.get(3);
+			data.priority = 10_000;
+			data.data = new SpawnerBodyData(PhysicsBodyType.GAS_STATION, this);
+
+			System.out.println(dogRunner.userProfile.score);
+			
+			waves = 0;
+		}
+		
+		/*
+		clear();
+		
+		spawnAgainCountdown --;
+		
+		if (spawnAgainCountdown > 0) {
+			
+			return;
+		}
 	   
-		for (int i = 0; i < 2; i++) {
-		DataPriority dataPriority = super.get(i);
-		dataPriority.priority = 100;
-		dataPriority.data = new SpawnerBodyData(PhysicsBodyType.GAS_STATION, this);}
+		if (spawnScore != -1 && dogRunner.userProfile.score >= spawnScore) {
+			
+			DataPriority data = super.get(((int) (Math.random() * 2)) + (SpawnManager.ROWS - 1) / 2);
+			data.priority = 10_000;
+			data.data = new SpawnerBodyData(PhysicsBodyType.GAS_STATION, this);
+			
+			try {
+				
+				spawnAgainTarget = Math.multiplyExact(spawnAgainTarget, 2);
+				spawnAgainCountdown = spawnAgainTarget;
+			}
+			catch (ArithmeticException e) {
+				
+				spawnAgainCountdown = Integer.MAX_VALUE;
+			}
+		}*/
 	}
 
 	@Override
