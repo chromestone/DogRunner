@@ -43,7 +43,7 @@ import com.badlogic.gdx.utils.Array;
  *
  */
 //note to programmers looking to register spawner find "PROGRAMMERS LOOK HERE - #DANKMEMES"
-class SpawnManager {
+public class SpawnManager {
 	
 	/**
 	 * The velocity of all bodies (entities) spawned by this spawn manager
