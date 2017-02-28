@@ -43,7 +43,7 @@ import com.badlogic.gdx.utils.Array;
  *
  */
 //note to programmers looking to register spawner find "PROGRAMMERS LOOK HERE - #DANKMEMES"
-public class SpawnManager {
+class SpawnManager {
 	
 	/**
 	 * The velocity of all bodies (entities) spawned by this spawn manager
@@ -92,11 +92,11 @@ public class SpawnManager {
 	
 	/**
 	 * 
-	 * @param gameWidth
-	 * @param gameHeight
-	 * @param occuringLength a synonym for between wave length (should be a function of player car length)
+	 * @param gameWidth the width of the game
+	 * @param gameHeight the height of the game
+	 * @param occurringLength a synonym for between wave length (should be a function of player car length)
 	 */
-	public SpawnManager(MainSurvivalWorld world, float gameWidth, float gameHeight, float occuringLength) {
+	SpawnManager(MainSurvivalWorld world, float gameWidth, float gameHeight, float occurringLength) {
 		
 		this.dogRunner = DogRunner.getInstance();
 		
@@ -123,11 +123,11 @@ public class SpawnManager {
 		////////////////////////////////
 		
 		carWavePos = gameWidth + cSp.getWidth() / 2f;// + gameWidth / 5f;
-		betweenWavePos = gameWidth + occuringLength / 2f;// + gameWidth / 5f;
+		betweenWavePos = gameWidth + occurringLength / 2f;// + gameWidth / 5f;
 		
 		carWaveTime = cSp.getWidth() / VELOCITY;
 		
-		betweenWaveTime = occuringLength / VELOCITY;
+		betweenWaveTime = occurringLength / VELOCITY;
 		
 		////////////////////////////////
 		
@@ -192,7 +192,7 @@ public class SpawnManager {
 			SpawnerBodyData data = (SpawnerBodyData) body.getUserData();
 			data.spawner.act(data);
 			
-			if (data.destroy == true) {
+			if (data.destroy) {
 				
 				iterator.remove();
 				
@@ -232,15 +232,13 @@ public class SpawnManager {
 	*/
 	
 	public void render() {
-		
-		Iterator<Body> iterator = bodiesArray.iterator();
-		while (iterator.hasNext()) {
 
-			Body body = iterator.next();
+		for (Body body : bodiesArray) {
+
 			SpawnerBodyData data = (SpawnerBodyData) body.getUserData();
 			Spawner spawner = data.spawner;
-			
-			spawner.getDrawable(data).draw(dogRunner.batch, body.getPosition().x - spawner.getWidth(data) / 2f, body.getPosition().y - spawner.getHeight(data) / 2f,  spawner.getWidth(data), spawner.getHeight(data));
+
+			spawner.getDrawable(data).draw(dogRunner.batch, body.getPosition().x - spawner.getWidth(data) / 2f, body.getPosition().y - spawner.getHeight(data) / 2f, spawner.getWidth(data), spawner.getHeight(data));
 		}
 	}
 	
