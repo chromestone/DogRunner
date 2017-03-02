@@ -25,7 +25,7 @@ public class StartButton extends GameObject {
 		
 		color = Color.BLACK;
 		
-		font = dogRunner.assetManager.get(DogAsset.ARIAL_WHITE_M.FILE_NAME, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogFont.ARIAL_WHITE_M.FILE_NAME, BitmapFont.class);
 		
 		//color = font.getColor();
 		

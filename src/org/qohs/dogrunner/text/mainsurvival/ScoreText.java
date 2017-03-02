@@ -13,10 +13,13 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
  *
  */
 public class ScoreText extends TextObject {
-
+	
+	private GlyphLayout glyphLayout;
+	
 	public ScoreText(BitmapFont font) {
 		
 		super(font);
+		glyphLayout = new GlyphLayout();
 	}
 
 	@Override
@@ -24,11 +27,11 @@ public class ScoreText extends TextObject {
 		
 		String text = "SCORE: " + dogRunner.userProfile.score;
 
-		GlyphLayout glyphLayout = new GlyphLayout();
+		//glyphLayout.reset();
 		glyphLayout.setText(font, text);
 
-		//float fontX = width - glyphLayout.width / fairies.GAME_WIDTH * width;
-		//float fontY = glyphLayout.height / 2;//height + glyphLayout.height / fairies.GAME_HEIGHT * height;
+		//float fontX = width - glyphLayout.width / dogRunner.GAME_WIDTH * width;
+		//float fontY = glyphLayout.height / 2;//height + glyphLayout.height / dogRunner.GAME_HEIGHT * height;
 		
 		font.draw(batch, glyphLayout, dogRunner.GAME_WIDTH - glyphLayout.width, 0f);
 	}

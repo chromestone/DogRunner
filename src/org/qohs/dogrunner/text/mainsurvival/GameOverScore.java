@@ -45,7 +45,16 @@ public class GameOverScore extends TextObject {
 
 		scoreFontX = -1f;
 		scoreFontY = dogRunner.GAME_HEIGHT * 3f / 4f - glyphLayout.height / 2f;
-		scoreText = null;
+		//scoreText = null;
+		
+		////////////////////////////////
+		
+		scoreText = "" + dogRunner.userProfile.score;
+
+		GlyphLayout glyphLayout2 = new GlyphLayout();
+		glyphLayout2.setText(font, scoreText);
+
+		scoreFontX = (dogRunner.GAME_WIDTH - glyphLayout2.width) / 2f;
 	}
 
 	@Override
@@ -53,6 +62,7 @@ public class GameOverScore extends TextObject {
 
 		font.draw(batch, "GAME OVER", fontX, fontY);
 		font.draw(batch, "SCORE:", fontX2, fontY2);
+		/*
 		if (scoreText == null) {
 
 			scoreText = "" + dogRunner.userProfile.score;
@@ -62,6 +72,7 @@ public class GameOverScore extends TextObject {
 
 			scoreFontX = (dogRunner.GAME_WIDTH - glyphLayout.width) / 2f;
 		}
+		*/
 		font.draw(batch, scoreText, scoreFontX, scoreFontY);
 	}
 

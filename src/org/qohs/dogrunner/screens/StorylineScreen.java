@@ -1,7 +1,7 @@
 package org.qohs.dogrunner.screens;
 
 import org.qohs.dogrunner.gameobjects.QueryButton;
-import org.qohs.dogrunner.io.DogAsset;
+import org.qohs.dogrunner.io.DogFont;
 import org.qohs.dogrunner.io.DogAtlasRegion;
 
 import com.badlogic.gdx.graphics.Color;
@@ -26,10 +26,17 @@ public class StorylineScreen extends StageScreen {
 		
 		super();
 		
+		float xPad = dogRunner.GAME_WIDTH / 20f;
 		LabelStyle labelStyle = new LabelStyle();
-		labelStyle.font = dogRunner.assetManager.get(DogAsset.ARIAL_WHITE_S.FILE_NAME, BitmapFont.class);
+		labelStyle.font = dogRunner.assetManager.get(DogFont.ARIAL_WHITE_M.FILE_NAME, BitmapFont.class);
 		labelStyle.fontColor = Color.BLACK;
-		storyLabel = new Label("Iwefjweofijwoie", labelStyle);
+		storyLabel = new Label("Iwefjweofijwoieoweifjewoifjweofweijfweoijweofewjfewofjoiejewowejfoiwefjweof", labelStyle);
+		storyLabel.setWrap(true);
+		storyLabel.setX(xPad);
+		storyLabel.setY(dogRunner.GAME_HEIGHT * 2f / 3f);
+		storyLabel.setWidth(dogRunner.GAME_WIDTH - xPad * 2);
+		storyLabel.setHeight(dogRunner.GAME_HEIGHT / 3f);
+		storyLabel.debug();
 		stage.addActor(storyLabel);
 
 		AtlasRegion pauseTexture = dogRunner.getAtlasRegion(DogAtlasRegion.PAUSE_IMG);

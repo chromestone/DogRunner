@@ -36,8 +36,8 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		super();
 
-		BitmapFont font = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
-		BitmapFont smallFont = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_M.FILE_NAME, BitmapFont.class);
+		BitmapFont font = dogRunner.assetManager.get(DogFont.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
+		BitmapFont smallFont = dogRunner.assetManager.get(DogFont.ARIAL_YELLOW_M.FILE_NAME, BitmapFont.class);
 		
 		LabelStyle smallLabelStyle = new LabelStyle();
 		smallLabelStyle.font = smallFont;
@@ -112,8 +112,8 @@ public class InputHighScoreScreen extends StageScreen {
 		////////////////////////////////
 		
 		WindowStyle windowStyle = new WindowStyle();
-		windowStyle.titleFont = dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
-		BitmapFont titleFont = dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
+		windowStyle.titleFont = dogRunner.assetManager.get(DogFont.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
+		BitmapFont titleFont = dogRunner.assetManager.get(DogFont.ARIAL_RED_M.FILE_NAME, BitmapFont.class);
 		
 		//apparently titles don't work very well
 		//(also due to change of coordinates, dialogs draw "inverted" but text is upright? :(
@@ -121,7 +121,7 @@ public class InputHighScoreScreen extends StageScreen {
 		warningDialog = new MyWarningDialog("", windowStyle);//, skin);
 		
 		labelStyle = new LabelStyle();
-		labelStyle.font = dogRunner.assetManager.get(DogAsset.ARIAL_RED_S.FILE_NAME, BitmapFont.class);
+		labelStyle.font = dogRunner.assetManager.get(DogFont.ARIAL_RED_S.FILE_NAME, BitmapFont.class);
 		
 		warningDialog.text("No high score will be attributed to you. Continue?", labelStyle);
 		//Label dialogLabel = new Label("No high score will be attributed to you. Continue?", labelStyle);
@@ -176,7 +176,7 @@ public class InputHighScoreScreen extends StageScreen {
 		if (continueButton.queryClicked()) {
 			
 			String temp = textField.getText().trim();
-			if (temp.isEmpty()) {
+			if (temp.length() <= 0) {
 				
 				warningDialog.show(stage);
 			}
@@ -190,7 +190,7 @@ public class InputHighScoreScreen extends StageScreen {
 				
 				dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
 				
-				return;
+				//return;
 			}
 		}
 	}
@@ -208,15 +208,17 @@ public class InputHighScoreScreen extends StageScreen {
 	
 	private class MyWarningDialog extends Dialog {
 
-		public MyWarningDialog(String title, WindowStyle windowStyle) {
+		MyWarningDialog(String title, WindowStyle windowStyle) {
 			
 			super(title, windowStyle);	
 		}
 		
+		/*
 		public MyWarningDialog(String title, Skin skin) {
 			
 			super(title, skin);
 		}
+		*/
 		
 		@Override
 		public void result(Object result) {

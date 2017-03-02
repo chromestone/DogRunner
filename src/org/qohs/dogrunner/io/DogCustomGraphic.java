@@ -14,7 +14,7 @@ public enum DogCustomGraphic {
 	
 	public final String FILE_NAME;
 	
-	private DogCustomGraphic (String fileName) {
+	DogCustomGraphic (String fileName) {
 		
 		this.FILE_NAME = DogRunner.PARENT_DIR + fileName;
 	}

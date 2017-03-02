@@ -18,14 +18,13 @@ import com.badlogic.gdx.utils.Scaling;
  */
 public class StartScreen extends StageScreen {
 	
-	private TextureRegion background;
-	
 	private Music backMusic;
 	
 	public StartScreen() {
 		
 		super();
         
+		TextureRegion background;
         background = new TextureRegion(dogRunner.assetManager.get(DogTexture.START_BACKGROUND.FILE_NAME, Texture.class));
         background.flip(false, true);
         

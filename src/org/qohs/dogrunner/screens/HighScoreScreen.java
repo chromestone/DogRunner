@@ -34,7 +34,7 @@ public class HighScoreScreen extends StageScreen {
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("square.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-		BitmapFont font = dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
+		BitmapFont font = dogRunner.assetManager.get(DogFont.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
 		GlyphLayout glyphLayout = new GlyphLayout(font, "A");
 		parameter.size = (int) (dogRunner.GAME_HEIGHT / (HighScore.MAX_HIGH_SCORES + 1.0) * glyphLayout.width / glyphLayout.height);
 		parameter.color = Color.WHITE;
@@ -44,9 +44,12 @@ public class HighScoreScreen extends StageScreen {
 		//parameter.borderColor = Color.WHITE;
 		BitmapFont theFont = generator.generateFont(parameter);
 		generator.dispose();
+		////////////////////////////////
 		
 		labelStyle = new LabelStyle();
 		labelStyle.font = theFont;
+		
+		////////////////////////////////
 
 		title = new Label("High Scores", labelStyle);
 		title.setX(dogRunner.GAME_WIDTH / 2f - title.getPrefWidth() / 2f);
@@ -57,10 +60,14 @@ public class HighScoreScreen extends StageScreen {
 		
 		stage.addActor(title);
 		
+		////////////////////////////////
+
 		continueButton = new QueryButton(dogRunner.GAME_WIDTH - title.getPrefHeight(), 0f, title.getPrefHeight(), title.getPrefHeight(), new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		
 		stage.addActor(continueButton);
 		
+		////////////////////////////////
+
 		labelStyle2 = new LabelStyle(labelStyle);
 		labelStyle2.fontColor = Color.WHITE;
 	}
@@ -85,15 +92,16 @@ public class HighScoreScreen extends StageScreen {
 		while (it2.hasNext() && drawHeight < dogRunner.GAME_HEIGHT) {
 			
 			Label label = new Label(it2.next(), labelStyle);
-			label.setX(0f);
-			label.setY(drawHeight);
-			
-			label.setColor(color);
 			
 			if (label.getWidth() > dogRunner.GAME_WIDTH / 2f) {
 
 				label.setFontScale(dogRunner.GAME_WIDTH / 2f / label.getWidth());
 			}
+			
+			label.setX(0f);
+			label.setY(drawHeight);
+			
+			label.setColor(color);
 			
 			stage.addActor(label);
 			
@@ -134,7 +142,7 @@ public class HighScoreScreen extends StageScreen {
 		if (continueButton.queryClicked()) {
 			
 			dogRunner.setScreen(DogScreens.Type.START_SCREEN);
-			return;
+			//return;
 		}
 	}
 	

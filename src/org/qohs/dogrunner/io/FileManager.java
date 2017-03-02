@@ -12,7 +12,7 @@ public interface FileManager {
 	 * USED FOR Gdx.files.local
 	 * WEIRD STUFF HAPPENING, ALL THESE THINGS POINT TO DIFFERENT DIRECTORIES ON ANDROID
 	 */
-	public static final String PARENT_DIR = "assets/";
+	static final String PARENT_DIR = "assets/";
 
 	public void load();
 	

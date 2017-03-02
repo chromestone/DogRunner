@@ -103,7 +103,7 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//set up text
 		textRenderer = new TextRenderer(cam);
-		textRenderer.add((scoreText = new ScoreText(dogRunner.assetManager.get(DogAsset.ARIAL_RED_M.FILE_NAME, BitmapFont.class))));
+		textRenderer.add((scoreText = new ScoreText(dogRunner.assetManager.get(DogFont.ARIAL_RED_M.FILE_NAME, BitmapFont.class))));
 	
 		////////////////////////////////
 		//sets up inputs for movement of player's car
@@ -379,7 +379,7 @@ public class MainSurvivalScreen extends StageScreen {
 			stage.addActor(nextButton);
 			
 			textRenderer.remove(scoreText);
-			textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogAsset.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
+			textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogFont.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
 			
 			gameState = GameState.GAME_OVER;
 			
@@ -475,7 +475,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		//***not sure if this is true***needs to be tested***
 		//on android assets need to be reloaded (after for example exiting)
-		//car = new TextureRegion(fairies.assetManager.get(DogAssets.FERRARI_CAR.fileName, Texture.class));
+		//car = new TextureRegion(dogRunner.assetManager.get(DogAssets.FERRARI_CAR.fileName, Texture.class));
 		//car.flip(false, true);
 	}
 	
