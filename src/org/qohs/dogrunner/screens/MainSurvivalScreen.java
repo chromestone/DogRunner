@@ -139,7 +139,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
-		countdownText = new CenteredText(dogRunner.assetManager.get(DogAsset.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class));
+		countdownText = new CenteredText(dogRunner.assetManager.get(DogFont.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class));
 
 		////////////////////////////////
 		//
@@ -190,6 +190,8 @@ public class MainSurvivalScreen extends StageScreen {
 		pauseButton.setVisible(false);
 		pauseButton.setTouchable(Touchable.disabled);
 		textRenderer.add(countdownText);
+		
+		dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class).stop();
 		
 		com.badlogic.gdx.Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 	}

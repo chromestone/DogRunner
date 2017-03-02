@@ -71,9 +71,9 @@ public class InputHighScoreScreen extends StageScreen {
 				dogRunner.assetManager.get(DogRunner.PARENT_DIR + "uiskin/uiskin.atlas", TextureAtlas.class)
 				.findRegion("default-round")));
 		textField.setWidth(dogRunner.GAME_WIDTH);
-		textField.setHeight(name.getPrefHeight() * 2f);
+		textField.setHeight(name.getHeight());
 		textField.setX(0f);
-		textField.setY(name.getY() + name.getPrefHeight());
+		textField.setY(name.getY() + name.getHeight());
 		textField.setMaxLength(32);
 		
 		stage.addActor(textField);
@@ -91,20 +91,26 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		Label title = new Label("New High Score:", labelStyle);
 		
-		title.setX(dogRunner.GAME_WIDTH / 2f - title.getPrefWidth() / 2f);
+		if (title.getWidth() > dogRunner.GAME_WIDTH) {
+			
+			title.setFontScale(dogRunner.GAME_WIDTH / title.getWidth());
+			title.setWidth(title.getPrefWidth());
+		}
+		
+		title.setX(dogRunner.GAME_WIDTH / 2f - title.getWidth() / 2f);
 		
 		float titleY = textField.getY() + textField.getHeight();
-		float titleY2 = dogRunner.GAME_HEIGHT / 2f - title.getPrefHeight() / 2f;
+		float titleY2 = dogRunner.GAME_HEIGHT / 2f - title.getHeight() / 2f;
 
 		title.setY(titleY < titleY2 ? titleY2: titleY);
 		
-		underTitleY = title.getY() + title.getPrefHeight() * 1.5f;
+		underTitleY = title.getY() + title.getHeight() * 1.5f;
 		
 		stage.addActor(title);
 		
 		////////////////////////////////
 		
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - name.getPrefHeight(), 0f, name.getPrefHeight(), name.getPrefHeight(),
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - name.getHeight(), 0f, name.getHeight(), name.getHeight(),
 				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		
 		stage.addActor(continueButton);
@@ -160,7 +166,8 @@ public class InputHighScoreScreen extends StageScreen {
 
 			score.setFontScale(dogRunner.GAME_WIDTH / score.getWidth());
 		}
-		score.setX(dogRunner.GAME_WIDTH / 2f - score.getPrefWidth() / 2f);
+		score.setWidth(score.getPrefWidth());
+		score.setX(dogRunner.GAME_WIDTH / 2f - score.getWidth() / 2f);
 		score.setY(underTitleY);
 		
 		stage.addActor(score);

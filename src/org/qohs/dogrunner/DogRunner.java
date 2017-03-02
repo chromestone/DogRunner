@@ -338,9 +338,6 @@ public class DogRunner extends Game {
 	public static DogRunner getInstance() {
 		
 		ApplicationListener listener = Gdx.app.getApplicationListener();
-		
-		//something is wrong if this isn't true
-		assert (listener instanceof DogRunner);
 			
 		return ((DogRunner) listener);
 	}
@@ -373,7 +370,7 @@ public class DogRunner extends Game {
 		/**
 		 * Returns true when creation is allowed
 		 * (when blocking IO has finished)
-		 * @return
+		 * @return if the assets for Dog Runner have been created
 		 */
 		public boolean create() {
 			

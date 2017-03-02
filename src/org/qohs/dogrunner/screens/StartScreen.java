@@ -89,7 +89,5 @@ public class StartScreen extends StageScreen {
 	public void hide() {
 		
 		super.hide();
-		
-		backMusic.stop();
 	}
 }

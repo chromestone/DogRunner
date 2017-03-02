@@ -32,7 +32,7 @@ public class HighScoreScreen extends StageScreen {
 		
 		super();
 		
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("square.ttf"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(DogFont.ACTUAL_FONT_FILE_NAME));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		BitmapFont font = dogRunner.assetManager.get(DogFont.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
 		GlyphLayout glyphLayout = new GlyphLayout(font, "A");
@@ -52,7 +52,7 @@ public class HighScoreScreen extends StageScreen {
 		////////////////////////////////
 
 		title = new Label("High Scores", labelStyle);
-		title.setX(dogRunner.GAME_WIDTH / 2f - title.getPrefWidth() / 2f);
+		title.setX(dogRunner.GAME_WIDTH / 2f - title.getWidth() / 2f);
 		title.setY(0f);
 		Color color = new Color(Color.GOLD);
 		color.a = .9f;
@@ -62,7 +62,7 @@ public class HighScoreScreen extends StageScreen {
 		
 		////////////////////////////////
 
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - title.getPrefHeight(), 0f, title.getPrefHeight(), title.getPrefHeight(), new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - title.getHeight(), 0f, title.getHeight(), title.getHeight(), new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		
 		stage.addActor(continueButton);
 		
@@ -96,7 +96,10 @@ public class HighScoreScreen extends StageScreen {
 			if (label.getWidth() > dogRunner.GAME_WIDTH / 2f) {
 
 				label.setFontScale(dogRunner.GAME_WIDTH / 2f / label.getWidth());
+				label.setWidth(label.getPrefWidth());
 			}
+
+			label.setHeight(height);
 			
 			label.setX(0f);
 			label.setY(drawHeight);
@@ -121,9 +124,12 @@ public class HighScoreScreen extends StageScreen {
 			if (label.getWidth() > dogRunner.GAME_WIDTH / 2f) {
 
 				label.setFontScale(dogRunner.GAME_WIDTH / 2f / label.getWidth());
+				label.setWidth(label.getPrefWidth());
 			}
+
+			label.setHeight(height);
 			
-			label.setX(dogRunner.GAME_WIDTH - label.getPrefWidth());
+			label.setX(dogRunner.GAME_WIDTH - label.getWidth());
 			label.setY(drawHeight);
 			
 			label.setColor(color);

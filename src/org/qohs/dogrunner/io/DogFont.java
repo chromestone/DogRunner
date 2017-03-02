@@ -17,7 +17,7 @@ public enum DogFont {
 	//S-Small; M-Medium; L-Large; XL-Extra Large; XXL-Extra Extra Large; etc.
 	ARIAL_RED_M("red_40"),
 	ARIAL_RED_S("red_20"),
-	/*ARIAL_GOLD_L("gold_100"),*/
+	ARIAL_GOLD_L("gold_100"),
 	ARIAL_YELLOW_L("black_90"),
 	ARIAL_YELLOW_M("black_45"),
 	ARIAL_WHITE_M("white_40"),
