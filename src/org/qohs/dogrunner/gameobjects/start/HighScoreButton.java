@@ -2,7 +2,7 @@ package org.qohs.dogrunner.gameobjects.start;
 
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.GameObject;
-import org.qohs.dogrunner.io.DogAsset;
+import org.qohs.dogrunner.io.DogFont;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -26,7 +26,7 @@ public class HighScoreButton extends GameObject {
 		
 		color = Color.BLACK;
 		
-		font = dogRunner.assetManager.get(DogAsset.ARIAL_WHITE_M.FILE_NAME, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogFont.ARIAL_WHITE_M.FILE_NAME, BitmapFont.class);
 		
 		//color = font.getColor();
 		

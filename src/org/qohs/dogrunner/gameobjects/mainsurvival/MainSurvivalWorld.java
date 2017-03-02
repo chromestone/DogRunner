@@ -234,12 +234,19 @@ public class MainSurvivalWorld extends PhysicsWorld {
 						break;
 					}
 					
+					SpawnerBodyData spawnerData = ((SpawnerBodyData) data);
+					
+					if (spawnerData.crashed) {
+						
+						break;
+					}
+					
 					//MainSurvivalWorld.this.playerCarTotalled = true;
 					//MainSurvivalWorld.this.crashes++;
 					dogRunner.userProfile.lives--;
 					//NPCBodyData npcData = ((NPCBodyData) data);
 					//npcData.crashed = true;
-					((SpawnerBodyData) data).crashed = true;
+					spawnerData.crashed = true;
 					
 					/*
 					if (MainSurvivalWorld.this.crashes >= 3) {

@@ -12,9 +12,8 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class GhostSpawner extends Spawner {
+class GhostSpawner extends Spawner {
 	
-	private final TextureRegion textureRegion;
 	private final TextureRegionDrawable textureDrawable;
 	
 	private final PolygonShape shape;
@@ -22,10 +21,11 @@ public class GhostSpawner extends Spawner {
 	private final BodyDef bodydef;
 	private final float width, height;
 	
-	public GhostSpawner(float gameWidth, float gameHeight) {
+	GhostSpawner(float gameWidth, float gameHeight) {
 		
 		super(gameWidth, gameHeight);
 		
+		TextureRegion textureRegion;
 		textureRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.GHOST.FILE_NAME, Texture.class));
 		textureRegion.flip(false, true);
 		textureDrawable = new TextureRegionDrawable(textureRegion);
@@ -49,13 +49,13 @@ public class GhostSpawner extends Spawner {
 		super.get(3).data = null;
 
 		if (dogRunner.userProfile.invincible > 0 ||
-				((int) (Math.random() * 20)) != 0) {
+				((int) (Math.random() * 10)) != 0) {
 			
 			return;
 		}
 		
 		DataPriority data = super.get(3);
-		data.priority = 9_999;
+		data.priority = 9999;
 		data.data = new SpawnerBodyData(PhysicsBodyType.GHOST, this);
 	}
 	

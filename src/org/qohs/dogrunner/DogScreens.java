@@ -54,12 +54,13 @@ public class DogScreens {
 		INPUT_HIGH_SCORE_SCREEN,
 		STORYLINE_SCREEN,
 		CLICKER_SCREEN;		
+
 		/**
 		 * 
-		 * @param dogScreens
-		 * @return
+		 * @param dogScreens the dog screen instance from which to get the screen
+		 * @return the corresponding stage screen
 		 */
-		public StageScreen getStageScreen(DogScreens dogScreens) {
+		protected StageScreen getStageScreen(DogScreens dogScreens) {
 			
 			StageScreen stageScreen = null;
 			

@@ -20,7 +20,6 @@ public class GasStationSpawner extends Spawner {
 	/**
 	 * note: jrock is named after James M. by James
 	 */
-	private final TextureRegion jrockTRegion;
 	private final TextureRegionDrawable jrockDrawable;
 	
 	private final PolygonShape shape;
@@ -41,6 +40,7 @@ public class GasStationSpawner extends Spawner {
 		
 		super(gameWidth, gameHeight);
 		
+		TextureRegion jrockTRegion;
 		jrockTRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.GAS_STATION.FILE_NAME, Texture.class));
 		jrockTRegion.flip(false, true);
 		jrockDrawable = new TextureRegionDrawable(jrockTRegion);
@@ -99,10 +99,10 @@ public class GasStationSpawner extends Spawner {
 		if (waves > 95) {
 
 			DataPriority data = super.get(3);
-			data.priority = 10_000;
+			data.priority = 10000;
 			data.data = new SpawnerBodyData(PhysicsBodyType.GAS_STATION, this);
 
-			System.out.println(dogRunner.userProfile.score);
+			//System.out.println(dogRunner.userProfile.score);
 			
 			waves = 0;
 		}
@@ -120,7 +120,7 @@ public class GasStationSpawner extends Spawner {
 		if (spawnScore != -1 && dogRunner.userProfile.score >= spawnScore) {
 			
 			DataPriority data = super.get(((int) (Math.random() * 2)) + (SpawnManager.ROWS - 1) / 2);
-			data.priority = 10_000;
+			data.priority = 10000;
 			data.data = new SpawnerBodyData(PhysicsBodyType.GAS_STATION, this);
 			
 			try {

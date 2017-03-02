@@ -43,7 +43,7 @@ public class RoadManager {
 	 * @param roadHeight
 	 * @param speed horizontal velocity of road (units/second)
 	 */
-	public RoadManager(float screenWidth, float roadHeight, float speed) {
+	RoadManager(float screenWidth, float roadHeight, float speed) {
 		
 		dogRunner = DogRunner.getInstance();
 		

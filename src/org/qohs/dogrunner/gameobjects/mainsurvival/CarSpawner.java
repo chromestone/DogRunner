@@ -20,10 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class CarSpawner extends Spawner {
 	
-	private TextureRegion carTexture;
 	private float carWidth, carHeight;
-	
-	private TextureRegion crashedTexture;
 	
 	//previous wave of cars
 	private boolean[] prevFormation;
@@ -48,12 +45,14 @@ public class CarSpawner extends Spawner {
 		
 		super(gameWidth, gameHeight);
 		
+		TextureRegion carTexture;
 		carTexture = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.WHITE_CAR));
 		carTexture.flip(false, true);
 		
 		carHeight = 7f * gameHeight / 48f;
 		carWidth = carHeight / carTexture.getRegionHeight() * carTexture.getRegionWidth();
 		
+		TextureRegion crashedTexture;
 		crashedTexture = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.EXPLODE));
 
 		prevFormation = new boolean[SpawnManager.ROWS];
@@ -200,7 +199,7 @@ public class CarSpawner extends Spawner {
 
 							currentFormation[counter] = true;
 							DataPriority dataPriority = cS.get(counter);
-							dataPriority.priority = 10_000;
+							dataPriority.priority = 10000;
 							dataPriority.data = new NPCBodyData(cS);
 							//carArray.add(createCarBody(row));
 						}
@@ -232,7 +231,7 @@ public class CarSpawner extends Spawner {
 
 							currentFormation[counter] = true;
 							DataPriority dataPriority = cS.get(counter);
-							dataPriority.priority = 10_000;
+							dataPriority.priority = 10000;
 							dataPriority.data = new NPCBodyData(cS);
 							//carArray.add(createCarBody(row));
 						}
@@ -267,7 +266,7 @@ public class CarSpawner extends Spawner {
 						
 						currentFormation[openRows[counter]] = true;
 						DataPriority dataPriority = cS.get(openRows[counter]);
-						dataPriority.priority = 10_000;
+						dataPriority.priority = 10000;
 						dataPriority.data = new NPCBodyData(cS);
 						//carArray.add(createCarBody(openRows[i]));
 					}
@@ -312,7 +311,7 @@ public class CarSpawner extends Spawner {
 				int row = firstFormation.get(i);
 				prevFormation[row] = true;
 				DataPriority dataPriority = cS.get(row);
-				dataPriority.priority = 10_000;
+				dataPriority.priority = 10000;
 				dataPriority.data = new NPCBodyData(cS);
 				//1/2 chance of spawning a car
 				/*if (Math.random() * 2 >= 1) {
@@ -320,7 +319,7 @@ public class CarSpawner extends Spawner {
 					int row = firstFormation.get(i);
 					prevFormation[row] = true;
 					DataPriority dataPriority = cS.get(i);
-					dataPriority.priority = 10_000;
+					dataPriority.priority = 10000;
 					dataPriority.data = new NPCBodyData(cS);
 					//carArray.add(createCarBody(row));
 				}*/

@@ -59,17 +59,18 @@ public abstract class GameObject extends Actor {
 		
 	}
 	
+	/*
 	/**
 	 * Called to check if a click is on this object (before anything else).
 	 * If the game object is not a rectangle, then override this method.
 	 * @param x
 	 * @param y
 	 * @return
-	 */
+	 *//*
 	public boolean collision(float x, float y) {
 		
 		return true;
-	}
+	}*/
 	
 	private class MyClickListener extends ClickListener {
 		
