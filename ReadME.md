@@ -6,4 +6,4 @@ Beta testing here:
 https://play.google.com/apps/testing/org.qohs.dogrunner
 
 Font from:
-all-free-download.com/font/download/forced_square_14817.html
+http://www.dafont.com/code-new-roman.font
