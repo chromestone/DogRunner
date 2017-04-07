@@ -13,15 +13,16 @@ public final class Invincibility {
 
 	private Invincibility() {}
 
+	/*
 	public static void scheduleInvinciblity(int delaySeconds) {
 		
 		scheduleInvinciblity(delaySeconds, 0);
 	}
+	*/
 	
 	/**
 	 * Makes player invincible for time specified
 	 * 
-	 * @param timer the timer to schedule the task on (Gdx's timer)
 	 * @param delaySeconds time to make player invincible for
 	 * @param warnSeconds when to set {@code userProfile.invincibile = 1}
 	 */
@@ -40,7 +41,7 @@ public final class Invincibility {
 
 		private final byte invincibility;
 		
-		public MyTask(byte i) {
+		MyTask(byte i) {
 			
 			invincibility = i;
 		}

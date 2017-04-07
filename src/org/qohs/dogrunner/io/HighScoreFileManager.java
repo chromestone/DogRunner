@@ -24,6 +24,11 @@ public class HighScoreFileManager implements FileManager {
 		FileHandle file = Gdx.files.local(FileManager.PARENT_DIR + "highscores.txt");
 		LinkedList<String> names = new LinkedList<String>();
 		LinkedList<Integer> scores = new LinkedList<Integer>();
+		if (!file.exists()) {
+			
+			highScore = new HighScore(names, scores);
+			return;
+		}
 		String text = file.readString();//.replace("\n", "");
 		String[] strArr = text.split(";");
 		for (String nameScore : strArr) {
@@ -66,7 +71,7 @@ public class HighScoreFileManager implements FileManager {
 		}
 		catch (Exception e) {
 			
-			Gdx.app.log("DogRunner-chromestone", e.getMessage());
+			Gdx.app.log("DogRunner-chromestone-HSFM", e.getMessage());
 		}
 	}
 }

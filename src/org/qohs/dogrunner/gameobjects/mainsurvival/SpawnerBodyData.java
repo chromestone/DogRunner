@@ -5,19 +5,18 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
  * @author Derek Zhang
  *
  */
-public class SpawnerBodyData extends PhysicsBodyData {
+class SpawnerBodyData extends PhysicsBodyData {
 
-	public final Spawner spawner;
-	public boolean crashed;
-	public boolean destroy;
+	final Spawner spawner;
+	boolean crashed;
+	boolean destroy;
 	
-	public SpawnerBodyData(PhysicsBodyType type, Spawner spawner) {
+	SpawnerBodyData(Spawner spawner) {
 		
-		super(type);
+		super(PhysicsBodyType.SPAWNER_ENTITY);
 		
 		this.spawner = spawner;
 		crashed = false;
 		destroy = false;
 	}
-
 }

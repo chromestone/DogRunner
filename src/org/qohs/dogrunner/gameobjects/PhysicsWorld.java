@@ -36,10 +36,12 @@ public abstract class PhysicsWorld {
 		accumulator = 0f;
 	}
 	
+	/*
 	//add bodies to the world and stuff
 	//must call this manually from children constructor
 	protected void init() {
 	}
+	*/
 	
 	/**
 	 * Will act (step) for the world if not disposed
@@ -97,6 +99,10 @@ public abstract class PhysicsWorld {
 	 */
 	protected void postAct(float delta) {
 
+	}
+	
+	public void render() {
+		
 	}
 	
 	public boolean isDisposed() {

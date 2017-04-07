@@ -13,7 +13,8 @@ public enum DogSound {
 	IGNITION_REV("sound/ignition_rev.mp3"),
 	CAR_CRASH_BONG("sound/bong.mp3"),
 	CRASH_DEATH("sound/crash_death.mp3"),
-	GHOST_SOUND("sound/ghost.mp3");
+	GHOST_SOUND("sound/ghost.mp3"),
+	WILHELM_SCREAM("sound/wilhelm.mp3");
 	
 	public final String FILE_NAME;
 	

@@ -103,7 +103,7 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//set up text
 		textRenderer = new TextRenderer(cam);
-		textRenderer.add((scoreText = new ScoreText(dogRunner.assetManager.get(DogFont.ARIAL_RED_M.FILE_NAME, BitmapFont.class))));
+		textRenderer.add((scoreText = new ScoreText(dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class))));
 	
 		////////////////////////////////
 		//sets up inputs for movement of player's car
@@ -139,7 +139,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
-		countdownText = new CenteredText(dogRunner.assetManager.get(DogFont.ARIAL_GOLD_L.FILE_NAME, BitmapFont.class));
+		countdownText = new CenteredText(dogRunner.assetManager.get(DogFont.GOLD_L.FILE_NAME, BitmapFont.class));
 
 		////////////////////////////////
 		//
@@ -193,9 +193,18 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class).stop();
 		
+		dogRunner.assetManager.get(DogSound.IGNITION_REV.FILE_NAME, Sound.class).play(1f);
+		
+		removePowerUps();
+		
 		com.badlogic.gdx.Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 	}
 	
+	private void removePowerUps() {
+		
+		dogRunner.userProfile.invincible = 0;
+	}
+
 	@Override
 	public void render(float delta) {
 		
@@ -319,13 +328,33 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		dogRunner.batch.begin();
 		
-		physicsWorld.roadManager.render();
+		//physicsWorld.roadManager.render();
 		//physicsWorld.carSpawner.render();
-		physicsWorld.spawnManager.render();
+		//physicsWorld.spawnManager.render();
+		physicsWorld.render();
 		
 		//draws the player's car
 		//dogRunner.batch.begin();
 		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
+		/*dogRunner.batch.draw(car,
+				physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2,
+				carWidth / 2, carHeight / 2,
+				carWidth, carHeight,
+				1f, 1f,
+				0f);//(float) (physicsWorld.carBody.getAngle() / Math.PI) * 180f);
+
+		/*
+		 * draw(TextureRegion region,
+                 float x,
+                 float y,
+                 float originX,
+                 float originY,
+                 float width,
+                 float height,
+                 float scaleX,
+                 float scaleY,
+                 float rotation)
+		 */
 		//dogRunner.batch.end();
 		
 		/*
@@ -365,7 +394,7 @@ public class MainSurvivalScreen extends StageScreen {
 
 		if (dogRunner.userProfile.lives <= 0){//physicsWorld.playerCarTotalled) {
 
-			dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
+			//dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
 			dogRunner.assetManager.get(DogSound.CRASH_DEATH.FILE_NAME, Sound.class).play();
 
 			//dogRunner.setScreen(DogScreens.Type.GAME_OVER_SCREEN);
@@ -381,7 +410,7 @@ public class MainSurvivalScreen extends StageScreen {
 			stage.addActor(nextButton);
 			
 			textRenderer.remove(scoreText);
-			textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogFont.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class)));
+			textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogFont.YELLOW_L.FILE_NAME, BitmapFont.class)));
 			
 			gameState = GameState.GAME_OVER;
 			
@@ -391,6 +420,13 @@ public class MainSurvivalScreen extends StageScreen {
 
 				cam.setToOrtho(true, meterWidth, meterHeight);
 			}
+			return;
+		}
+		
+		if (dogRunner.userProfile.storylineTime) {
+			
+			dogRunner.userProfile.storylineTime = false;
+			dogRunner.setScreen(DogScreens.Type.STORYLINE_SCREEN);
 			return;
 		}
 		
@@ -465,13 +501,13 @@ public class MainSurvivalScreen extends StageScreen {
 		backMusic.stop();
 		
 		physicsWorld.dispose();
-		physicsWorld = null;
-		
+		//physicsWorld = null;
+				
 		dogRunner.timer.clear();
 		
 		com.badlogic.gdx.Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 	}
-
+	
 	@Override
 	public void resume() {
 		

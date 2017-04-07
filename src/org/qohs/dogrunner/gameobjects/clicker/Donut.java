@@ -1,5 +1,6 @@
 package org.qohs.dogrunner.gameobjects.clicker;
 
+import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.*;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,5 +17,9 @@ public class Donut extends TextureRegionGameObject {
 		super(x, y, width, height, tRegion);
 	}
 
-	
+	@Override
+	public void clicked() {
+		
+		dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
+	}
 }

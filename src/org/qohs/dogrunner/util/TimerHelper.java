@@ -13,11 +13,13 @@ public class TimerHelper {
 
 	private final Timer timer;
 	private long pauseTime;
+	private boolean paused;
 	
 	public TimerHelper(Timer timer) {
 		
 		this.timer = timer;
-		pauseTime = -1L;
+		pauseTime = 0L;
+		paused = false;
 	}
 
 	/**
@@ -28,6 +30,7 @@ public class TimerHelper {
 		
 		timer.stop();
 		pauseTime = TimeUtils.nanoTime();
+		paused = true;
 	}
 	
 	/**
@@ -38,13 +41,13 @@ public class TimerHelper {
 	 */
 	public void resume() {
 		
-		if (pauseTime < 0) {
+		if (!paused) {
 			
 			timer.start();
 			return;
 		}
 		timer.delay(TimeUtils.nanosToMillis(TimeUtils.nanoTime() - pauseTime));
 		timer.start();
-		pauseTime = -1L;
+		paused = false;
 	}
 }

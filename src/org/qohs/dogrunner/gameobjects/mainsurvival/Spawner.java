@@ -25,7 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  * @author Derek Zhang
  *
  */
-public abstract class Spawner {
+abstract class Spawner {
 	
 	protected final DogRunner dogRunner;
 
@@ -37,7 +37,7 @@ public abstract class Spawner {
 	
 	private boolean disposed;
 	
-	public Spawner(float gameWidth, float gameHeight) {
+	Spawner(float gameWidth, float gameHeight) {
 		
 		dogRunner = DogRunner.getInstance();
 		
@@ -68,7 +68,7 @@ public abstract class Spawner {
 	 * 
 	 * @return an array of data priority representing the spawn requests in each row
 	 */
-	public final DataPriority[] requestSpawnList() {
+	final DataPriority[] requestSpawnList() {
 		
 		editSpawnList();
 		
@@ -103,13 +103,25 @@ public abstract class Spawner {
 	 */
 	abstract protected void editSpawnList();
 	
+	/*
 	/**
 	 * Call once for EVERY entity corresponding to
 	 * this spawner EVERY frame cycle.
 	 * 
 	 * @param data
+	 *//*
+	void act(SpawnerBodyData data) {
+		
+	}*/
+	
+	/**
+	 * When a specific entity spawned by
+	 * the spawner has been crashed into
+	 * 
+	 * @param data
 	 */
-	public void act(SpawnerBodyData data) {
+	void onCrash(SpawnerBodyData data) {
+		
 		
 	}
 	
@@ -123,7 +135,7 @@ public abstract class Spawner {
 	 * 
 	 * @param data
 	 */
-	public void onDestroy(SpawnerBodyData data) {
+	void onDestroy(SpawnerBodyData data) {
 		
 	}
 	
@@ -133,7 +145,7 @@ public abstract class Spawner {
 	 * @param data
 	 * @return drawable (sprite of what I look like)
 	 */
-	abstract public Drawable getDrawable(SpawnerBodyData data);
+	abstract Drawable getDrawable(SpawnerBodyData data);
 	
 	/**
 	 * How wide I am.
@@ -141,7 +153,7 @@ public abstract class Spawner {
 	 * @param data
 	 * @return width of me
 	 */
-	abstract public float getWidth(SpawnerBodyData data);
+	abstract float getWidth(SpawnerBodyData data);
 	
 	/**
 	 * How tall I am.
@@ -149,9 +161,9 @@ public abstract class Spawner {
 	 * @param data
 	 * @return height of me
 	 */
-	abstract public float getHeight(SpawnerBodyData data);
+	abstract float getHeight(SpawnerBodyData data);
 	
-	abstract public BodyDef getBodyDef();
+	abstract BodyDef getBodyDef();
 	
 	/**
 	 * Used by the spawn manager when an entity is to be spawned.
@@ -160,9 +172,9 @@ public abstract class Spawner {
 	 * 
 	 * @return shape of me
 	 */
-	abstract public Shape getShape();
+	abstract Shape getShape();
 	
-	public final void dispose() {
+	final void dispose() {
 
 		if (!disposed) {
 			

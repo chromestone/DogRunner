@@ -20,7 +20,7 @@ public abstract class StageScreen implements Screen {
 	protected final DogRunner dogRunner;
 	protected final Stage stage;
 	
-	public StageScreen() {
+	StageScreen() {
 
 		dogRunner = DogRunner.getInstance();
 		stage = new Stage(
@@ -44,7 +44,7 @@ public abstract class StageScreen implements Screen {
 	/**
 	 * Method can be used to simplify the render method
 	 * in some subclasses.
-	 * @param delta
+	 * @param delta delta time elapsed since last call
 	 */
 	public void act(float delta) {
 		

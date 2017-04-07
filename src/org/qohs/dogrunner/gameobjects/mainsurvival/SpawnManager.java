@@ -100,6 +100,8 @@ public class SpawnManager {
 		
 		this.dogRunner = DogRunner.getInstance();
 		
+		//VELOCITY = 75f * 480f / dogRunner.GAME_HEIGHT ;
+		
 		//this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
 		
@@ -128,7 +130,7 @@ public class SpawnManager {
 		carWaveTime = cSp.getWidth() / VELOCITY;
 		
 		betweenWaveTime = occurringLength / VELOCITY;
-		
+
 		////////////////////////////////
 		
 		//I mean the first row should spawn in a reasonable time when the game starts
@@ -140,7 +142,7 @@ public class SpawnManager {
 		carWaveSpawner = new Spawner[]{cSp};
 		
 		betweenWaveSpawner = new Spawner[]{new GhostSpawner(gameWidth, gameHeight),
-				new GasStationSpawner(gameWidth, gameHeight)};
+				new GasStationSpawner(gameWidth, gameHeight), new UnicornSpawner(gameWidth, gameHeight)};
 		
 		////////////////////////////////
 		
@@ -190,7 +192,7 @@ public class SpawnManager {
 			
 			Body body = iterator.next();
 			SpawnerBodyData data = (SpawnerBodyData) body.getUserData();
-			data.spawner.act(data);
+			//data.spawner.act(data);
 			
 			if (data.destroy) {
 				
@@ -303,7 +305,7 @@ public class SpawnManager {
 		}
 	}
 	
-	public void dispose() {
+	void dispose() {
 		
 		for (Spawner spawner : carWaveSpawner) {
 			

@@ -43,12 +43,12 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	//public boolean playerCarTotalled;
 
 	//public CarSpawner carSpawner;
-	public RoadManager roadManager;
-	public SpawnManager spawnManager;
+	private RoadManager roadManager;
+	private SpawnManager spawnManager;
 	
 	//public int crashes;
 	
-	private Box2DDebugRenderer b2DRenderer = new Box2DDebugRenderer();
+	//private Box2DDebugRenderer b2DRenderer = new Box2DDebugRenderer();
 	
 	public MainSurvivalWorld(Vector2 gravity, boolean doSleep, Definition def) {
 		
@@ -74,8 +74,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		spawnManager = new SpawnManager(this, meterWidth, meterHeight, carWidth * 1.5f);
 	}
 
-	@Override
-	protected void init() {
+	private void init() {
 		
 		createCarBody();
 		
@@ -146,6 +145,13 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		//carSpawner.clean();
 	}
 	*/
+	
+	@Override
+	public void render() {
+		
+		roadManager.render();
+		spawnManager.render();
+	}
 
 	@Override
 	public void dispose() {
@@ -164,7 +170,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		//bdef.position.set(5f * carWidth / 8f, (meterHeight - carHeight) / 2);
 		bdef.position.set(carWidth / 2f + carWidth / 5f, (meterHeight - carHeight) / 2f);
 		bdef.type = BodyType.DynamicBody;
-		bdef.bullet = true;
+		//bdef.bullet = true;
 		
 		carBody = world.createBody(bdef);
 		
@@ -191,19 +197,19 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		carBody.setUserData(new PhysicsBodyData(PhysicsBodyType.PLAYER_CAR));
 	}
 	
-	
+	/*
 	public void method(com.badlogic.gdx.graphics.Camera cam) {
 		
 		b2DRenderer.render(world, cam.combined);
 	}
+	*/
 	
-	
-	public Body createBody(BodyDef bodyDef) {
+	Body createBody(BodyDef bodyDef) {
 		
 		return world.createBody(bodyDef);
 	}
 	
-	public void destroyBody(Body body) {
+	void destroyBody(Body body) {
 		
 		world.destroyBody(body);
 	}
@@ -225,37 +231,13 @@ public class MainSurvivalWorld extends PhysicsWorld {
 				PhysicsBodyData data = (PhysicsBodyData) crashedBody.getUserData();
 				PhysicsBodyType type = data.type;
 				
+				if (dogRunner.userProfile.invincible > 0) {
+					
+					return;
+				}
+				
 				switch (type) {
 				
-				case NPC_CAR: {
-					
-					if (dogRunner.userProfile.invincible > 0) {
-						
-						break;
-					}
-					
-					SpawnerBodyData spawnerData = ((SpawnerBodyData) data);
-					
-					if (spawnerData.crashed) {
-						
-						break;
-					}
-					
-					//MainSurvivalWorld.this.playerCarTotalled = true;
-					//MainSurvivalWorld.this.crashes++;
-					dogRunner.userProfile.lives--;
-					//NPCBodyData npcData = ((NPCBodyData) data);
-					//npcData.crashed = true;
-					spawnerData.crashed = true;
-					
-					/*
-					if (MainSurvivalWorld.this.crashes >= 3) {
-						
-						MainSurvivalWorld.this.playerCarTotalled = true;
-					}
-					*/
-					break;
-				}
 				case WALL: {
 					
 					break;
@@ -264,22 +246,13 @@ public class MainSurvivalWorld extends PhysicsWorld {
 					
 					throw new IllegalStateException("A player car crashed into another player car.");
 				}
-				case GAS_STATION: {
+				case SPAWNER_ENTITY: {
+					
+					SpawnerBodyData spawnerData = ((SpawnerBodyData) data);
+					
+					spawnerData.spawner.onCrash(spawnerData);
 					
 					break;
-				}
-				case GHOST: {
-					
-					if (dogRunner.userProfile.invincible > 0) {
-						
-						break;
-					}
-					
-					((SpawnerBodyData) data).crashed = true;
-					//((SpawnerBodyData) data).crashed = true;
-					
-					//20 seconds of invisibility
-					Invincibility.scheduleInvinciblity(20, 5);
 				}
 				default: {
 					
@@ -287,17 +260,6 @@ public class MainSurvivalWorld extends PhysicsWorld {
 				}
 				}
 			}
-			
-			/*
-			if((contact.getFixtureA().getBody() == carBody
-					&& BodyType.DynamicBody.equals(contact.getFixtureB().getBody().getType()))
-                    ||
-                    (BodyType.DynamicBody.equals(contact.getFixtureA().getBody().getType())
-                    && contact.getFixtureB().getBody() == carBody)) {
-				
-				MainSurvivalWorld.this.carCrashed = true;
-			}
-			*/
 		}
 
 		@Override

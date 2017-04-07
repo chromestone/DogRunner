@@ -14,7 +14,7 @@ public interface FileManager {
 	 */
 	static final String PARENT_DIR = "assets/";
 
-	public void load();
+	void load();
 	
-	public void save();
+	void save();
 }

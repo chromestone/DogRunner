@@ -9,9 +9,9 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
  */
 class PhysicsBodyData {
 
-	public final PhysicsBodyType type;
+	final PhysicsBodyType type;
 	
-	public PhysicsBodyData(PhysicsBodyType type) {
+	PhysicsBodyData(PhysicsBodyType type) {
 		
 		this.type = type;
 	}

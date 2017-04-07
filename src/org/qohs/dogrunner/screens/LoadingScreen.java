@@ -26,6 +26,8 @@ public class LoadingScreen extends StageScreen {
 	
 	//private boolean assetsLoaded;
 	
+	private FontSelectScreen fontSelectScreen;
+	
 	public LoadingScreen(Creator creator) {
 		
 		super();
@@ -56,7 +58,11 @@ public class LoadingScreen extends StageScreen {
 		Label label = new Label("Loading",
 						dogRunner.assetManager.get(DogCustomGraphic.UI_SKIN.FILE_NAME, Skin.class));
 		
-		label.setColor(Color.BLACK);
+		label.setColor(Color.WHITE);
+		
+		label.setFontScale(2f * dogRunner.GAME_WIDTH / 800f);
+		label.setHeight(label.getPrefHeight());
+		label.setWidth(label.getPrefWidth());
 		
 		label.setX(dogRunner.GAME_WIDTH / 2f - label.getWidth() / 2f);
 		label.setY(progressBar.getY() - label.getHeight() * 1.5f);
@@ -66,6 +72,8 @@ public class LoadingScreen extends StageScreen {
 		this.creator = creator;
 		
 		//assetsLoaded = false;
+		
+		fontSelectScreen = null;
 	}
 
 	@Override
@@ -83,8 +91,25 @@ public class LoadingScreen extends StageScreen {
 		
 		if (dogRunner.assetManager.update()) {
 
-			if (creator.create()) {
+			if (!creator.isIODone()) {
 
+				return;
+			}
+			
+			if (!dogRunner.fontSelectFM.validatedSize) {
+				
+				if (fontSelectScreen == null) {
+					
+					fontSelectScreen = new FontSelectScreen();
+				}
+
+				dogRunner.setScreen(fontSelectScreen);
+				
+				return;
+			}
+			
+			if (creator.create()) {
+					
 				dogRunner.setScreen(DogScreens.Type.START_SCREEN);
 				
 				return;

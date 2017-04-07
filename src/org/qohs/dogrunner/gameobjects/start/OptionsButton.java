@@ -2,28 +2,24 @@ package org.qohs.dogrunner.gameobjects.start;
 
 import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.GameObject;
-import org.qohs.dogrunner.io.*;
+import org.qohs.dogrunner.io.DogFont;
 
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
-/**
- * 
- * @author Derek Zhang
- *
- */
-public class StartButton extends GameObject {
+public class OptionsButton extends GameObject {
 	
 	private Color color;
 	private float fontX, fontY;
 	private BitmapFont font;
 	
-	public StartButton(float x, float y, float width, float height) {
+	public OptionsButton(float x, float y, float width, float height) {
 		
 		super(x, y, width, height);
 		
-		color = Color.BLACK;
+		color = Color.FOREST;
 		
 		font = dogRunner.assetManager.get(DogFont.WHITE_M.FILE_NAME, BitmapFont.class);
 		
@@ -33,12 +29,12 @@ public class StartButton extends GameObject {
 		
 		////////////////////////////////
 		//
-		String text = "Start";
+		String text = "Options";
 		
 		GlyphLayout glyphLayout = new GlyphLayout();
 		glyphLayout.setText(font, text);
 
-		fontX = x + width / 2 - glyphLayout.width / 2;
+		fontX = x;// + width / 2 - glyphLayout.width / 2;
 		fontY = y + height / 2 - glyphLayout.height / 2;
 	}
 
@@ -62,7 +58,7 @@ public class StartButton extends GameObject {
 		
 		font.setColor(color);
 
-		font.draw(batch, "Start", fontX, fontY);
+		font.draw(batch, "Options", fontX, fontY);
 		
 		font.setColor(origColor);
 		
@@ -76,15 +72,11 @@ public class StartButton extends GameObject {
 	
 	public void animateUp() {
 		
-		color = Color.BLACK;
+		color = Color.FOREST;
 	}
 	
 	public void clicked() {
 		
-		font.setColor(color);
-		//dogRunner.userProfile.score = 0;
-		dogRunner.userProfile.reset();
-		dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class).stop();
-		dogRunner.setScreen(DogScreens.Type.STORYLINE_SCREEN);
+		dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
 	}
 }

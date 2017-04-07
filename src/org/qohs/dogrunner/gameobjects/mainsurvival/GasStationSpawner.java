@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * @author Derek Zhang
  * @author James Mufah
  */
-public class GasStationSpawner extends Spawner {
+class GasStationSpawner extends Spawner {
 	
 	/**
 	 * note: jrock is named after James M. by James
@@ -27,16 +27,12 @@ public class GasStationSpawner extends Spawner {
 	private final BodyDef bodydef;
 	private final float width, height;
 	
-	//private int spawnScore;
 	private int waves;
 	
-	/*
-	private int prevSpawnScore;
-	private int spawnAgainTarget;//number of spawn retries
-	private int spawnAgainCountdown;
-	*/
+	private int targetWave;
+	private int spawnRetries;//number of spawn retries
 
-	public GasStationSpawner(float gameWidth, float gameHeight) {
+	GasStationSpawner(float gameWidth, float gameHeight) {
 		
 		super(gameWidth, gameHeight);
 		
@@ -56,35 +52,22 @@ public class GasStationSpawner extends Spawner {
 		shape.setAsBox(width / 2f, height / 2f);
 		//shape.setAsBox((jrockTRegion.getRegionWidth() - gameWidth * (21f / 500f)) / 2, jrockTRegion.getRegionHeight() / 2f - 2f);
 		
-		//spawnScore = dogRunner.userProfile.previousGasScore;
-			
-		//dogRunner.userProfile.previousGasScore += 100 * (int) Math.pow(1.5, dogRunner.userProfile.gasStops);
-		//dogRunner.userProfile.gasStops++;
+        ////////////////////////////////
 		
-		/*
-		prevSpawnScore = 0;
-		if (dogRunner.storyFM.scoreToStoryline.containsKey(dogRunner.userProfile.score - prevSpawnScore)) {
-
-			prevSpawnScore = spawnScore;
-			spawnScore = dogRunner.userProfile.score;
+		if (dogRunner.userProfile.gasStops == 0) {
+			
+			dogRunner.userProfile.previousWave = 38;
 		}
 		else {
-
-			Integer score = dogRunner.storyFM.scoreToStoryline.higherKey(dogRunner.userProfile.score - prevSpawnScore);
-			if (score == null) {
-
-				spawnScore = -1;
-			}
-			else {
-
-				prevSpawnScore = spawnScore;
-				spawnScore = score.intValue() + dogRunner.userProfile.score;
-			}
+			
+			dogRunner.userProfile.previousWave += (int) (37.6 * dogRunner.userProfile.gasStops);//(int) (37.6 * Math.pow(1.5, dogRunner.userProfile.gasStops));
 		}
 		
-		spawnAgainTarget = 1;
-		spawnAgainCountdown = spawnAgainTarget;
-		*/
+		dogRunner.userProfile.gasStops++;
+		
+		targetWave = dogRunner.userProfile.previousWave;
+		
+		spawnRetries = 0;
 		
 		waves = 0;
 	}
@@ -94,73 +77,65 @@ public class GasStationSpawner extends Spawner {
 		
 		waves++;
 
+		super.get(2).data = null;
 		super.get(3).data = null;
 		
-		if (waves > 95) {
+		if (waves > targetWave) {
 
-			DataPriority data = super.get(3);
+			DataPriority data = super.get((int) (Math.random() * 2) + 2);
 			data.priority = 10000;
-			data.data = new SpawnerBodyData(PhysicsBodyType.GAS_STATION, this);
-
-			//System.out.println(dogRunner.userProfile.score);
+			data.data = new SpawnerBodyData(this);//PhysicsBodyType.GAS_STATION, this);
 			
+			if (spawnRetries == 0) {
+				
+				targetWave = dogRunner.userProfile.gasStops * 38;
+			}
+			else {
+				
+				targetWave += spawnRetries * 38;
+			}
+			
+			spawnRetries++;
+			//System.out.println("Score: "+ dogRunner.userProfile.score);
+
+			//System.out.println(targetWave);
+						
 			waves = 0;
 		}
+	}
+	
+	@Override
+	void onCrash(SpawnerBodyData data) {
 		
-		/*
-		clear();
-		
-		spawnAgainCountdown --;
-		
-		if (spawnAgainCountdown > 0) {
-			
-			return;
-		}
-	   
-		if (spawnScore != -1 && dogRunner.userProfile.score >= spawnScore) {
-			
-			DataPriority data = super.get(((int) (Math.random() * 2)) + (SpawnManager.ROWS - 1) / 2);
-			data.priority = 10000;
-			data.data = new SpawnerBodyData(PhysicsBodyType.GAS_STATION, this);
-			
-			try {
-				
-				spawnAgainTarget = Math.multiplyExact(spawnAgainTarget, 2);
-				spawnAgainCountdown = spawnAgainTarget;
-			}
-			catch (ArithmeticException e) {
-				
-				spawnAgainCountdown = Integer.MAX_VALUE;
-			}
-		}*/
+		dogRunner.userProfile.storylineTime = true;
 	}
 
 	@Override
-	public Drawable getDrawable(SpawnerBodyData data) {
+	Drawable getDrawable(SpawnerBodyData data) {
 
 		return jrockDrawable;
 	}
 
 	@Override
-	public float getWidth(SpawnerBodyData data) {
+	float getWidth(SpawnerBodyData data) {
 		
 		return width;
 	}
 
 	@Override
-	public float getHeight(SpawnerBodyData data) {
+	float getHeight(SpawnerBodyData data) {
 		
 		return height;
 	}
 
 	@Override
-	public BodyDef getBodyDef() {
+	BodyDef getBodyDef() {
 
 		return bodydef;
 	}
 
 	@Override
-	public Shape getShape() {
+	Shape getShape() {
 
 		return shape;
 	}

@@ -16,17 +16,22 @@ public final class UserProfile {
 	 * Also equivalent to the ceiling of how many minutes
 	 * left until game over. (i.e. 30 seconds left, gas would be 1 still)
 	 */
-	public int gas;
-	public boolean spin = false;
+	//public int gas;
+	public boolean spin;
+	
 	public int gasStops;
-	public int previousGasScore;
+	public int previousWave;
+	public boolean storylineTime;
+	
 	/**
 	 * 0 for NOT invincible, 1 for ALMOST not invincible, 2 for invincible
 	 */
 	public byte invincible;
+	
+	public int multiplier;
 
 	//don't instantiate this class outside of DogRunner
-	protected UserProfile() {
+	UserProfile() {
 		
 		reset();
 	}
@@ -35,9 +40,12 @@ public final class UserProfile {
 		
 		score = 0;
 		lives = 3;
-		gas = 10;
+		spin = false;
+		//gas = 10;
 		gasStops = 0;
-		previousGasScore = 100;
-		invincible = 0;
+		previousWave = 0;
+		storylineTime = false;
+		invincible = 2;
+		multiplier = 1;
 	}
 }

@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * @author Derek Zhang
  *
  */
-public class CarSpawner extends Spawner {
+class CarSpawner extends Spawner {
 	
 	private float carWidth, carHeight;
 	
@@ -35,13 +35,16 @@ public class CarSpawner extends Spawner {
 	
 	private final BodyDef bodyDef;
 	
+	private Sound sound;
+	private Sound soundWilhelm;
+	
 	/**
 	 * This editor has one method that gets called by the editSpawnList method
 	 * each object has the option to pass the job onto another editor
 	 */
 	private Editor editorHackz;
 	
-	public CarSpawner(float gameWidth, float gameHeight) {
+	CarSpawner(float gameWidth, float gameHeight) {
 		
 		super(gameWidth, gameHeight);
 		
@@ -71,6 +74,9 @@ public class CarSpawner extends Spawner {
 		bodyDef = new BodyDef(); 
 		//bodyDef.type = BodyDef.BodyType.KinematicBody;
 		
+		sound = dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class);
+		soundWilhelm = dogRunner.assetManager.get(DogSound.WILHELM_SCREAM.FILE_NAME, Sound.class);
+		
 		editorHackz = new FirstEditor();
 	}
 	
@@ -80,8 +86,9 @@ public class CarSpawner extends Spawner {
 		editorHackz.editSpawnList();
 	}
 	
+	/*
 	@Override
-	public void act(SpawnerBodyData data) {
+	void act(SpawnerBodyData data) {
 		
 		NPCBodyData npcData = (NPCBodyData) data;
 		
@@ -95,23 +102,46 @@ public class CarSpawner extends Spawner {
 			}
 		}
 	}
+	*/
 	
 	@Override
-	public void onDestroy(SpawnerBodyData data) {
+	void onCrash(SpawnerBodyData data) {
 		
-		NPCBodyData npcData = (NPCBodyData) data;
-		if (!npcData.crashed) {
+		if (data.crashed) {
+			
+			return;
+		}
+		
+		data.crashed = true;
+		
+		//dogRunner.userProfile.lives--;
+
+		if (Math.random() * 2 >= 1) { 
+			
+			soundWilhelm.play();
+		}
+		else {
+
+			sound.play();
+		}
+	}
+	
+	@Override
+	void onDestroy(SpawnerBodyData data) {
+		
+		//NPCBodyData npcData = (NPCBodyData) data;
+		if (!data.crashed) {
 
 			dogRunner.userProfile.score += 1;
 		}
 	}
 
 	@Override
-	public Drawable getDrawable(SpawnerBodyData data) {
+	Drawable getDrawable(SpawnerBodyData data) {
 		
-		NPCBodyData npcData = (NPCBodyData) data;
+		//NPCBodyData npcData = (NPCBodyData) data;
 		
-		if (npcData.crashed) {
+		if (data.crashed) {
 			
 			return crashedDrawable;
 		}
@@ -127,31 +157,31 @@ public class CarSpawner extends Spawner {
 	 * 
 	 * @return
 	 */
-	public float getWidth() {
+	float getWidth() {
 		
 		return carWidth;
 	}
 
 	@Override
-	public float getWidth(SpawnerBodyData data) {
+	float getWidth(SpawnerBodyData data) {
 		
 		return carWidth;
 	}
 	
 	@Override
-	public float getHeight(SpawnerBodyData data) {
+	float getHeight(SpawnerBodyData data) {
 		
 		return carHeight;
 	}
 
 	@Override
-	public Shape getShape() {
+	Shape getShape() {
 
 		return shape;
 	}
 
 	@Override
-	public BodyDef getBodyDef() {
+	BodyDef getBodyDef() {
 
 		return bodyDef;
 	}
@@ -164,7 +194,7 @@ public class CarSpawner extends Spawner {
 	
 	private interface Editor {
 		
-		public void editSpawnList();
+		void editSpawnList();
 	}
 	
 	private class LaterEditor implements Editor {
@@ -172,7 +202,7 @@ public class CarSpawner extends Spawner {
 		private final CarSpawner cS;
 		private int counter;
 		
-		public LaterEditor() {
+		LaterEditor() {
 			
 			counter = 0;
 			cS = CarSpawner.this;
@@ -200,7 +230,7 @@ public class CarSpawner extends Spawner {
 							currentFormation[counter] = true;
 							DataPriority dataPriority = cS.get(counter);
 							dataPriority.priority = 10000;
-							dataPriority.data = new NPCBodyData(cS);
+							dataPriority.data = new SpawnerBodyData(cS);//NPCBodyData(cS);
 							//carArray.add(createCarBody(row));
 						}
 						else {
@@ -232,7 +262,7 @@ public class CarSpawner extends Spawner {
 							currentFormation[counter] = true;
 							DataPriority dataPriority = cS.get(counter);
 							dataPriority.priority = 10000;
-							dataPriority.data = new NPCBodyData(cS);
+							dataPriority.data = new SpawnerBodyData(cS);//new NPCBodyData(cS);
 							//carArray.add(createCarBody(row));
 						}
 						else {
@@ -267,7 +297,7 @@ public class CarSpawner extends Spawner {
 						currentFormation[openRows[counter]] = true;
 						DataPriority dataPriority = cS.get(openRows[counter]);
 						dataPriority.priority = 10000;
-						dataPriority.data = new NPCBodyData(cS);
+						dataPriority.data = new SpawnerBodyData(cS);//new NPCBodyData(cS);
 						//carArray.add(createCarBody(openRows[i]));
 					}
 				}
@@ -285,7 +315,7 @@ public class CarSpawner extends Spawner {
 		private final CarSpawner cS;
 		private final Editor laterEditor;
 		
-		public FirstEditor() {
+		FirstEditor() {
 			
 			laterEditor = new LaterEditor();
 			cS = CarSpawner.this;
@@ -312,7 +342,7 @@ public class CarSpawner extends Spawner {
 				prevFormation[row] = true;
 				DataPriority dataPriority = cS.get(row);
 				dataPriority.priority = 10000;
-				dataPriority.data = new NPCBodyData(cS);
+				dataPriority.data = new SpawnerBodyData(cS);//new NPCBodyData(cS);
 				//1/2 chance of spawning a car
 				/*if (Math.random() * 2 >= 1) {
 

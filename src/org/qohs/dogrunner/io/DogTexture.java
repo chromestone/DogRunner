@@ -15,7 +15,10 @@ public enum DogTexture {
 	GAS_STATION("texture/gas_station_car.png"),
 	START_BACKGROUND("texture/start_background.png"),
 	DONUT_TYPES("texture/types.png"),
-	GHOST("texture/ghost.png");
+	GHOST("texture/ghost.png"),
+	PROHIBITED("texture/prohibited.png"),
+	CHECK("texture/check.png"),
+	UNICORN("texture/unicorn.png");
 
 	public final String FILE_NAME;
 

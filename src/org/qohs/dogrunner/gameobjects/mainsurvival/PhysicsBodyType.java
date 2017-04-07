@@ -8,8 +8,10 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
 enum PhysicsBodyType {
 
 	PLAYER_CAR,
-	NPC_CAR,
 	WALL,
+	SPAWNER_ENTITY;/*,
+	NPC_CAR,
 	GAS_STATION,
-	GHOST;
+	GHOST,
+	UNICORN;*/
 }

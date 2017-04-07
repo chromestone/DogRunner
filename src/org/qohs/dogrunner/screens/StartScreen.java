@@ -62,7 +62,11 @@ public class StartScreen extends StageScreen {
         		width, height);
 		stage.addActor(startButton);
 		
-		stage.addActor(new HighScoreButton((dogRunner.GAME_WIDTH * 150f / 192f) - (width / 2f),
+		stage.addActor(new HighScoreButton(dogRunner.GAME_WIDTH - width, //(dogRunner.GAME_WIDTH * 150f / 192f) - (width / 2f),
+        		(dogRunner.GAME_HEIGHT * 52f / 108f) - (height / 2f),
+        		width, height));
+		
+		stage.addActor(new OptionsButton(0f,//(dogRunner.GAME_WIDTH * 25f / 192f) - (width / 2f),
         		(dogRunner.GAME_HEIGHT * 52f / 108f) - (height / 2f),
         		width, height));
 		

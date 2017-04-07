@@ -24,9 +24,9 @@ public class HighScoreButton extends GameObject {
 		
 		super(x, y, width, height);
 		
-		color = Color.BLACK;
+		color = Color.FOREST;
 		
-		font = dogRunner.assetManager.get(DogFont.ARIAL_WHITE_M.FILE_NAME, BitmapFont.class);
+		font = dogRunner.assetManager.get(DogFont.WHITE_M.FILE_NAME, BitmapFont.class);
 		
 		//color = font.getColor();
 		
@@ -39,7 +39,7 @@ public class HighScoreButton extends GameObject {
 		GlyphLayout glyphLayout = new GlyphLayout();
 		glyphLayout.setText(font, text);
 
-		fontX = x + width / 2 - glyphLayout.width / 2;
+		fontX = dogRunner.GAME_WIDTH - glyphLayout.width;//x + width / 2 - glyphLayout.width / 2;
 		fontY = y + height / 2 - glyphLayout.height / 2;
 	}
 
@@ -77,7 +77,7 @@ public class HighScoreButton extends GameObject {
 	
 	public void animateUp() {
 		
-		color = Color.BLACK;
+		color = Color.FOREST;
 	}
 	
 	public void clicked() {

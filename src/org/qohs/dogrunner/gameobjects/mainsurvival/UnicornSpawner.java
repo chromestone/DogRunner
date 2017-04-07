@@ -1,9 +1,11 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
-import org.qohs.dogrunner.io.DogSound;
+//import org.qohs.dogrunner.io.DogSound;
 import org.qohs.dogrunner.io.DogTexture;
 
-import com.badlogic.gdx.audio.Sound;
+
+
+//import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,8 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * @author Gudrun T.
  *
  */
-class GhostSpawner extends Spawner {
-	
+public class UnicornSpawner extends Spawner {
 	private final TextureRegionDrawable textureDrawable;
 	
 	private final PolygonShape shape;
@@ -27,18 +28,16 @@ class GhostSpawner extends Spawner {
 	private final BodyDef bodydef;
 	private final float width, height;
 	
-	private Sound sound;
+	//private Sound sound;
 	
 	private int waveCount;
 	
-	private final SpawnerBodyData theData;
-	
-	GhostSpawner(float gameWidth, float gameHeight) {
+	UnicornSpawner(float gameWidth, float gameHeight) {
 		
 		super(gameWidth, gameHeight);
 		
 		TextureRegion textureRegion;
-		textureRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.GHOST.FILE_NAME, Texture.class));
+		textureRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.UNICORN.FILE_NAME, Texture.class));
 		textureRegion.flip(false, true);
 		textureDrawable = new TextureRegionDrawable(textureRegion);
 		
@@ -52,76 +51,80 @@ class GhostSpawner extends Spawner {
 		shape = new PolygonShape();
 		shape.setAsBox(width / 2f, height / 2f);
 		
-		sound = dogRunner.assetManager.get(DogSound.GHOST_SOUND.FILE_NAME, Sound.class);
+		//sound = dogRunner.assetManager.get(DogSound.MULTIPLIER_SOUND.FILE_NAME, Sound.class);
 		
 		waveCount = 0;
 		
-		//dogRunner.assetManager.get(DogSound.GHOST_SOUND.FILE_NAME, Sound.class).setVolume(1, 1);
-		
-		theData = new SpawnerBodyData(this);
-	}
-	
-	private void resetData() {
-		
-		theData.crashed = false;
-		theData.destroy = false;
+		//dogRunner.assetManager.get(DogSound.MULTIPLIER_SOUND.FILE_NAME, Sound.class).setVolume(1, 1);
 	}
 
 	@Override
 	protected void editSpawnList() {
 		
-		super.get(1).data = null;
+		super.get(2).data = null;
+		super.get(3).data = null;
+
+		waveCount += 1;
+
+		if (waveCount > 10) {
+
+			DataPriority data = super.get((int)(Math.random()*2) + 2);
+			data.priority = 9999;
+			data.data = new SpawnerBodyData(this);//PhysicsBodyType.UNICORN, this);
+			waveCount = 0;
+		}
+		else if (((int) (Math.random() * 30)) == 0) {
+
+			DataPriority data = super.get((int)(Math.random()*2) + 2);
+			data.priority = 9999;
+			data.data = new SpawnerBodyData(this);//PhysicsBodyType.UNICORN, this);
+		}
+		
+		/*
+		super.get(3).data = null;
 		super.get(4).data = null;
 		
 		if (dogRunner.userProfile.invincible == 0) {
 
 			waveCount += 1;
 			
-			if (waveCount > 38) {
+			if (waveCount > 37) {
 				
-				DataPriority data = super.get(randomIndex());//(int)(Math.random()*2) + 2);
+				System.out.println("Score: "+ dogRunner.userProfile.score);
+				DataPriority data = super.get((int)(Math.random()*2) + 3);
 				data.priority = 9999;
-				resetData();
-				data.data = theData;//PhysicsBodyType.GHOST, this);
+				data.data = new SpawnerBodyData(PhysicsBodyType.MULTIPLIER, this);
 				waveCount = 0;
 			}
 			else if (((int) (Math.random() * 30)) == 0) {
 				
-				DataPriority data = super.get(randomIndex());
+				DataPriority data = super.get((int)(Math.random()*2) + 3);
 				data.priority = 9999;
-				resetData();
-				data.data = theData;//PhysicsBodyType.GHOST, this);
+				data.data = new SpawnerBodyData(PhysicsBodyType.MULTIPLIER, this);
 			}
 		}
 		else {
 			
 			waveCount = 0;
 		}
-	}
-	
-	private int randomIndex() {
-		
-		return (Math.random()*2) >= 1 ? 1 : 4;
+		*/
 	}
 	
 	/*
 	@Override
 	void act(SpawnerBodyData data) {
 		
-		/*if (data.crashed) {
+		if (data.crashed) {
 			
 			//20 seconds of invisibility
 			//Invincibility.scheduleInvinciblity(20, 5);
-			data.destroy = true;
-			sound.play();
-			//ghostData.soundPlayed = true;
+			//data.destroy = true;
+			//sound.play();
+			//MULTIPLIERData.soundPlayed = true;
+			System.out.println("sysout");
 		}
-		else*//*
-		if (dogRunner.userProfile.invincible > 0) {
-			
-			data.destroy = true;
-		}
-	}*/
+	}
+	*/
 	
 	@Override
 	void onCrash(SpawnerBodyData data) {
@@ -133,11 +136,7 @@ class GhostSpawner extends Spawner {
 		
 		data.crashed = true;
 		
-		//20 seconds of invisibility
-		Invincibility.scheduleInvinciblity(15, 5);
-		
-		data.destroy = true;
-		sound.play();
+		dogRunner.userProfile.score += 44;
 	}
 
 	@Override

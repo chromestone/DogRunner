@@ -34,7 +34,7 @@ public class HighScoreScreen extends StageScreen {
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(DogFont.ACTUAL_FONT_FILE_NAME));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-		BitmapFont font = dogRunner.assetManager.get(DogFont.ARIAL_YELLOW_L.FILE_NAME, BitmapFont.class);
+		BitmapFont font = dogRunner.assetManager.get(DogFont.YELLOW_L.FILE_NAME, BitmapFont.class);
 		GlyphLayout glyphLayout = new GlyphLayout(font, "A");
 		parameter.size = (int) (dogRunner.GAME_HEIGHT / (HighScore.MAX_HIGH_SCORES + 1.0) * glyphLayout.width / glyphLayout.height);
 		parameter.color = Color.WHITE;
