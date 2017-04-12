@@ -25,14 +25,7 @@ public class HighScore {
 	
 	public boolean isHighScore(Integer score) {
 		
-		if (scores.size() < MAX_HIGH_SCORES) {
-			
-			return true;
-		}
-		else {
-			
-			return getScoreIndex(score) != -1;
-		}
+		return scores.size() < MAX_HIGH_SCORES || getScoreIndex(score) != -1;
 	}
 	
 	private int getScoreIndex(Integer score) {

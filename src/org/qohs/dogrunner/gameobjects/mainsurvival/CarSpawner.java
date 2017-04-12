@@ -114,7 +114,7 @@ class CarSpawner extends Spawner {
 		
 		data.crashed = true;
 		
-		//dogRunner.userProfile.lives--;
+		dogRunner.userProfile.lives--;
 
 		if (Math.random() * 2 >= 1) { 
 			
@@ -155,7 +155,7 @@ class CarSpawner extends Spawner {
 	 * This class is "special" so it has this
 	 * overloaded method
 	 * 
-	 * @return
+	 * @return the width of the car
 	 */
 	float getWidth() {
 		

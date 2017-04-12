@@ -163,7 +163,7 @@ public class DogRunner extends Game {
 	
 		////////////////////////////////
 		//Instantiates the screens
-		dogScreens = new DogScreens(batch);
+		dogScreens = new DogScreens();
 	
 		////////////////////////////////
 		//Sets the first screen users will see
@@ -341,6 +341,15 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.flip = true;
 		
 		assetManager.load(DogFont.WHITE_S.FILE_NAME, BitmapFont.class, fTFLP);
+		
+		fTFLP = new FreeTypeFontLoaderParameter();
+		fTFLP.fontFileName = arial;
+		fTFLP.fontParameters.size = DogFont.WHITE_L.getSize();//(int) (GAME_WIDTH * 50d / 800d);
+		fTFLP.fontParameters.color = Color.WHITE;
+		fTFLP.fontParameters.flip = true;
+		
+		assetManager.load(DogFont.WHITE_L.FILE_NAME, BitmapFont.class, fTFLP);
+
 	}
 	
 	/**

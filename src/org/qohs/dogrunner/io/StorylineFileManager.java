@@ -23,12 +23,36 @@ import com.badlogic.gdx.files.FileHandle;
 public class StorylineFileManager implements FileManager {
 
 	public LinkedList<DialogListRead> storylineDialogList = null;
-	public int readPosition = -1;
+	/**
+	 * Technically, this is the next read position or the chapter
+	 * index starting from zero that should next be displayed
+	 */
+	private int readPosition = -1;
+	private int unlockedPosition;
+	
+	public int getReadPosition() {
+		
+		return readPosition;
+	}
+	
+	public int getUnlockedPosition() {
+		
+		return unlockedPosition;
+	}
+	
+	public void setReadPosition(int position) {
+		
+		readPosition = position;
+		if (readPosition > unlockedPosition) {
+			
+			unlockedPosition = readPosition;
+		}
+	}
 
 	@Override
 	public void load() {
 		
-		storylineDialogList = new LinkedList<>();
+		storylineDialogList = new LinkedList<DialogListRead>();
 		
 		try {	
 			
@@ -114,12 +138,14 @@ public class StorylineFileManager implements FileManager {
 		public final LinkedList<String> images;
 		//public boolean read;
 		
+		/*
 		private DialogListRead(LinkedList<DialogImage> dialogs, LinkedList<String> images) {
 			
 			this(dialogs, images, false);
 		}
+		*/
 		
-		private DialogListRead(LinkedList<DialogImage> dialogs, LinkedList<String> images, boolean read) {
+		private DialogListRead(LinkedList<DialogImage> dialogs, LinkedList<String> images) {//, boolean read) {
 			
 			this.dialogs = dialogs;
 			this.images = images;

@@ -26,7 +26,7 @@ public class DonutTRegionManager implements FileManager {
 	public DonutTRegionManager() {
 
 		dogRunner = DogRunner.getInstance();
-		donutThings = new LinkedList<>();
+		donutThings = new LinkedList<TextureRegion>();
 	}
 
 	@Override

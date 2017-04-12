@@ -43,7 +43,7 @@ public class StorylineScreen extends StageScreen {
 	
 	private ProgressBar progressBar;
 	
-	TextureRegionDrawable imageDrawable;
+	private TextureRegionDrawable imageDrawable;
 	private Image image;
 	
 	private AssetManager assetManager;
@@ -159,7 +159,7 @@ public class StorylineScreen extends StageScreen {
 		storyline = dogRunner.storyFM.storylineDialogList.get(dogRunner.userProfile.gasStops);
 		
 		//if this gas stop corresponding chapter has been read
-		if (dogRunner.userProfile.gasStops < dogRunner.storyFM.readPosition) {
+		if (dogRunner.userProfile.gasStops < dogRunner.storyFM.getReadPosition()) {
 
 			//go to clicker if not first stop
 			if (dogRunner.userProfile.gasStops > 0) {
@@ -177,7 +177,8 @@ public class StorylineScreen extends StageScreen {
 		//if there is a chapter but it is empty
 		if (storyline.dialogs.size() == 0) {//storyline.read) {
 			
-			dogRunner.storyFM.readPosition = dogRunner.userProfile.gasStops + 1;
+			//dogRunner.storyFM.readPosition = dogRunner.userProfile.gasStops + 1;
+			dogRunner.storyFM.setReadPosition(dogRunner.userProfile.gasStops);
 			if (dogRunner.userProfile.gasStops > 0) {
 				
 				dogRunner.setScreen(DogScreens.Type.CLICKER_SCREEN);
@@ -224,16 +225,16 @@ public class StorylineScreen extends StageScreen {
 	
 	private void updateImage() {
 		
-		String image = storyline.dialogs.get(index).image;
-		if (image == null) {
+		String imagePath = storyline.dialogs.get(index).image;
+		if (imagePath == null) {
 			
 			return;
 		}
 		
-		TextureRegion region = new TextureRegion(assetManager.get(image, Texture.class));
+		TextureRegion region = new TextureRegion(assetManager.get(imagePath, Texture.class));
 		region.flip(false, true);
 		imageDrawable.setRegion(region);
-		this.image.invalidate();
+		image.invalidate();
 	}
 	
 	@Override
@@ -260,7 +261,7 @@ public class StorylineScreen extends StageScreen {
 
 		private final Storyline s;
 		
-		public Loader() {
+		Loader() {
 			
 			s = new Storyline();
 		}
@@ -303,6 +304,12 @@ public class StorylineScreen extends StageScreen {
 			forwardButton.setVisible(true);
 			image.setVisible(true);
 			
+			String imagePath = storyline.dialogs.get(index).image;
+			if (imagePath == null) {
+				
+				return;
+			}
+			
 			image.setColor(Color.WHITE);
 			updateImage();
 		}
@@ -327,9 +334,9 @@ public class StorylineScreen extends StageScreen {
 						updateImage();
 					}
 					else {
-						
-						dogRunner.storyFM.readPosition = dogRunner.userProfile.gasStops + 1;
-						
+					
+						//dogRunner.storyFM.readPosition = dogRunner.userProfile.gasStops + 1;
+						dogRunner.storyFM.setReadPosition(dogRunner.userProfile.gasStops + 1);
 						if (dogRunner.userProfile.gasStops > 0) {
 
 							dogRunner.setScreen(DogScreens.Type.CLICKER_SCREEN);

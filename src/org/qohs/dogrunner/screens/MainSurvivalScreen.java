@@ -4,9 +4,8 @@ import org.qohs.dogrunner.DogScreens;
 import org.qohs.dogrunner.gameobjects.GameObject;
 import org.qohs.dogrunner.gameobjects.QueryButton;
 import org.qohs.dogrunner.gameobjects.mainsurvival.*;
+import org.qohs.dogrunner.gameobjects.mainsurvival.ScoreText;
 import org.qohs.dogrunner.io.*;
-import org.qohs.dogrunner.text.*;
-import org.qohs.dogrunner.text.mainsurvival.*;
 import org.qohs.dogrunner.util.*;
 
 import com.badlogic.gdx.audio.Music;
@@ -15,7 +14,13 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * Where the action at. This screen displays the main runner game.
@@ -50,28 +55,41 @@ public class MainSurvivalScreen extends StageScreen {
 	private QueryButton pauseButton;
 	private QueryButton playButton;
 	
+	private QueryButton quitButton;
+	private QueryDialog quitDialog;
+	
 	private TextureRegion car;
 	private final float carHeight;
 	private final float carWidth;
 	
 	//private CarSpawner carSpawner;
 	
-	private TextRenderer textRenderer;
+	//private TextRenderer textRenderer;
 	
-	private TextObject scoreText;
+	//private TextObject scoreText;
+	
+	private ScoreText scoreText;
 	
 	private Countdown countdown;
-	private CenteredText countdownText;
+	private Label countdownText;
 	
 	//private RoadManager roadManager;
+	
+	////////////////////////////////
 	
 	//game over (end game) fields
 	private TextureRegion background;
 	private final static Color backgroundColor = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.5f);
 	
-	private QueryButton nextButton;
+	private Label gameOver;
+	private Label gOScore;
 	
-	private GameOverScore gOS;
+	/*/**
+	 * Displays game over text
+	 */
+	//private GameOverScore gOS;
+	
+	////////////////////////////////
 	
 	private Music backMusic;
 	
@@ -93,53 +111,144 @@ public class MainSurvivalScreen extends StageScreen {
 		//fit car into screen
 		carHeight = meterHeight / 10f;
 		carWidth = carHeight / car.getRegionHeight() * car.getRegionWidth();
-		
+
 		////////////////////////////////
 		//configure screen units
 		cam = new OrthographicCamera();
 		cam.setToOrtho(true, meterWidth, meterHeight);
-		stage.getViewport().setCamera(cam);
+		//stage.getViewport().setCamera(cam);
 		
 		////////////////////////////////
 		//set up text
-		textRenderer = new TextRenderer(cam);
-		textRenderer.add((scoreText = new ScoreText(dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class))));
-	
-		////////////////////////////////
-		//sets up inputs for movement of player's car
-		
-		float upperBound = (meterHeight - (meterHeight * .25f)) / 2;
-		float lowerBound = upperBound + (meterHeight * .25f);
-		
-		upperClickHandler = new UpperClickHandler(0f, 0f, meterWidth, upperBound, meterHeight / 12f);
-		upperHandler = (ClickListener) upperClickHandler.getListeners().get(0);
-		
-		stage.addActor(upperClickHandler);
-		
-		lowerClickHandler = new LowerClickHandler(0f, lowerBound, meterWidth, meterHeight - lowerBound, meterHeight / 12f);
-		lowerHandler = (ClickListener) lowerClickHandler.getListeners().get(0);
-		
-		stage.addActor(lowerClickHandler);
+		//textRenderer = new TextRenderer(cam);
+		//textRenderer.add((scoreText = new ScoreText(dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class))));
 		
 		////////////////////////////////
-		//pause and play buttons
-		pauseButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
-				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.PAUSE_IMG)));
-		stage.addActor(pauseButton);
 		
-		playButton = new QueryButton(meterWidth / 2f - meterHeight / 2f, 0f, meterHeight, meterHeight, 
-				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
-		stage.addActor(playButton);
-		
-		GameObject ghost = new InvincibilityIndicator(0, 0, meterWidth, meterHeight);
+		GameObject ghost = new InvincibilityIndicator(0, 0, dogRunner.GAME_WIDTH, dogRunner.GAME_HEIGHT);
 		ghost.setTouchable(Touchable.disabled);
 		stage.addActor(ghost);
+		
+		////////////////////////////////
+		
+		LabelStyle labelStyle;
 		
 		////////////////////////////////
 		//count down
 		//3.4-"3"-2.4-"2"-1.4-"1"-0.4-"GO"-0.0
 		countdown = new Countdown(3.4f);
-		countdownText = new CenteredText(dogRunner.assetManager.get(DogFont.GOLD_L.FILE_NAME, BitmapFont.class));
+		labelStyle = new LabelStyle();
+		labelStyle.font = dogRunner.assetManager.get(DogFont.GOLD_L.FILE_NAME, BitmapFont.class);
+		
+		countdownText = new Label("_", labelStyle);
+		
+		countdownText.setX((dogRunner.GAME_WIDTH - countdownText.getWidth()) / 2f);
+		countdownText.setY((dogRunner.GAME_HEIGHT - countdownText.getHeight()) / 2f);
+		countdownText.setAlignment(Align.center);
+		countdownText.setText("");
+		countdownText.setTouchable(Touchable.disabled);
+
+		stage.addActor(countdownText);
+		
+		////////////////////////////////
+		
+		labelStyle = new LabelStyle();
+		labelStyle.font = dogRunner.assetManager.get(DogFont.YELLOW_L.FILE_NAME, BitmapFont.class);
+		
+		gameOver = new Label("GAME OVER\nSCORE:", labelStyle);
+		
+		gameOver.setX((dogRunner.GAME_WIDTH - gameOver.getWidth()) / 2f);
+		gameOver.setY(dogRunner.GAME_HEIGHT / 2f - gameOver.getHeight());
+		
+		gameOver.setTouchable(Touchable.disabled);
+		gameOver.setAlignment(Align.center);
+
+		stage.addActor(gameOver);
+		
+		gOScore = new Label("_", labelStyle);
+		
+		gOScore.setX((dogRunner.GAME_WIDTH - gOScore.getWidth()) / 2f);
+		gOScore.setY(dogRunner.GAME_HEIGHT/ 2f);
+		
+		gOScore.setTouchable(Touchable.disabled);
+		gOScore.setAlignment(Align.center);
+		gOScore.setText("");
+		
+		stage.addActor(gOScore);
+		
+		////////////////////////////////
+		//sets up inputs for movement of player's car
+		
+		float upperBound = (dogRunner.GAME_HEIGHT - (dogRunner.GAME_HEIGHT * .25f)) / 2;
+		float lowerBound = upperBound + (dogRunner.GAME_HEIGHT * .25f);
+		
+		upperClickHandler = new UpperClickHandler(0f, 0f, dogRunner.GAME_WIDTH, upperBound, dogRunner.GAME_HEIGHT / 12f);
+		upperHandler = (ClickListener) upperClickHandler.getListeners().get(0);
+		
+		stage.addActor(upperClickHandler);
+		
+		lowerClickHandler = new LowerClickHandler(0f, lowerBound, dogRunner.GAME_WIDTH, dogRunner.GAME_HEIGHT - lowerBound, dogRunner.GAME_HEIGHT / 12f);
+		lowerHandler = (ClickListener) lowerClickHandler.getListeners().get(0);
+		
+		stage.addActor(lowerClickHandler);
+		
+		////////////////////////////////
+		scoreText = new ScoreText(0f, 0f, dogRunner.GAME_WIDTH, dogRunner.GAME_HEIGHT / 6f);
+		scoreText.setTouchable(Touchable.disabled);
+		stage.addActor(scoreText);
+		
+		////////////////////////////////
+		//pause and play buttons
+		pauseButton = new QueryButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 2f - dogRunner.GAME_HEIGHT / 20f,
+				dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 10f, 
+				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.PAUSE_IMG)));
+		stage.addActor(pauseButton);
+		
+		playButton = new QueryButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 2f - dogRunner.GAME_HEIGHT / 20f,
+				dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 10f, 
+				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
+		/*new QueryButton(dogRunner.GAME_WIDTH / 2f - dogRunner.GAME_HEIGHT / 2f, 0f, dogRunner.GAME_HEIGHT, dogRunner.GAME_HEIGHT, 
+				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));*/
+		stage.addActor(playButton);
+		
+		////////////////////////////////
+		
+		TextureRegion temp = new TextureRegion(dogRunner.assetManager.get(DogTexture.PROHIBITED.FILE_NAME, Texture.class));
+		temp.flip(false, true);
+		quitButton = new QueryButton(0f, dogRunner.GAME_HEIGHT / 2f - dogRunner.GAME_HEIGHT / 20f,
+				dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 10f, temp);
+		quitButton.setTouchable(Touchable.disabled);
+		
+		stage.addActor(quitButton);
+		
+		WindowStyle windowStyle = new WindowStyle();
+		windowStyle.titleFont = dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class);
+		BitmapFont titleFont = dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class);
+		
+		//apparently titles don't work very well
+		quitDialog = new QueryDialog("", windowStyle);
+		
+		labelStyle = new LabelStyle();
+		labelStyle.font = dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class);
+		
+		quitDialog.text("Are you sure you want to quit?", labelStyle);
+		
+		TextButtonStyle buttonStyle = new TextButtonStyle();
+		buttonStyle.font = titleFont;
+		buttonStyle.downFontColor = Color.BLUE;
+		buttonStyle.fontColor = titleFont.getColor();
+		
+		quitDialog.button("No     ", false, buttonStyle);  //sends "false" as the result
+		quitDialog.button("     Yes", true, buttonStyle); //sends "true" as the result
+		
+		Color backColor = new Color(Color.DARK_GRAY);
+		backColor.a = 0.85f;
+		
+		quitDialog.setBackground(new TextureRegionDrawable(
+				dogRunner.getAtlasRegion(DogAtlasRegion.BLANK))
+		.tint(backColor));
+		
+		quitDialog.setWidth(dogRunner.GAME_WIDTH);
 
 		////////////////////////////////
 		//
@@ -150,9 +259,8 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//end game stuff
 		background = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
-	
-		nextButton = new QueryButton(meterWidth - meterHeight / 10f, meterHeight / 2f - meterHeight / 20f, meterHeight / 10f, meterHeight / 10f, 
-				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
+		
+		////////////////////////////////
 	
 		backMusic = dogRunner.assetManager.get(DogMusic.BACKGROUND_THEME.FILE_NAME, Music.class);
 		backMusic.setLooping(true);
@@ -166,7 +274,7 @@ public class MainSurvivalScreen extends StageScreen {
 		//set screen units
 		//note that these directly apply to drawing and must be set back once screen changes [this.hide()]
 		//dogRunner.batch.setProjectionMatrix(cam.combined);
-		//dogRunner.renderer.setProjectionMatrix(cam.combined);
+		dogRunner.renderer.setProjectionMatrix(cam.combined);
 		
 		//set up parameters for the physics world
 		MainSurvivalWorld.Definition def = new MainSurvivalWorld.Definition();
@@ -189,11 +297,23 @@ public class MainSurvivalScreen extends StageScreen {
 		playButton.setTouchable(Touchable.disabled);
 		pauseButton.setVisible(false);
 		pauseButton.setTouchable(Touchable.disabled);
-		textRenderer.add(countdownText);
+		
+		quitButton.setVisible(false);
+		
+		//textRenderer.add(countdownText);
+		//stage.addActor(countdownText);
+		
+		countdownText.setVisible(true);
+		
+		scoreText.setVisible(true);
+		//scoreText.setText("SCORE: " + dogRunner.userProfile.score);
+		
+		gameOver.setVisible(false);
+		gOScore.setVisible(false);
 		
 		dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class).stop();
 		
-		dogRunner.assetManager.get(DogSound.IGNITION_REV.FILE_NAME, Sound.class).play(1f);
+		dogRunner.assetManager.get(DogSound.IGNITION_REV.FILE_NAME, Sound.class).play();//.play(1f);
 		
 		removePowerUps();
 		
@@ -236,9 +356,23 @@ public class MainSurvivalScreen extends StageScreen {
 				
 				gameState = GameState.COUNTDOWN;
 				countdown.reset();
+				
+				
 				playButton.setVisible(false);
 				playButton.setTouchable(Touchable.disabled);
-				textRenderer.add(countdownText);
+				
+				quitButton.setTouchable(Touchable.disabled);
+				quitButton.setVisible(false);
+				
+				//countdownText.text = "";
+				//textRenderer.add(countdownText);
+				//countdownText.setText("");
+				//stage.addActor(countdownText);
+			}
+			else if (quitButton.queryClicked()) {
+				
+				quitDialog.show(stage);
+				System.out.println("hi");
 			}
 			
 			break;
@@ -251,18 +385,41 @@ public class MainSurvivalScreen extends StageScreen {
 				int number = (int) seconds;
 				if (number > 0) {
 					
-					countdownText.text = "" + number;
+					//countdownText.text = "" + number;
+					countdownText.setText("" + number);
+					/*if (countdownText.getPrefWidth() != countdownText.getWidth()) {
+
+						countdownText.setWidth(countdownText.getPrefWidth());
+						countdownText.setX((dogRunner.GAME_WIDTH - countdownText.getWidth()) / 2f);
+					}*/
+					/*countdownText.layout();
+					if (countdownText.getPrefWidth() != countdownText.getWidth()) {
+						System.out.println("hi");
+						System.out.println(countdownText.getWidth());
+						
+					}*/
 				}
 				else {
-					
-					countdownText.text = "GO";
-				}
+
+					//countdownText.text = "GO";
+					countdownText.setText("GO");
+					/*if (countdownText.getPrefWidth() != countdownText.getWidth()) {
+
+						countdownText.setWidth(countdownText.getPrefWidth());
+						countdownText.setX((dogRunner.GAME_WIDTH - countdownText.getWidth()) / 2f);
+					}*/
+					/*countdownText.invalidate();
+					countdownText.setY((dogRunner.GAME_HEIGHT - countdownText.getHeight()) / 2f);
+					countdownText.setX((dogRunner.GAME_WIDTH - countdownText.getWidth()) / 2f);
+				*/}
 				
 				//dogRunner.timer.delay((long) (delta * 1000L));
 			}
 			else {
 				
-				textRenderer.remove(countdownText);
+				//textRenderer.remove(countdownText);
+				//countdownText.remove();
+				countdownText.setVisible(false);
 				
 				gameState = GameState.RESUMED;
 				
@@ -281,19 +438,19 @@ public class MainSurvivalScreen extends StageScreen {
 		}
 		case GAME_OVER: {
 
-			if (nextButton.queryClicked()) {
+			if (playButton.queryClicked()) {//nextButton.queryClicked()) {
 				
-				pauseButton.setVisible(true);
-				pauseButton.setTouchable(Touchable.enabled);
+				/*pauseButton.setVisible(true);
+				pauseButton.setTouchable(Touchable.enabled);*/
 				upperClickHandler.setVisible(true);
 				upperClickHandler.setTouchable(Touchable.enabled);
 				lowerClickHandler.setVisible(true);
 				lowerClickHandler.setTouchable(Touchable.enabled);
 				
-				nextButton.remove();
+				//nextButton.remove();
 				
-				textRenderer.remove(gOS);
-				textRenderer.add(scoreText);
+				//textRenderer.remove(gOS);
+				//textRenderer.add(scoreText);
 				
 				if (dogRunner.highScoreFM.highScore.isHighScore(dogRunner.userProfile.score)) {
 					
@@ -326,6 +483,9 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//SpriteBatch is used to render starting here
 		
+		//the stage will always mutate the batch
+		dogRunner.batch.setProjectionMatrix(cam.combined);
+		
 		dogRunner.batch.begin();
 		
 		//physicsWorld.roadManager.render();
@@ -335,7 +495,21 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		//draws the player's car
 		//dogRunner.batch.begin();
-		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
+		
+		boolean invincible = dogRunner.userProfile.invincible > 0;
+		if (invincible) {
+			
+			dogRunner.batch.setColor(1f, 1f, 1f, .5f);
+		}
+		
+		dogRunner.batch.draw(car, physicsWorld.carBody.getPosition().x - carWidth / 2,
+				physicsWorld.carBody.getPosition().y - carHeight / 2, carWidth, carHeight);
+
+		if (invincible) {
+
+			dogRunner.batch.setColor(Color.WHITE);
+		}
+		
 		/*dogRunner.batch.draw(car,
 				physicsWorld.carBody.getPosition().x - carWidth / 2, physicsWorld.carBody.getPosition().y - carHeight / 2,
 				carWidth / 2, carHeight / 2,
@@ -364,7 +538,7 @@ public class MainSurvivalScreen extends StageScreen {
 		dogRunner.renderer.end();
 		*/
 		
-		if (GameState.GAME_OVER == gameState) {
+		if (gameState == GameState.GAME_OVER || gameState == GameState.PAUSED) {
 			
 			Color color = dogRunner.batch.getColor();
 			dogRunner.batch.setColor(backgroundColor);
@@ -380,9 +554,11 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		//physicsWorld.method(cam);
 		
+		//scoreText.setText("SCORE: " + dogRunner.userProfile.score);
+		
 		stage.draw();
 		
-		textRenderer.render();
+		//textRenderer.render();
 	}
 	
 	/**
@@ -407,10 +583,27 @@ public class MainSurvivalScreen extends StageScreen {
 			lowerClickHandler.setVisible(false);
 			lowerClickHandler.setTouchable(Touchable.disabled);
 			
-			stage.addActor(nextButton);
+			//stage.addActor(nextButton);
 			
-			textRenderer.remove(scoreText);
-			textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogFont.YELLOW_L.FILE_NAME, BitmapFont.class)));
+			playButton.setVisible(true);
+			playButton.setTouchable(Touchable.enabled);
+			
+			//textRenderer.remove(scoreText);
+			//textRenderer.add(gOS = new GameOverScore(dogRunner.assetManager.get(DogFont.YELLOW_L.FILE_NAME, BitmapFont.class)));
+			
+			scoreText.setVisible(false);
+			
+			gameOver.setVisible(true);
+			gOScore.setVisible(true);
+			if (dogRunner.userProfile.score != 4) {
+				
+				gOScore.setText("" + dogRunner.userProfile.score);
+			}
+			//easter egg of the year
+			else {
+
+				gOScore.setText("Go Gudrun!");
+			}
 			
 			gameState = GameState.GAME_OVER;
 			
@@ -493,10 +686,11 @@ public class MainSurvivalScreen extends StageScreen {
 		super.hide();
 		
 		//set display units back to normal
-		//dogRunner.batch.setProjectionMatrix(dogRunner.cam.combined);
-		//dogRunner.renderer.setProjectionMatrix(dogRunner.cam.combined);
+		dogRunner.batch.setProjectionMatrix(dogRunner.cam.combined);
+		dogRunner.renderer.setProjectionMatrix(dogRunner.cam.combined);
 
-		textRenderer.remove(countdownText);
+		//textRenderer.remove(countdownText);
+		//countdownText.remove();
 		
 		backMusic.stop();
 		
@@ -512,6 +706,7 @@ public class MainSurvivalScreen extends StageScreen {
 	public void resume() {
 		
 		//***not sure if this is true***needs to be tested***
+		//**as of now apparently not needed**
 		//on android assets need to be reloaded (after for example exiting)
 		//car = new TextureRegion(dogRunner.assetManager.get(DogAssets.FERRARI_CAR.fileName, Texture.class));
 		//car.flip(false, true);
@@ -522,7 +717,8 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		if (GameState.RESUMED == gameState || GameState.COUNTDOWN == gameState) {
 			
-			textRenderer.remove(countdownText);
+			//textRenderer.remove(countdownText);
+			//countdownText.remove();
 
 			gameState = GameState.PAUSED;
 
@@ -530,6 +726,15 @@ public class MainSurvivalScreen extends StageScreen {
 			pauseButton.setVisible(false);
 			playButton.setTouchable(Touchable.enabled);
 			playButton.setVisible(true);
+			
+			quitButton.setTouchable(Touchable.enabled);
+			quitButton.setVisible(true);
+			
+			countdownText.setText("PAUSED");
+			/*countdownText.setWidth(countdownText.getPrefWidth());
+			countdownText.setX((dogRunner.GAME_WIDTH - countdownText.getWidth()) / 2f);*/
+			//stage.addActor(countdownText);
+			countdownText.setVisible(true);
 			
 			dogRunner.timerHelper.pause();
 			

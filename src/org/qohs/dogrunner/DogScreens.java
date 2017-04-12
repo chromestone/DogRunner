@@ -2,8 +2,6 @@ package org.qohs.dogrunner;
 
 import org.qohs.dogrunner.screens.*;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-
 /**
  * I tried to encapsulate the screens accessibility by other screens.
  * This ended up complicated but we will stick to this.
@@ -25,7 +23,7 @@ public class DogScreens {
 	//private final StageScreen fontSelectScreen;
 
 	//don't instantiate this class outside of DogRunner
-	protected DogScreens(Batch batch) {
+	protected DogScreens() {
 		
 		startScreen = new StartScreen();
 		mainSurvivalScreen = new MainSurvivalScreen();
@@ -66,7 +64,7 @@ public class DogScreens {
 		 */
 		protected StageScreen getStageScreen(DogScreens dogScreens) {
 			
-			StageScreen stageScreen = null;
+			StageScreen stageScreen;
 			
 			//"register" here
 			switch (this	) {

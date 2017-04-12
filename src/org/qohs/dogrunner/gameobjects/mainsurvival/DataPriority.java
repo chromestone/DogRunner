@@ -7,8 +7,8 @@ package org.qohs.dogrunner.gameobjects.mainsurvival;
  */
 class DataPriority {
 
-	public SpawnerBodyData data;
-	public int priority;
+	SpawnerBodyData data;
+	int priority;
 	
 	DataPriority(SpawnerBodyData data, int priority) {
 		

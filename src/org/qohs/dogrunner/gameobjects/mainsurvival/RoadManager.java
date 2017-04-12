@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Array;
  * @author Derek Zhang
  *
  */
-public class RoadManager {
+class RoadManager {
 	
 	private DogRunner dogRunner;
 	
@@ -39,8 +39,8 @@ public class RoadManager {
 	 * It is assumed that roadWidth and roadHeight are in same units
 	 * these units should be consistent with speed
 	 * 
-	 * @param screenWidth
-	 * @param roadHeight
+	 * @param screenWidth the width of the screen
+	 * @param roadHeight the height of the road
 	 * @param speed horizontal velocity of road (units/second)
 	 */
 	RoadManager(float screenWidth, float roadHeight, float speed) {
@@ -127,7 +127,7 @@ public class RoadManager {
 		//dogRunner.batch.begin();
 		
 		Iterator<Point> iterator = tRegionPoints.iterator();
-		Point p = null;
+		Point p;
 		while (iterator.hasNext()) {
 			
 			p = iterator.next();
@@ -164,9 +164,9 @@ public class RoadManager {
 
 	private static class Point {
 		
-		public float x, y;
+		float x, y;
 		
-		public Point(float x, float y) {
+		Point(float x, float y) {
 			
 			this.x = x;
 			this.y = y;

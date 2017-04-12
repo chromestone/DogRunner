@@ -43,14 +43,14 @@ import com.badlogic.gdx.utils.Array;
  *
  */
 //note to programmers looking to register spawner find "PROGRAMMERS LOOK HERE - #DANKMEMES"
-public class SpawnManager {
+class SpawnManager {
 	
 	/**
 	 * The velocity of all bodies (entities) spawned by this spawn manager
 	 */
-	public static final float VELOCITY = 75f;//75f
+	static final float VELOCITY = 75f;//75f
 
-	public static int ROWS = 6;
+	static int ROWS = 6;
 	
 	private final DogRunner dogRunner;
 	

@@ -10,9 +10,12 @@ public interface FileManager {
 
 	/**
 	 * USED FOR Gdx.files.local
-	 * WEIRD STUFF HAPPENING, ALL THESE THINGS POINT TO DIFFERENT DIRECTORIES ON ANDROID
+	 * On Android, local is a whole private directory that starts at "/" and is empty
+	 * for organization, assets is used.
+	 * It also makes it easier on Desktop tests as local and internal are the same
+	 * so both start at the root of the project and the assets are in the asset folder
 	 */
-	static final String PARENT_DIR = "assets/";
+	String PARENT_DIR = "assets/";
 
 	void load();
 	

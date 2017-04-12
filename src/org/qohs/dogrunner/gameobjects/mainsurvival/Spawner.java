@@ -118,7 +118,7 @@ abstract class Spawner {
 	 * When a specific entity spawned by
 	 * the spawner has been crashed into
 	 * 
-	 * @param data
+	 * @param data the spawner data on the crashed entity
 	 */
 	void onCrash(SpawnerBodyData data) {
 		
@@ -133,7 +133,7 @@ abstract class Spawner {
 	 * NOTE: If destroying was due to data.destroyed = true,
 	 * then this method will NOT be called.
 	 * 
-	 * @param data
+	 * @param data the spawner data on the destroyed entity
 	 */
 	void onDestroy(SpawnerBodyData data) {
 		
@@ -142,7 +142,7 @@ abstract class Spawner {
 	/**
 	 * What I look like. lolz :)
 	 * 
-	 * @param data
+	 * @param data the spawner data on the entity to be drawn
 	 * @return drawable (sprite of what I look like)
 	 */
 	abstract Drawable getDrawable(SpawnerBodyData data);
@@ -150,7 +150,7 @@ abstract class Spawner {
 	/**
 	 * How wide I am.
 	 * 
-	 * @param data
+	 * @param data the spawner data of the entity
 	 * @return width of me
 	 */
 	abstract float getWidth(SpawnerBodyData data);
@@ -158,7 +158,7 @@ abstract class Spawner {
 	/**
 	 * How tall I am.
 	 * 
-	 * @param data
+	 * @param data the spawner data of the entity
 	 * @return height of me
 	 */
 	abstract float getHeight(SpawnerBodyData data);

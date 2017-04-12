@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * @author Gudrun T.
  *
  */
-public class UnicornSpawner extends Spawner {
+class UnicornSpawner extends Spawner {
 	private final TextureRegionDrawable textureDrawable;
 	
 	private final PolygonShape shape;
@@ -66,7 +66,7 @@ public class UnicornSpawner extends Spawner {
 
 		waveCount += 1;
 
-		if (waveCount > 10) {
+		if (waveCount > 19) {
 
 			DataPriority data = super.get((int)(Math.random()*2) + 2);
 			data.priority = 9999;

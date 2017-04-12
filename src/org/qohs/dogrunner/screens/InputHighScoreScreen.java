@@ -8,6 +8,7 @@ import org.qohs.dogrunner.io.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -186,6 +187,7 @@ public class InputHighScoreScreen extends StageScreen {
 			String temp = textField.getText().trim();
 			if (temp.length() <= 0) {
 				
+				continueButton.setTouchable(Touchable.disabled);
 				warningDialog.show(stage);
 			}
 			else {
@@ -229,11 +231,15 @@ public class InputHighScoreScreen extends StageScreen {
 		*/
 		
 		@Override
-		public void result(Object result) {
+		protected void result(Object result) {
 			
-			if (Boolean.valueOf(String.valueOf(result))) {
+			if (Boolean.parseBoolean(String.valueOf(result))) {
 				
 				InputHighScoreScreen.this.dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
+			}
+			else {
+				
+				continueButton.setTouchable(Touchable.enabled);
 			}
 		}
 	}
