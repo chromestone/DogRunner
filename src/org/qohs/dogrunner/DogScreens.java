@@ -20,7 +20,8 @@ public class DogScreens {
 	private final StageScreen inputHighScoreScreen;
 	private final StageScreen storylineScreen;
 	private final StageScreen clickerScreen;
-	//private final StageScreen fontSelectScreen;
+	private final StageScreen optionsScreen;
+	private final StageScreen selectStorylineScreen;
 
 	//don't instantiate this class outside of DogRunner
 	protected DogScreens() {
@@ -31,7 +32,8 @@ public class DogScreens {
 		inputHighScoreScreen = new InputHighScoreScreen();
 		storylineScreen = new StorylineScreen();
 		clickerScreen = new ClickerScreen();
-		//fontSelectScreen = new FontSelectScreen();
+		optionsScreen = new OptionsScreen();
+		selectStorylineScreen = new SelectStorylineScreen();
 	}
 	
 	//dispose screens here
@@ -43,7 +45,8 @@ public class DogScreens {
 		inputHighScoreScreen.dispose();
 		storylineScreen.dispose();
 		clickerScreen.dispose();
-		//fontSelectScreen.dispose();
+		optionsScreen.dispose();
+		selectStorylineScreen.dispose();
 	}
 	
 	public enum Type {
@@ -54,8 +57,9 @@ public class DogScreens {
 		HIGH_SCORE_SCREEN,
 		INPUT_HIGH_SCORE_SCREEN,
 		STORYLINE_SCREEN,
-		CLICKER_SCREEN;
-		//FONT_SELECT_SCREEN;		
+		CLICKER_SCREEN,
+		OPTIONS_SCREEN,
+		SELECT_STORY_SCREEN;
 
 		/**
 		 * 
@@ -93,10 +97,14 @@ public class DogScreens {
 				
 				stageScreen = dogScreens.clickerScreen;
 				break;
-			/*case FONT_SELECT_SCREEN:
+			case OPTIONS_SCREEN:
 				
-				stageScreen = dogScreens.fontSelectScreen;
-				break;*/
+				stageScreen = dogScreens.optionsScreen;
+				break;
+			case SELECT_STORY_SCREEN:
+				
+				stageScreen = dogScreens.selectStorylineScreen;
+				break;
 			default:
 				
 				stageScreen = null;

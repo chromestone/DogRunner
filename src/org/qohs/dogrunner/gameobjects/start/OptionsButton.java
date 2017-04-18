@@ -77,6 +77,6 @@ public class OptionsButton extends GameObject {
 	
 	public void clicked() {
 		
-		dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
+		dogRunner.setScreen(DogScreens.Type.OPTIONS_SCREEN);
 	}
 }

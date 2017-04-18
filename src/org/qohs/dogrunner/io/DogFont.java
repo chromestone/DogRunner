@@ -20,7 +20,7 @@ public enum DogFont {
 	GOLD_L("GOLD_L", 110),//100
 	YELLOW_L("YELLOW_L", 100),//90
 	YELLOW_M("YELLOW_M", 55),
-	WHITE_L("WHITE_L", 70),//50
+	//WHITE_L("WHITE_L", 70),//50
 	WHITE_M("WHITE_M", 40),
 	WHITE_S("WHITE_S", 25);
 	//ARIAL_RED_XS("");

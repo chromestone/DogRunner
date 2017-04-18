@@ -22,13 +22,13 @@ import com.badlogic.gdx.files.FileHandle;
  */
 public class StorylineFileManager implements FileManager {
 
-	public LinkedList<DialogListRead> storylineDialogList = null;
+	public LinkedList<DialogImageList> storylineDialogList = null;
 	/**
 	 * Technically, this is the next read position or the chapter
 	 * index starting from zero that should next be displayed
 	 */
 	private int readPosition = -1;
-	private int unlockedPosition;
+	private int unlockedPosition = -1;
 	
 	public int getReadPosition() {
 		
@@ -52,7 +52,7 @@ public class StorylineFileManager implements FileManager {
 	@Override
 	public void load() {
 		
-		storylineDialogList = new LinkedList<DialogListRead>();
+		storylineDialogList = new LinkedList<DialogImageList>();
 		
 		try {	
 			
@@ -86,17 +86,35 @@ public class StorylineFileManager implements FileManager {
 		if (!readFile.exists()) {
 
 			readPosition = 0;
+			unlockedPosition = 0;
 			return;
+		}
+		
+		String[] data = readFile.readString().split("\\|");
+		
+		try {
+
+			readPosition = Integer.parseInt(data[0]);
+		}
+		catch (Exception e) {
+
+			Gdx.app.log("DogRunner-chromestone-SFM", e.getMessage());
+			readPosition = 0;
 		}
 		
 		try {
 
-			readPosition = Integer.parseInt(readFile.readString());
+			
+			unlockedPosition = Integer.parseInt(data[1]);
 		}
 		catch (Exception e) {
 
-			Gdx.app.log("DogRunner-chromestone", e.getMessage());
-			readPosition = 0;
+			Gdx.app.log("DogRunner-chromestone-SFM", e.getMessage());
+			unlockedPosition = 0;
+			if (readPosition > unlockedPosition) {
+				
+				unlockedPosition = readPosition;
+			}
 		}
 	}
 
@@ -117,7 +135,7 @@ public class StorylineFileManager implements FileManager {
 		try {
 			
 			FileHandle readFile = Gdx.files.local(FileManager.PARENT_DIR + "storyline/read_story.txt");
-			readFile.writeString("" + readPosition, false);
+			readFile.writeString(readPosition + "|" + unlockedPosition, false);
 		}
 		catch (Exception e) {
 			
@@ -125,7 +143,7 @@ public class StorylineFileManager implements FileManager {
 		}
 	}
 	
-	public static class DialogListRead {
+	public static class DialogImageList {
 		
 		/**
 		 * This should hold a dialog image. The dialog image's image
@@ -135,7 +153,7 @@ public class StorylineFileManager implements FileManager {
 		/**
 		 * This is a reference list to all the non null values in dialogs.
 		 */
-		public final LinkedList<String> images;
+		public final HashSet<String> images;
 		//public boolean read;
 		
 		/*
@@ -145,7 +163,7 @@ public class StorylineFileManager implements FileManager {
 		}
 		*/
 		
-		private DialogListRead(LinkedList<DialogImage> dialogs, LinkedList<String> images) {//, boolean read) {
+		private DialogImageList(LinkedList<DialogImage> dialogs, HashSet<String> images) {//, boolean read) {
 			
 			this.dialogs = dialogs;
 			this.images = images;
@@ -184,7 +202,7 @@ public class StorylineFileManager implements FileManager {
 		
 		//private Integer score = null;
 		private LinkedList<DialogImage> dialogs = null;
-		private LinkedList<String> images = null;
+		private HashSet<String> images = null;
 		private String image = null;
 		
 		@Override
@@ -200,7 +218,7 @@ public class StorylineFileManager implements FileManager {
 
 					//score = new Integer(attributes.getValue("score"));
 					dialogs = new LinkedList<DialogImage>();
-					images = new LinkedList<String>();
+					images = new HashSet<String>();
 				}
 				else {
 
@@ -250,7 +268,7 @@ public class StorylineFileManager implements FileManager {
 				if (qName.equals("chapter")) {
 
 					//StorylineFileManager.this.scoreToStoryline.put(score, dialogs);
-					StorylineFileManager.this.storylineDialogList.add(new DialogListRead(dialogs, images));
+					StorylineFileManager.this.storylineDialogList.add(new DialogImageList(dialogs, images));
 					elementType = ElementType.UNDEFINED;
 				}
 					

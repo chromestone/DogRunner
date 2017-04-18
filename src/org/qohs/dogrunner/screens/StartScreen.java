@@ -82,12 +82,12 @@ public class StartScreen extends StageScreen {
 		
 		backMusic.play();
 	}
-	
+	/*
 	@Override
 	public void render(float delta) {
 		
 		stage.draw();
-	}
+	}*/
 	
 	@Override
 	public void hide() {

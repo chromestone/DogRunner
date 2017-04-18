@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * 
@@ -25,7 +26,7 @@ public class InputHighScoreScreen extends StageScreen {
 	//private static Color color = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.25f);
 	
 	private Label score;
-	private float underTitleY;
+	//private float underTitleY;
 	
 	private TextField textField;
 	
@@ -85,10 +86,7 @@ public class InputHighScoreScreen extends StageScreen {
 		labelStyle.font = font;
 		
 		////////////////////////////////
-
-		score = new Label("", labelStyle);
-		
-		////////////////////////////////
+		float underTitleY;
 		
 		Label title = new Label("New High Score:", labelStyle);
 		
@@ -110,6 +108,15 @@ public class InputHighScoreScreen extends StageScreen {
 		stage.addActor(title);
 		
 		////////////////////////////////
+
+		score = new Label("_", labelStyle);
+		score.setX(dogRunner.GAME_WIDTH / 2f - score.getWidth() / 2f);
+		score.setY(underTitleY);
+		score.setAlignment(Align.center);
+		score.setText("");
+		stage.addActor(score);
+		
+		////////////////////////////////
 		
 		continueButton = new QueryButton(dogRunner.GAME_WIDTH - name.getHeight(), 0f, name.getHeight(), name.getHeight(),
 				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
@@ -118,9 +125,11 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		////////////////////////////////
 		
-		WindowStyle windowStyle = new WindowStyle();
-		windowStyle.titleFont = dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class);
 		BitmapFont titleFont = dogRunner.assetManager.get(DogFont.RED_M.FILE_NAME, BitmapFont.class);
+		
+		WindowStyle windowStyle = new WindowStyle();
+		windowStyle.titleFont = titleFont;
+		
 		
 		//apparently titles don't work very well
 		//(also due to change of coordinates, dialogs draw "inverted" but text is upright? :(
@@ -164,17 +173,17 @@ public class InputHighScoreScreen extends StageScreen {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		
 		score.setText(String.valueOf(dogRunner.userProfile.score));
+		score.setWidth(score.getPrefWidth());
 		if (score.getWidth() > dogRunner.GAME_WIDTH) {
 
 			score.setFontScale(dogRunner.GAME_WIDTH / score.getWidth());
 		}
-		score.setWidth(score.getPrefWidth());
-		score.setX(dogRunner.GAME_WIDTH / 2f - score.getWidth() / 2f);
-		score.setY(underTitleY);
-		
-		stage.addActor(score);
+		//score.setWidth(score.getPrefWidth());
 		
 		textField.setText("");
+		
+		continueButton.setTouchable(Touchable.enabled);
+		continueButton.setVisible(true);
 	}
 	
 	@Override
@@ -188,6 +197,7 @@ public class InputHighScoreScreen extends StageScreen {
 			if (temp.length() <= 0) {
 				
 				continueButton.setTouchable(Touchable.disabled);
+				continueButton.setVisible(false);
 				warningDialog.show(stage);
 			}
 			else {
@@ -212,7 +222,7 @@ public class InputHighScoreScreen extends StageScreen {
 		
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		
-		score.remove();
+		//score.remove();
 		warningDialog.remove();
 	}
 	
@@ -235,11 +245,14 @@ public class InputHighScoreScreen extends StageScreen {
 			
 			if (Boolean.parseBoolean(String.valueOf(result))) {
 				
+				dogRunner.userProfile.reset();
+				
 				InputHighScoreScreen.this.dogRunner.setScreen(DogScreens.Type.HIGH_SCORE_SCREEN);
 			}
 			else {
 				
 				continueButton.setTouchable(Touchable.enabled);
+				continueButton.setVisible(true);
 			}
 		}
 	}

@@ -29,6 +29,8 @@ public final class UserProfile {
 	public byte invincible;
 	
 	public int multiplier;
+	
+	public boolean inGame;
 
 	//don't instantiate this class outside of DogRunner
 	UserProfile() {
@@ -47,5 +49,6 @@ public final class UserProfile {
 		storylineTime = false;
 		invincible = 2;
 		multiplier = 1;
+		inGame = false;
 	}
 }

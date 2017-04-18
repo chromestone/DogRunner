@@ -1,5 +1,8 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.qohs.dogrunner.io.DogTexture;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * @author James Mufah
  */
 class GasStationSpawner extends Spawner {
+	
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	
 	/**
 	 * note: jrock is named after James M. by James
@@ -66,6 +71,8 @@ class GasStationSpawner extends Spawner {
 		dogRunner.userProfile.gasStops++;
 		
 		targetWave = dogRunner.userProfile.previousWave;
+		System.out.println(targetWave);
+		System.out.println(dateFormat.format(new Date()));
 		
 		spawnRetries = 0;
 		
@@ -81,6 +88,8 @@ class GasStationSpawner extends Spawner {
 		super.get(3).data = null;
 		
 		if (waves > targetWave) {
+			
+			System.out.println(dateFormat.format(new Date()));
 
 			DataPriority data = super.get((int) (Math.random() * 2) + 2);
 			data.priority = 10000;

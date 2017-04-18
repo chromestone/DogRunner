@@ -84,6 +84,7 @@ public class StartButton extends GameObject {
 		font.setColor(color);
 		//dogRunner.userProfile.score = 0;
 		dogRunner.userProfile.reset();
+		dogRunner.userProfile.inGame = true;
 		dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class).stop();
 		dogRunner.setScreen(DogScreens.Type.STORYLINE_SCREEN);
 	}

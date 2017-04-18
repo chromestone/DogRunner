@@ -102,12 +102,14 @@ public class LoadingScreen extends StageScreen {
 					
 					fontSelectScreen = new FontSelectScreen();
 				}
+				
+				creator.loadFonts = true;
 
 				dogRunner.setScreen(fontSelectScreen);
 				
 				return;
 			}
-			
+
 			if (creator.create()) {
 					
 				dogRunner.setScreen(DogScreens.Type.START_SCREEN);
@@ -120,7 +122,8 @@ public class LoadingScreen extends StageScreen {
 			progressBar.setValue(dogRunner.assetManager.getProgress());
 		}
 		
-		stage.draw();
+		//stage.draw();
+		super.render(delta);
 	}
 	
 	@Override

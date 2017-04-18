@@ -37,8 +37,9 @@ public class HighScoreScreen extends StageScreen {
 		BitmapFont font = dogRunner.assetManager.get(DogFont.YELLOW_L.FILE_NAME, BitmapFont.class);
 		GlyphLayout glyphLayout = new GlyphLayout(font, "A");
 		parameter.size = (int) (dogRunner.GAME_HEIGHT / (HighScore.MAX_HIGH_SCORES + 1.0) * glyphLayout.width / glyphLayout.height);
+		parameter.size = parameter.size > dogRunner.fontSelectFM.fontSizeMax ? dogRunner.fontSelectFM.fontSizeMax : parameter.size;
 		parameter.color = Color.WHITE;
-		parameter.borderColor = Color.BLACK;
+		//parameter.borderColor = Color.BLACK;
 		parameter.flip = true;
 		//parameter.borderWidth = 1f;
 		//parameter.borderColor = Color.WHITE;

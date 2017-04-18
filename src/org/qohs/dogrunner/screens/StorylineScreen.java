@@ -6,7 +6,7 @@ import org.qohs.dogrunner.gameobjects.QueryButton;
 import org.qohs.dogrunner.io.DogCustomGraphic;
 import org.qohs.dogrunner.io.DogFont;
 import org.qohs.dogrunner.io.DogAtlasRegion;
-import org.qohs.dogrunner.io.StorylineFileManager.DialogListRead;
+import org.qohs.dogrunner.io.StorylineFileManager.DialogImageList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -39,7 +39,7 @@ public class StorylineScreen extends StageScreen {
 	private QueryButton forwardButton;
 	private int index;
 	
-	private DialogListRead storyline;
+	private DialogImageList storyline;
 	
 	private ProgressBar progressBar;
 	
@@ -144,24 +144,17 @@ public class StorylineScreen extends StageScreen {
 		//if there is no chapter corresponding to this gas stop
 		if (dogRunner.userProfile.gasStops >=
 				dogRunner.storyFM.storylineDialogList.size()) {
-			
-			if (dogRunner.userProfile.gasStops > 0) {
-				
-				dogRunner.setScreen(DogScreens.Type.CLICKER_SCREEN);
-			}
-			else {
-				
-				dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
-			}
+
+			chooseNextScreen();
+
 			return;
 		}
 		
 		storyline = dogRunner.storyFM.storylineDialogList.get(dogRunner.userProfile.gasStops);
 		
-		//if this gas stop corresponding chapter has been read
-		if (dogRunner.userProfile.gasStops < dogRunner.storyFM.getReadPosition()) {
+		//if in game and this gas stop corresponding chapter has been read
+		if (dogRunner.userProfile.inGame && dogRunner.userProfile.gasStops < dogRunner.storyFM.getReadPosition()) {
 
-			//go to clicker if not first stop
 			if (dogRunner.userProfile.gasStops > 0) {
 
 				dogRunner.setScreen(DogScreens.Type.CLICKER_SCREEN);
@@ -176,17 +169,11 @@ public class StorylineScreen extends StageScreen {
 		
 		//if there is a chapter but it is empty
 		if (storyline.dialogs.size() == 0) {//storyline.read) {
-			
+
 			//dogRunner.storyFM.readPosition = dogRunner.userProfile.gasStops + 1;
-			dogRunner.storyFM.setReadPosition(dogRunner.userProfile.gasStops);
-			if (dogRunner.userProfile.gasStops > 0) {
-				
-				dogRunner.setScreen(DogScreens.Type.CLICKER_SCREEN);
-			}
-			else {
-				
-				dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
-			}
+			dogRunner.storyFM.setReadPosition(dogRunner.userProfile.gasStops + 1);
+			
+			chooseNextScreen();
 			
 			return;
 		}
@@ -206,6 +193,23 @@ public class StorylineScreen extends StageScreen {
 		
 		renderable = new Loader();
 		renderable.show();
+	}
+	
+	private void chooseNextScreen() {
+		
+		if (!dogRunner.userProfile.inGame) {
+			
+			dogRunner.setScreen(DogScreens.Type.SELECT_STORY_SCREEN);
+		}
+		//go to clicker if not first stop
+		else if (dogRunner.userProfile.gasStops > 0) {
+			
+			dogRunner.setScreen(DogScreens.Type.CLICKER_SCREEN);
+		}
+		else {
+			
+			dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
+		}
 	}
 	
 	@Override
@@ -337,7 +341,11 @@ public class StorylineScreen extends StageScreen {
 					
 						//dogRunner.storyFM.readPosition = dogRunner.userProfile.gasStops + 1;
 						dogRunner.storyFM.setReadPosition(dogRunner.userProfile.gasStops + 1);
-						if (dogRunner.userProfile.gasStops > 0) {
+						/*
+						if (!dogRunner.userProfile.inGame) {
+							
+						}
+						else if (dogRunner.userProfile.gasStops > 0) {
 
 							dogRunner.setScreen(DogScreens.Type.CLICKER_SCREEN);
 						}
@@ -345,6 +353,8 @@ public class StorylineScreen extends StageScreen {
 
 							dogRunner.setScreen(DogScreens.Type.MAIN_SURVIVE_SCREEN);
 						}
+						*/
+						chooseNextScreen();
 					}
 				}
 				else if (index >= 1) {

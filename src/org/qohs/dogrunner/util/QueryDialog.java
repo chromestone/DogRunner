@@ -1,10 +1,23 @@
 package org.qohs.dogrunner.util;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class QueryDialog extends Dialog {
 	
+	/**
+	 * Waiting is waiting for response (after show called)
+	 * 
+	 * 
+	 * @author Derek Zhang
+	 *
+	 */
 	public enum State {
 
 		WAITING,
@@ -24,12 +37,12 @@ public class QueryDialog extends Dialog {
 	}
 	
 	@Override
-	public Dialog show(Stage stage) {
+	public Dialog show(Stage stage, Action action) {
 		
 		state = State.WAITING;
 		result = null;
 		
-		return super.show(stage);
+		return super.show(stage, action);
 	}
 	
 	public State getState() {
@@ -39,11 +52,11 @@ public class QueryDialog extends Dialog {
 	
 	public String queryResult() {
 		
-		if (state == State.WAITING) {
+		if (state == State.IDLE) {
 			
 			return "null";
 		}
-		
+
 		state = State.IDLE;
 		
 		String result = this.result;
@@ -55,8 +68,8 @@ public class QueryDialog extends Dialog {
 
 	@Override
 	protected void result(Object result) {
-		System.out.println(result);
+
 		state = State.INPUTTED;
-		result = String.valueOf(result);
+		this.result = String.valueOf(result);
 	}
 }

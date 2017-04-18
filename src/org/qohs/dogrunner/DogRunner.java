@@ -295,6 +295,7 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.size = DogFont.GOLD_L.getSize();//(int) (GAME_WIDTH * 110d / 800d);
 		fTFLP.fontParameters.color = Color.GOLD;
 		fTFLP.fontParameters.flip = true;
+		fTFLP.fontParameters.characters = "ADEGOPSU123";//PAUSED GO 123
 
 		assetManager.load(DogFont.GOLD_L.FILE_NAME, BitmapFont.class, fTFLP);
 		
@@ -341,15 +342,6 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.flip = true;
 		
 		assetManager.load(DogFont.WHITE_S.FILE_NAME, BitmapFont.class, fTFLP);
-		
-		fTFLP = new FreeTypeFontLoaderParameter();
-		fTFLP.fontFileName = arial;
-		fTFLP.fontParameters.size = DogFont.WHITE_L.getSize();//(int) (GAME_WIDTH * 50d / 800d);
-		fTFLP.fontParameters.color = Color.WHITE;
-		fTFLP.fontParameters.flip = true;
-		
-		assetManager.load(DogFont.WHITE_L.FILE_NAME, BitmapFont.class, fTFLP);
-
 	}
 	
 	/**
@@ -407,7 +399,7 @@ public class DogRunner extends Game {
 	}
 	
 	public void setScreen(DogScreens.Type type) {
-		
+
 		super.setScreen(type.getStageScreen(dogScreens));
 	}
 	
@@ -436,7 +428,7 @@ public class DogRunner extends Game {
 		
 		private final Thread thread;
 		private boolean created;
-		private boolean fontLoadCalled;
+		public boolean loadFonts;
 		
 		/**
 		 * 
@@ -446,7 +438,7 @@ public class DogRunner extends Game {
 			
 			this.thread = thread;
 			created = false;
-			fontLoadCalled = false;
+			loadFonts = true;
 		}
 		
 		public boolean isIODone() {
@@ -472,11 +464,11 @@ public class DogRunner extends Game {
 			}
 			else {
 				
-				if (!fontLoadCalled) {
+				if (loadFonts) {
 					
 					loadFonts();
 					
-					fontLoadCalled = true;
+					loadFonts = false;//don't load next time
 					return false;
 				}
 				
