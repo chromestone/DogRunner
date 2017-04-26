@@ -1,10 +1,14 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
 //import org.qohs.dogrunner.io.DogSound;
+import org.qohs.dogrunner.io.DogSound;
 import org.qohs.dogrunner.io.DogTexture;
 
 
 
+
+
+import com.badlogic.gdx.audio.Sound;
 //import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,7 +25,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  *
  */
 class UnicornSpawner extends Spawner {
+	
 	private final TextureRegionDrawable textureDrawable;
+	private final TextureRegionDrawable butterflyTexture;
 	
 	private final PolygonShape shape;
 	
@@ -32,6 +38,8 @@ class UnicornSpawner extends Spawner {
 	
 	private int waveCount;
 	
+	private Sound neighing;
+	
 	UnicornSpawner(float gameWidth, float gameHeight) {
 		
 		super(gameWidth, gameHeight);
@@ -40,6 +48,10 @@ class UnicornSpawner extends Spawner {
 		textureRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.UNICORN.FILE_NAME, Texture.class));
 		textureRegion.flip(false, true);
 		textureDrawable = new TextureRegionDrawable(textureRegion);
+		
+		textureRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.BUTTERFLY.FILE_NAME, Texture.class));
+		textureRegion.flip(false, true);
+		butterflyTexture = new TextureRegionDrawable(textureRegion);
 		
 		bodydef = new BodyDef(); 
 		//bodydef.type = BodyDef.BodyType.DynamicBody;
@@ -51,11 +63,12 @@ class UnicornSpawner extends Spawner {
 		shape = new PolygonShape();
 		shape.setAsBox(width / 2f, height / 2f);
 		
-		//sound = dogRunner.assetManager.get(DogSound.MULTIPLIER_SOUND.FILE_NAME, Sound.class);
+		neighing = dogRunner.assetManager.get(DogSound.NEIGH.FILE_NAME, Sound.class);
 		
 		waveCount = 0;
 		
 		//dogRunner.assetManager.get(DogSound.MULTIPLIER_SOUND.FILE_NAME, Sound.class).setVolume(1, 1);
+		
 	}
 
 	@Override
@@ -137,11 +150,17 @@ class UnicornSpawner extends Spawner {
 		data.crashed = true;
 		
 		dogRunner.userProfile.score += 44;
+		
+		neighing.play();
 	}
 
 	@Override
 	Drawable getDrawable(SpawnerBodyData data) {
 
+		if(data.crashed){
+			
+			return butterflyTexture;
+		}
 		return textureDrawable;
 	}
 

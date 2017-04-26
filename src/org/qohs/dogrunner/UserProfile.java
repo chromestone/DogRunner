@@ -40,7 +40,7 @@ public final class UserProfile {
 	
 	public void reset() {
 		
-		score = 114;
+		score = 0;
 		lives = 3;
 		spin = false;
 		gas = 10 * 60;

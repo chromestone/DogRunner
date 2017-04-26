@@ -16,7 +16,8 @@ public enum DogTexture {
 	DONUT_TYPES("texture/types.png"),
 	PROHIBITED("texture/prohibited.png"),
 	UNICORN("texture/unicorn.png"),
-	GAS_INDICATOR("texture/gas_indicator.png");
+	GAS_INDICATOR("texture/gas_indicator.png"),
+	BUTTERFLY("texture/butterfly.png");
 
 	public final String FILE_NAME;
 

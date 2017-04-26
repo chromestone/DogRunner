@@ -50,7 +50,8 @@ public class GasBarManager {
 	}
 	
 	public void reset() {
-		System.out.println(dogRunner.userProfile.gas);
+		
+		//System.out.println("GBM" + dogRunner.userProfile.gas);
 		beginningFuel = dogRunner.userProfile.gas;
 		gasBar.setValue(1f);
 	}

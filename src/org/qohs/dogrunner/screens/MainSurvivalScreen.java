@@ -687,11 +687,6 @@ public class MainSurvivalScreen extends StageScreen {
 				gOScore.setText("Awesome = Derek!");
 				break;
 			}
-			case 3515: {
-				
-				gOScore.setText("Let it snow!");
-				break;
-			}
 			default: {
 				
 				gOScore.setText("" + dogRunner.userProfile.score);
