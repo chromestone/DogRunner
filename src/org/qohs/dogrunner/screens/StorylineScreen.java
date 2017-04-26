@@ -90,13 +90,13 @@ public class StorylineScreen extends StageScreen {
 		
 		////////////////////////////////
 
-		progressBar = new ProgressBar(0f, 1f, .0001f, false,
+		progressBar = new ProgressBar(0f, 1f, .01f, false,
 				dogRunner.assetManager.get(DogCustomGraphic.UI_SKIN.FILE_NAME, Skin.class));
 		
 		progressBar.setX(-dogRunner.GAME_WIDTH * .25f);
 		progressBar.setWidth(dogRunner.GAME_WIDTH * 1.25f);
 		progressBar.setY((dogRunner.GAME_HEIGHT - progressBar.getHeight()) / 2f);
-		
+
 		stage.addActor(progressBar);
 		
 		////////////////////////////////

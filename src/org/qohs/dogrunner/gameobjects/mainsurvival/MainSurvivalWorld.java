@@ -45,6 +45,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	//public CarSpawner carSpawner;
 	private RoadManager roadManager;
 	private SpawnManager spawnManager;
+	private GasConsumer gasConsumer;
 	
 	//public int crashes;
 	
@@ -72,6 +73,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		init();
 		
 		spawnManager = new SpawnManager(this, meterWidth, meterHeight, carWidth * 1.5f);
+		gasConsumer = new GasConsumer();
 	}
 
 	private void init() {
@@ -127,6 +129,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	protected void preAct(float delta) {
 		
 		spawnManager.act(delta);
+		gasConsumer.act(delta);
 	}
 
 	@Override

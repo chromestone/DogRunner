@@ -2,6 +2,7 @@ package org.qohs.dogrunner.screens;
 
 import org.qohs.dogrunner.gameobjects.ColorInterrupter;
 import org.qohs.dogrunner.gameobjects.QueryButton;
+import org.qohs.dogrunner.io.DogAtlasRegion;
 import org.qohs.dogrunner.io.DogCustomGraphic;
 import org.qohs.dogrunner.io.DogFont;
 import org.qohs.dogrunner.io.DogTexture;
@@ -115,7 +116,7 @@ public class FontSelectScreen extends StageScreen {
 		
 		stage.addActor(new ColorInterrupter(dogRunner.batch.getColor()));
 		
-		progressBar = new ProgressBar(0f, 1f, .0001f, false,
+		progressBar = new ProgressBar(0f, 1f, .01f, false,
 				dogRunner.assetManager.get(DogCustomGraphic.UI_SKIN.FILE_NAME, Skin.class));
 		
 		progressBar.setX(-dogRunner.GAME_WIDTH * .25f);
@@ -135,7 +136,7 @@ public class FontSelectScreen extends StageScreen {
 		
 		stage.addActor(noButton);
 		
-		temp = new TextureRegion(dogRunner.assetManager.get(DogTexture.CHECK.FILE_NAME, Texture.class));
+		temp = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.CHECK));
 		temp.flip(false, true);
 		yesButton = new QueryButton(0f, dogRunner.GAME_HEIGHT * .75f,
 				dogRunner.GAME_HEIGHT * .25f, dogRunner.GAME_HEIGHT *.25f, 

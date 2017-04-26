@@ -18,6 +18,7 @@ public abstract class GameObject extends Actor {
 	protected DogRunner dogRunner;
 	protected float x, y;
 	protected float width, height;
+	protected ClickListener listener;
 	
 	public GameObject(float x, float y, float width, float height) {
 		
@@ -34,7 +35,7 @@ public abstract class GameObject extends Actor {
 		this.setY(y);
 		this.setWidth(width);
 		this.setHeight(height);
-		this.addListener(new MyClickListener());
+		this.addListener(listener = new MyClickListener());
 	}
 	
 	/**

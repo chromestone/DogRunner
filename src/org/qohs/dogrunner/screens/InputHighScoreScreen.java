@@ -17,6 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 /**
+ * I couldn't find a better place to blab:
+ * 
+ * The difference between pref width and height and just width and height
+ * is that width and height is actually what the hit box of the actor is
+ * the pref width and height is where the drawn boundaries of the actor is
+ * so the actor can actually draw outside of its hit box
+ * width and height are set. you have to MANUALLY change them
  * 
  * @author Derek Zhang
  *

@@ -13,10 +13,10 @@ public final class UserProfile {
 	public int score;
 	public int lives;
 	/**
-	 * Also equivalent to the ceiling of how many minutes
-	 * left until game over. (i.e. 30 seconds left, gas would be 1 still)
+	 * Also equivalent to how many seconds
+	 * left until game over.
 	 */
-	//public int gas;
+	public int gas;
 	public boolean spin;
 	
 	public int gasStops;
@@ -40,14 +40,14 @@ public final class UserProfile {
 	
 	public void reset() {
 		
-		score = 0;
+		score = 114;
 		lives = 3;
 		spin = false;
-		//gas = 10;
+		gas = 10 * 60;
 		gasStops = 0;
 		previousWave = 0;
 		storylineTime = false;
-		invincible = 2;
+		invincible = 0;
 		multiplier = 1;
 		inGame = false;
 	}

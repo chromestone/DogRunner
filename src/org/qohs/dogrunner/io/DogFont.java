@@ -22,7 +22,8 @@ public enum DogFont {
 	YELLOW_M("YELLOW_M", 55),
 	//WHITE_L("WHITE_L", 70),//50
 	WHITE_M("WHITE_M", 40),
-	WHITE_S("WHITE_S", 25);
+	WHITE_S("WHITE_S", 25),
+	WHITE_M_BD("WHITE_M_BD", 40);
 	//ARIAL_RED_XS("");
 
 	public static final String FONT_NAME = "new_roman";

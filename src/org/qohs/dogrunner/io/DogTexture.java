@@ -10,15 +10,13 @@ import org.qohs.dogrunner.DogRunner;
  */
 public enum DogTexture {
 
-	//DOG("placeholder/dog.png"),
 	ROAD_IMG("texture/road.png"),
 	GAS_STATION("texture/gas_station_car.png"),
 	START_BACKGROUND("texture/start_background.png"),
 	DONUT_TYPES("texture/types.png"),
-	GHOST("texture/ghost.png"),
 	PROHIBITED("texture/prohibited.png"),
-	CHECK("texture/check.png"),
-	UNICORN("texture/unicorn.png");
+	UNICORN("texture/unicorn.png"),
+	GAS_INDICATOR("texture/gas_indicator.png");
 
 	public final String FILE_NAME;
 

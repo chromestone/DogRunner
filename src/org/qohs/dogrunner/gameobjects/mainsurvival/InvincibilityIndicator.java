@@ -1,10 +1,9 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
 import org.qohs.dogrunner.gameobjects.GameObject;
-import org.qohs.dogrunner.io.DogTexture;
+import org.qohs.dogrunner.io.DogAtlasRegion;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -28,7 +27,7 @@ public class InvincibilityIndicator extends GameObject {
 		
 		super(x, y, width, height);
 		
-		ghost = new TextureRegion(dogRunner.assetManager.get(DogTexture.GHOST.FILE_NAME, Texture.class));
+		ghost = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.GHOST));
 		ghost.flip(false, true);
 		
 		super.width = super.getHeight() * ghost.getRegionWidth() / ghost.getRegionHeight();

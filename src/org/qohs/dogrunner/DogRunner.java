@@ -342,6 +342,19 @@ public class DogRunner extends Game {
 		fTFLP.fontParameters.flip = true;
 		
 		assetManager.load(DogFont.WHITE_S.FILE_NAME, BitmapFont.class, fTFLP);
+		
+		
+		fTFLP = new FreeTypeFontLoaderParameter();
+		//actual directory of file (must be root, i.e. not in a folder other than assets)
+		fTFLP.fontFileName = arial;
+		fTFLP.fontParameters.size = DogFont.WHITE_M_BD.getSize();//(int) (GAME_WIDTH * 40d / 800d);
+		fTFLP.fontParameters.color = Color.WHITE;
+		fTFLP.fontParameters.borderWidth = 2f;
+		fTFLP.fontParameters.borderColor = Color.BLACK;
+		fTFLP.fontParameters.flip = true;
+		
+		//name of this does not matter, however must end in .ttf
+		assetManager.load(DogFont.WHITE_M_BD.FILE_NAME, BitmapFont.class, fTFLP);
 	}
 	
 	/**

@@ -1,14 +1,10 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
-import org.qohs.dogrunner.io.DogSound;
-import org.qohs.dogrunner.io.DogTexture;
+import org.qohs.dogrunner.io.*;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -38,7 +34,7 @@ class GhostSpawner extends Spawner {
 		super(gameWidth, gameHeight);
 		
 		TextureRegion textureRegion;
-		textureRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.GHOST.FILE_NAME, Texture.class));
+		textureRegion = new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.GHOST));
 		textureRegion.flip(false, true);
 		textureDrawable = new TextureRegionDrawable(textureRegion);
 		

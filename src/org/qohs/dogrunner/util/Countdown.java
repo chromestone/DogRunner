@@ -12,6 +12,7 @@ public class Countdown {
 	private float time;
 	
 	/**
+	 * The start time is actually how many seconds to count down from
 	 * 
 	 * @param startTime in seconds
 	 */

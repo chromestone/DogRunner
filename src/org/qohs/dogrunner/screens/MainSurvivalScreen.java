@@ -77,6 +77,11 @@ public class MainSurvivalScreen extends StageScreen {
 	
 	////////////////////////////////
 	
+	private GasBarManager gasBarManager;
+	private GasIndicator gasIndicatorButton;
+	
+	////////////////////////////////
+	
 	//game over (end game) fields
 	private TextureRegion background;
 	private final static Color backgroundColor = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.5f);
@@ -156,6 +161,29 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		////////////////////////////////
 		
+		gasBarManager = new GasBarManager();
+		
+		stage.addActor(gasBarManager.container);
+		
+		TextureRegion gIndiTexture = new TextureRegion(dogRunner.assetManager.get(DogTexture.GAS_INDICATOR.FILE_NAME, Texture.class));
+		gIndiTexture.flip(false, true);
+		float gIWidth = dogRunner.GAME_HEIGHT / 10f;
+		float gIHeight = gIWidth * gIndiTexture.getRegionHeight() / gIndiTexture.getRegionWidth();
+		gasIndicatorButton = new GasIndicator(dogRunner.GAME_WIDTH - gIWidth - gasBarManager.gasBar.getWidth(),
+				dogRunner.GAME_HEIGHT - gIHeight,
+				gIWidth,
+				gIHeight,
+				gIndiTexture);
+		/*gasIndicatorButton.setWidth(dogRunner.GAME_HEIGHT / 10f);
+		gasIndicatorButton.setHeight(gasIndicatorButton.getWidth()
+				* gIndiTexture.getRegionHeight() / gIndiTexture.getRegionWidth());
+		gasIndicatorButton.setX(dogRunner.GAME_WIDTH - gasIndicatorButton.getWidth() - gasBarManager.gasBar.getWidth());
+		gasIndicatorButton.setY(dogRunner.GAME_HEIGHT - gasIndicatorButton.getHeight());*/
+		gasIndicatorButton.setColor(new Color(1f, 1f, 1f, .35f));
+		
+		stage.addActor(new ColorInterrupter(dogRunner.batch.getColor()));
+		////////////////////////////////
+	
 		labelStyle = new LabelStyle();
 		labelStyle.font = dogRunner.assetManager.get(DogFont.YELLOW_L.FILE_NAME, BitmapFont.class);
 		
@@ -195,6 +223,9 @@ public class MainSurvivalScreen extends StageScreen {
 		lowerHandler = (ClickListener) lowerClickHandler.getListeners().get(0);
 		
 		stage.addActor(lowerClickHandler);
+		
+		////////////////////////////////
+		stage.addActor(gasIndicatorButton);
 		
 		////////////////////////////////
 		scoreText = new ScoreText(0f, 0f, dogRunner.GAME_WIDTH, dogRunner.GAME_HEIGHT / 6f);
@@ -329,6 +360,8 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		gameOver.setVisible(false);
 		gOScore.setVisible(false);
+		
+		gasBarManager.reset();
 		
 		dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class).stop();
 		
@@ -632,20 +665,44 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			gameOver.setVisible(true);
 			gOScore.setVisible(true);
-			if (dogRunner.userProfile.score != 4) {
+			switch (dogRunner.userProfile.score) {
+			
+			case 4: {
+				
+				gOScore.setText("Go Gudrun!");
+				break;
+			}
+			case 114: {
+				
+				gOScore.setText("Hey Yunseo!");
+				break;
+			}
+			case 410: {
+				
+				gOScore.setText("Get Olivia-ed!");
+				break;
+			}
+			case 522: {
+				
+				gOScore.setText("Awesome = Derek!");
+				break;
+			}
+			case 3515: {
+				
+				gOScore.setText("Let it snow!");
+				break;
+			}
+			default: {
 				
 				gOScore.setText("" + dogRunner.userProfile.score);
+				break;
 			}
-			//easter egg of the year
-			else {
-
-				gOScore.setText("Go Gudrun!");
 			}
 			
 			//gOScore.setWidth(gOScore.getPrefWidth());
 			if (gOScore.getPrefWidth() > dogRunner.GAME_WIDTH) {
 
-				gOScore.setFontScale(dogRunner.GAME_WIDTH / gOScore.getWidth());
+				gOScore.setFontScale(dogRunner.GAME_WIDTH / gOScore.getPrefWidth());
 			}
 			
 			gameState = GameState.GAME_OVER;
@@ -677,6 +734,7 @@ public class MainSurvivalScreen extends StageScreen {
 		if (dogRunner.userProfile.spin) {
 
 			cam.rotate(.1f);
+			cam.update();
 		}
 	}
 	
@@ -752,6 +810,8 @@ public class MainSurvivalScreen extends StageScreen {
 		physicsWorld.act(delta);
 		
 		//stage.act(delta);
+		
+		gasBarManager.update();
 	}
 
 	@Override

@@ -132,7 +132,7 @@ class CarSpawner extends Spawner {
 		//NPCBodyData npcData = (NPCBodyData) data;
 		if (!data.crashed) {
 
-			dogRunner.userProfile.score += 1;
+			dogRunner.userProfile.score += dogRunner.userProfile.multiplier;
 		}
 	}
 
