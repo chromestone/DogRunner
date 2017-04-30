@@ -20,6 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class OptionsScreen extends StageScreen {
 
 	private QueryButton continueButton;
@@ -71,8 +76,8 @@ public class OptionsScreen extends StageScreen {
 		LabelStyle whiteLabel = new LabelStyle();
 		whiteLabel.font = font;
 		whiteLabel.fontColor = Color.BLACK;
-		TextureRegionDrawable temp = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
-		whiteLabel.background = temp;
+		//TextureRegionDrawable temp = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
+		whiteLabel.background = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));;
 		
 		////////////////////////////////
 		

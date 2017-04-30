@@ -12,23 +12,23 @@ public class HighScore {
 	public static int MAX_HIGH_SCORES = 5;
 
 	public LinkedList<String> names;
-	public LinkedList<Integer> scores;
+	public LinkedList<Long> scores;
 	
 	private boolean modified;
 	
-	public HighScore(LinkedList<String> names, LinkedList<Integer> score) {
+	public HighScore(LinkedList<String> names, LinkedList<Long> score) {
 		
 		this.names = names;
 		this.scores = score;
 		modified = false;
 	}
 	
-	public boolean isHighScore(Integer score) {
+	public boolean isHighScore(Long score) {
 		
 		return scores.size() < MAX_HIGH_SCORES || getScoreIndex(score) != -1;
 	}
 	
-	private int getScoreIndex(Integer score) {
+	private int getScoreIndex(Long score) {
 		
 		int i = 0;
 		for (; i < scores.size(); i++) {
@@ -46,9 +46,8 @@ public class HighScore {
 		
 		return -1;
 	}
-	
-	//TODO: do this
-	public boolean updateScores(String name, Integer score) {
+
+	public boolean updateScores(String name, Long score) {
 
 		modified = true;
 

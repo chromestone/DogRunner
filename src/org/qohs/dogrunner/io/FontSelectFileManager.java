@@ -3,6 +3,11 @@ package org.qohs.dogrunner.io;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class FontSelectFileManager implements FileManager {
 
 	public boolean validatedSize = false;

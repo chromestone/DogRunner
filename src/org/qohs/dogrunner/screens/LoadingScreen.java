@@ -98,7 +98,7 @@ public class LoadingScreen extends StageScreen {
 			}
 
 			if (creator.create()) {
-					
+				
 				dogRunner.setScreen(DogScreens.Type.START_SCREEN);
 				
 				return;

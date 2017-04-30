@@ -117,7 +117,7 @@ public class HighScoreScreen extends StageScreen {
 		color = new Color(Color.GOLD);
 		color.a = .9f;
 		
-		Iterator<Integer> it = dogRunner.highScoreFM.highScore.scores.iterator();
+		Iterator<Long> it = dogRunner.highScoreFM.highScore.scores.iterator();
 		while (it.hasNext() && drawHeight < dogRunner.GAME_HEIGHT) {
 			
 			Label label = new Label(it.next().toString(), labelStyle2);

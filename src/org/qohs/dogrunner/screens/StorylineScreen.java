@@ -340,7 +340,10 @@ public class StorylineScreen extends StageScreen {
 					else {
 					
 						//dogRunner.storyFM.readPosition = dogRunner.userProfile.gasStops + 1;
-						dogRunner.storyFM.setReadPosition(dogRunner.userProfile.gasStops + 1);
+						if (dogRunner.userProfile.inGame) {
+							
+							dogRunner.storyFM.setReadPosition(dogRunner.userProfile.gasStops + 1);
+						}
 						/*
 						if (!dogRunner.userProfile.inGame) {
 							

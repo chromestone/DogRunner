@@ -21,6 +21,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class SelectStorylineScreen extends StageScreen {
 	
 	private final MyClickListener listener;
@@ -29,8 +34,7 @@ public class SelectStorylineScreen extends StageScreen {
 	private ScrollPane sP;
 	
 	private QueryButton continueButton;
-	
-	private Label title;
+
 	//private final float initialY;
 	
 	private final LabelStyle labelStyle;
@@ -55,8 +59,8 @@ public class SelectStorylineScreen extends StageScreen {
 
 		titleStyle = new LabelStyle();
 		titleStyle.font = dogRunner.assetManager.get(DogFont.YELLOW_M.FILE_NAME, BitmapFont.class);
-		
-		title = new Label("Storyline", titleStyle);
+
+		Label title = new Label("Storyline", titleStyle);
 		title.setColor(Color.GOLD);
 		title.setX((dogRunner.GAME_WIDTH - title.getWidth()) / 2f);
 		title.setY(0f);
@@ -99,8 +103,8 @@ public class SelectStorylineScreen extends StageScreen {
 		whiteStyle = new LabelStyle();
 		whiteStyle.font = font;
 		whiteStyle.fontColor = Color.BLACK;
-		TextureRegionDrawable temp = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
-		whiteStyle.background = temp;
+		//TextureRegionDrawable temp = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
+		whiteStyle.background = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
 	}
 	
 	@Override
@@ -165,7 +169,7 @@ public class SelectStorylineScreen extends StageScreen {
 			
 			dogRunner.setScreen(DogScreens.Type.OPTIONS_SCREEN);
 			
-			return;
+			//return;
 		}
 	}
 	

@@ -81,7 +81,9 @@ public class MainSurvivalScreen extends StageScreen {
 	private GasIndicator gasIndicatorButton;
 	
 	////////////////////////////////
+	private HealthIndicator healthIndi;
 	
+	////////////////////////////////
 	//game over (end game) fields
 	private TextureRegion background;
 	private final static Color backgroundColor = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.5f);
@@ -120,7 +122,7 @@ public class MainSurvivalScreen extends StageScreen {
 		////////////////////////////////
 		//configure screen units
 		cam = new OrthographicCamera();
-		cam.setToOrtho(true, meterWidth, meterHeight);
+//		cam.setToOrtho(true, meterWidth, meterHeight);
 		//stage.getViewport().setCamera(cam);
 		
 		////////////////////////////////
@@ -179,7 +181,7 @@ public class MainSurvivalScreen extends StageScreen {
 				* gIndiTexture.getRegionHeight() / gIndiTexture.getRegionWidth());
 		gasIndicatorButton.setX(dogRunner.GAME_WIDTH - gasIndicatorButton.getWidth() - gasBarManager.gasBar.getWidth());
 		gasIndicatorButton.setY(dogRunner.GAME_HEIGHT - gasIndicatorButton.getHeight());*/
-		gasIndicatorButton.setColor(new Color(1f, 1f, 1f, .35f));
+		gasIndicatorButton.setColor(new Color(1f, 1f, 1f, .5f));
 		
 		stage.addActor(new ColorInterrupter(dogRunner.batch.getColor()));
 		////////////////////////////////
@@ -309,6 +311,12 @@ public class MainSurvivalScreen extends StageScreen {
 	
 		backMusic = dogRunner.assetManager.get(DogMusic.BACKGROUND_THEME.FILE_NAME, Music.class);
 		backMusic.setLooping(true);
+		
+		////////////////////////////////
+		
+		stage.addActor(healthIndi = new HealthIndicator(0f, 0f,
+				dogRunner.GAME_HEIGHT / 12f, dogRunner.GAME_HEIGHT / 12f));
+		////////////////////////////////
 	}
 	
 	@Override
@@ -318,6 +326,9 @@ public class MainSurvivalScreen extends StageScreen {
 				
 		//set screen units
 		//note that these directly apply to drawing and must be set back once screen changes [this.hide()]
+		
+		cam.setToOrtho(true, meterWidth, meterHeight);
+		
 		//dogRunner.batch.setProjectionMatrix(cam.combined);
 		dogRunner.renderer.setProjectionMatrix(cam.combined);
 		
@@ -363,6 +374,11 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		gasBarManager.reset();
 		
+		gasBarManager.gasBar.setVisible(true);
+		gasIndicatorButton.setVisible(true);
+		
+		healthIndi.setVisible(true);
+		
 		dogRunner.assetManager.get(DogMusic.START_THEME.FILE_NAME, Music.class).stop();
 		
 		dogRunner.assetManager.get(DogSound.IGNITION_REV.FILE_NAME, Sound.class).play();//.play(1f);
@@ -375,6 +391,7 @@ public class MainSurvivalScreen extends StageScreen {
 	private void removePowerUps() {
 		
 		dogRunner.userProfile.invincible = 0;
+		dogRunner.userProfile.multiplier = dogRunner.userProfile.spin ? ((byte) 10) : ((byte) 1);
 	}
 
 	@Override
@@ -638,7 +655,7 @@ public class MainSurvivalScreen extends StageScreen {
 	 */
 	private void doGameResumed() {
 
-		if (dogRunner.userProfile.lives <= 0){//physicsWorld.playerCarTotalled) {
+		if (dogRunner.userProfile.lives <= 0 || dogRunner.userProfile.gas <= 0){//physicsWorld.playerCarTotalled) {
 
 			//dogRunner.assetManager.get(DogSound.CAR_CRASH_BONG.FILE_NAME, Sound.class).play();
 			dogRunner.assetManager.get(DogSound.CRASH_DEATH.FILE_NAME, Sound.class).play();
@@ -665,33 +682,31 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			gameOver.setVisible(true);
 			gOScore.setVisible(true);
-			switch (dogRunner.userProfile.score) {
 			
-			case 4: {
+			gasBarManager.gasBar.setVisible(false);
+			gasIndicatorButton.setVisible(false);
+			
+			healthIndi.setVisible(false);
+			
+			if (dogRunner.userProfile.score == 4) {
 				
 				gOScore.setText("Go Gudrun!");
-				break;
 			}
-			case 114: {
+			else if (dogRunner.userProfile.score == 114) {
 				
 				gOScore.setText("Hey Yunseo!");
-				break;
 			}
-			case 410: {
+			else if (dogRunner.userProfile.score == 410) {
 				
 				gOScore.setText("Get Olivia-ed!");
-				break;
 			}
-			case 522: {
+			else if (dogRunner.userProfile.score == 522) {
 				
 				gOScore.setText("Awesome = Derek!");
-				break;
 			}
-			default: {
+			else {
 				
 				gOScore.setText("" + dogRunner.userProfile.score);
-				break;
-			}
 			}
 			
 			//gOScore.setWidth(gOScore.getPrefWidth());
@@ -783,13 +798,29 @@ public class MainSurvivalScreen extends StageScreen {
 			
 			if (upperHandler.isPressed() || com.badlogic.gdx.Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) {
 				
-				physicsWorld.carBody.setLinearVelocity(0f, -120f);
-				upperClickHandler.activated = true;
+				if (dogRunner.userProfile.invertControl) {
+					
+					physicsWorld.carBody.setLinearVelocity(0f, 120f);
+					lowerClickHandler.activated = true;
+				}
+				else {
+
+					physicsWorld.carBody.setLinearVelocity(0f, -120f);
+					upperClickHandler.activated = true;
+				}
 			}
 			else {
 				
-				physicsWorld.carBody.setLinearVelocity(0f, 120f);
-				lowerClickHandler.activated = true;
+				if (dogRunner.userProfile.invertControl) {
+					
+					physicsWorld.carBody.setLinearVelocity(0f, -120f);
+					upperClickHandler.activated = true;
+				}
+				else {
+
+					physicsWorld.carBody.setLinearVelocity(0f, 120f);
+					lowerClickHandler.activated = true;
+				}
 			}
 		}
 		else {

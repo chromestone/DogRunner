@@ -174,12 +174,12 @@ public class DogRunner extends Game {
 	 * Required items to load before game starts
 	 */
 	private void forceLoad() {
-		
+
 		assetManager.load(DogRunner.PARENT_DIR + "uiskin/uiskin.atlas", TextureAtlas.class);
 
 		assetManager.load(DogCustomGraphic.UI_SKIN.FILE_NAME, Skin.class,
 				new SkinLoader.SkinParameter(DogRunner.PARENT_DIR + "uiskin/uiskin.atlas"));
-		
+
 		assetManager.finishLoading();
 	}
 	

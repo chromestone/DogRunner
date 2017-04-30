@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class OptionsButton extends GameObject {
 	
 	private Color color;
@@ -36,6 +41,8 @@ public class OptionsButton extends GameObject {
 
 		fontX = x;// + width / 2 - glyphLayout.width / 2;
 		fontY = y + height / 2 - glyphLayout.height / 2;
+		
+		this.setWidth(glyphLayout.width);
 	}
 
 	@Override

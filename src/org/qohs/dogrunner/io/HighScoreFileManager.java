@@ -23,7 +23,7 @@ public class HighScoreFileManager implements FileManager {
 		
 		FileHandle file = Gdx.files.local(FileManager.PARENT_DIR + "highscores.txt");
 		LinkedList<String> names = new LinkedList<String>();
-		LinkedList<Integer> scores = new LinkedList<Integer>();
+		LinkedList<Long> scores = new LinkedList<Long>();
 		if (!file.exists()) {
 			
 			highScore = new HighScore(names, scores);
@@ -37,7 +37,7 @@ public class HighScoreFileManager implements FileManager {
 			if (arr.length == 2) {
 				
 				names.add(arr[0].trim());
-				scores.add(Integer.valueOf(arr[1]));
+				scores.add(Long.valueOf(arr[1]));
 			}
 		}
 		highScore = new HighScore(names, scores);
@@ -57,7 +57,7 @@ public class HighScoreFileManager implements FileManager {
 			char colon = ':', semiColon = ';';
 
 			Iterator<String> it1 = highScore.names.iterator();
-			Iterator<Integer> it2 = highScore.scores.iterator();
+			Iterator<Long> it2 = highScore.scores.iterator();
 			while (it1.hasNext() && it2.hasNext()) {
 
 				stringBuilder.append(it1.next());

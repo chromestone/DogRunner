@@ -23,7 +23,7 @@ public class ProgressBarCustomizer {
 	 * 
 	 * @param dogRunner the current dog runner instance
 	 * @param progressBar the progress bar to act on
-	 * @return
+	 * @return the progressbar that has been customized
 	 */
 	public static ProgressBar customize1(DogRunner dogRunner, ProgressBar progressBar) {
 		

@@ -41,6 +41,9 @@ public class HighScoreButton extends GameObject {
 
 		fontX = dogRunner.GAME_WIDTH - glyphLayout.width;//x + width / 2 - glyphLayout.width / 2;
 		fontY = y + height / 2 - glyphLayout.height / 2;
+		
+		this.setX(fontX);
+		this.setWidth(glyphLayout.width);
 	}
 
 	@Override

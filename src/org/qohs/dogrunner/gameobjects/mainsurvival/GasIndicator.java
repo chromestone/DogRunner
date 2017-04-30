@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * 
+ * @author Derek Zhang
+ *
+ */
 public class GasIndicator extends TextureRegionGameObject {
 
 	public GasIndicator(float x, float y, float width, float height,
@@ -27,10 +32,9 @@ public class GasIndicator extends TextureRegionGameObject {
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
 		
-		Actor actor = super.hit(x, y, touchable);
-		if (actor != null && dogRunner.userProfile.score == 522) {
+		if (dogRunner.userProfile.score == 522) {
 			
-			return actor;
+			return super.hit(x, y, touchable);
 		}
 		return null;
 	}
@@ -39,6 +43,6 @@ public class GasIndicator extends TextureRegionGameObject {
 	public void clicked() {
 
 		dogRunner.userProfile.spin = true;
-		dogRunner.userProfile.multiplier = 10;
+		dogRunner.userProfile.multiplier = (byte) 10;
 	}
 }

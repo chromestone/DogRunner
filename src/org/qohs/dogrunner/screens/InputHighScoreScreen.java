@@ -180,10 +180,9 @@ public class InputHighScoreScreen extends StageScreen {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		
 		score.setText(String.valueOf(dogRunner.userProfile.score));
-		score.setWidth(score.getPrefWidth());
-		if (score.getWidth() > dogRunner.GAME_WIDTH) {
+		if (score.getPrefWidth() > dogRunner.GAME_WIDTH) {
 
-			score.setFontScale(dogRunner.GAME_WIDTH / score.getWidth());
+			score.setFontScale(dogRunner.GAME_WIDTH / score.getPrefWidth());
 		}
 		//score.setWidth(score.getPrefWidth());
 		
@@ -208,7 +207,7 @@ public class InputHighScoreScreen extends StageScreen {
 				warningDialog.show(stage);
 			}
 			else {
-				
+
 				dogRunner.highScoreFM.highScore.updateScores(temp, dogRunner.userProfile.score);
 				
 				dogRunner.highScoreFM.save();

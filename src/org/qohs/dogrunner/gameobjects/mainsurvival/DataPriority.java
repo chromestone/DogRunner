@@ -16,11 +16,9 @@ class DataPriority {
 		this.priority = priority;
 	}
 	
-	/*
 	@Override
 	public String toString() {
 		
 		return "" + data;
 	}
-	*/
 }

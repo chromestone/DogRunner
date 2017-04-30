@@ -1,8 +1,5 @@
 package org.qohs.dogrunner.gameobjects.mainsurvival;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.qohs.dogrunner.io.DogTexture;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -17,15 +14,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * 
  * @author Derek Zhang
  * @author James Mufah
+ * 
  */
 class GasStationSpawner extends Spawner {
 	
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	private static final int PRIORITY = 100;
 	
-	/**
-	 * note: jrock is named after James M. by James
-	 */
-	private final TextureRegionDrawable jrockDrawable;
+	//private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	
+	private final TextureRegionDrawable gasDrawable;
 	
 	private final PolygonShape shape;
 	
@@ -41,16 +38,16 @@ class GasStationSpawner extends Spawner {
 		
 		super(gameWidth, gameHeight);
 		
-		TextureRegion jrockTRegion;
-		jrockTRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.GAS_STATION.FILE_NAME, Texture.class));
-		jrockTRegion.flip(false, true);
-		jrockDrawable = new TextureRegionDrawable(jrockTRegion);
+		TextureRegion gasTRegion;
+		gasTRegion = new TextureRegion(dogRunner.assetManager.get(DogTexture.GAS_STATION.FILE_NAME, Texture.class));
+		gasTRegion.flip(false, true);
+		gasDrawable = new TextureRegionDrawable(gasTRegion);
 		
 		bodydef = new BodyDef(); 
 		//bodydef.type = BodyDef.BodyType.DynamicBody;
 		
 	    height = 7f * gameHeight / 48f;
-	    width = height * jrockTRegion.getRegionWidth() / jrockTRegion.getRegionHeight();
+	    width = height * gasTRegion.getRegionWidth() / gasTRegion.getRegionHeight();
 
 		//shape
 		shape = new PolygonShape();
@@ -71,8 +68,8 @@ class GasStationSpawner extends Spawner {
 		dogRunner.userProfile.gasStops++;
 		
 		targetWave = dogRunner.userProfile.previousWave;
-		System.out.println(targetWave);
-		System.out.println(dateFormat.format(new Date()));
+		//System.out.println(targetWave);
+		//System.out.println(dateFormat.format(new Date()));
 		
 		spawnRetries = 0;
 		
@@ -89,10 +86,10 @@ class GasStationSpawner extends Spawner {
 		
 		if (waves > targetWave) {
 			
-			System.out.println(dateFormat.format(new Date()));
+			//System.out.println(dateFormat.format(new Date()));
 
 			DataPriority data = super.get((int) (Math.random() * 2) + 2);
-			data.priority = 10000;
+			data.priority = PRIORITY;
 			data.data = new SpawnerBodyData(this);//PhysicsBodyType.GAS_STATION, this);
 			
 			if (spawnRetries == 0) {
@@ -122,7 +119,7 @@ class GasStationSpawner extends Spawner {
 	@Override
 	Drawable getDrawable(SpawnerBodyData data) {
 
-		return jrockDrawable;
+		return gasDrawable;
 	}
 
 	@Override

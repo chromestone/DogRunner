@@ -16,11 +16,11 @@ public class TextureRegionGameObject extends GameObject {
 
 	/**
 	 * 
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param tRegion
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param width how wide i am
+	 * @param height how tall i am
+	 * @param tRegion the texture region to display
 	 */
 	public TextureRegionGameObject(float x, float y, float width, float height, TextureRegion tRegion) {
 		

@@ -22,9 +22,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * 
  * @author Derek Zhang
  * @author Gudrun T.
- *
+ * 
  */
 class UnicornSpawner extends Spawner {
+	
+	private final static int PRIORITY = 90;
 	
 	private final TextureRegionDrawable textureDrawable;
 	private final TextureRegionDrawable butterflyTexture;
@@ -79,17 +81,17 @@ class UnicornSpawner extends Spawner {
 
 		waveCount += 1;
 
-		if (waveCount > 19) {
+		if (waveCount > 19) {//19
 
 			DataPriority data = super.get((int)(Math.random()*2) + 2);
-			data.priority = 9999;
+			data.priority = PRIORITY;
 			data.data = new SpawnerBodyData(this);//PhysicsBodyType.UNICORN, this);
 			waveCount = 0;
 		}
-		else if (((int) (Math.random() * 30)) == 0) {
+		else if (Math.random() * 30 < 1) {
 
 			DataPriority data = super.get((int)(Math.random()*2) + 2);
-			data.priority = 9999;
+			data.priority = PRIORITY;
 			data.data = new SpawnerBodyData(this);//PhysicsBodyType.UNICORN, this);
 		}
 		
@@ -122,22 +124,6 @@ class UnicornSpawner extends Spawner {
 		}
 		*/
 	}
-	
-	/*
-	@Override
-	void act(SpawnerBodyData data) {
-		
-		if (data.crashed) {
-			
-			//20 seconds of invisibility
-			//Invincibility.scheduleInvinciblity(20, 5);
-			//data.destroy = true;
-			//sound.play();
-			//MULTIPLIERData.soundPlayed = true;
-			System.out.println("sysout");
-		}
-	}
-	*/
 	
 	@Override
 	void onCrash(SpawnerBodyData data) {

@@ -32,7 +32,7 @@ public class DonutTRegionManager implements FileManager {
 	@Override
 	public void load() {
 		
-		FileHandle file = Gdx.files.internal(DogRunner.PARENT_DIR + "/texture/types.txt");
+		FileHandle file = Gdx.files.internal(DogRunner.PARENT_DIR + "texture/types.txt");
 		String mapdata = file.readString();
 		mapdata = mapdata.replaceAll("\r", "");
 		String[] mappings = mapdata.split("\n");

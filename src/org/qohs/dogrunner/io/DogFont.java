@@ -48,8 +48,8 @@ public enum DogFont {
 	
 	/**
 	 * Don't use this unless you are Dog Runner
-	 * @param width
-	 * @param testWidth
+	 * @param width actual width when deployed
+	 * @param testWidth the width we usually use in testing
 	 */
 	public void scale(int width, int testWidth) {
 		
@@ -59,7 +59,7 @@ public enum DogFont {
 	
 	/**
 	 * Don't use this unless you are Font Select Screen
-	 * @param maxSize
+	 * @param maxSize maximize size the fonts are to be capped with
 	 */
 	public static void cap(int maxSize) {
 		

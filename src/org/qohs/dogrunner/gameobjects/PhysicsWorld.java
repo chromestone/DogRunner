@@ -24,8 +24,8 @@ public abstract class PhysicsWorld {
 	/**
 	 * Note to children classes: call init in the constructor!!! (if you want it to run)
 	 * 
-	 * @param gravity
-	 * @param doSleep
+	 * @param gravity the gravity to be applied in the world
+	 * @param doSleep whether to sleep the world at time (see libGDX doc)
 	 */
 	public PhysicsWorld(Vector2 gravity, boolean doSleep) {
 		
@@ -78,7 +78,7 @@ public abstract class PhysicsWorld {
 	/**
 	 * Called before the world act (step) is called
 	 * 
-	 * @param delta
+	 * @param delta total time passed since last call
 	 */
 	protected void preAct(float delta) {
 
@@ -95,7 +95,7 @@ public abstract class PhysicsWorld {
 	/**
 	 * Called after all the world act (step) is called
 	 * 
-	 * @param delta
+	 * @param delta total time passed since last call
 	 */
 	protected void postAct(float delta) {
 

@@ -47,12 +47,17 @@ class SpawnManager {
 	
 	/**
 	 * The velocity of all bodies (entities) spawned by this spawn manager
+	 * (base velocity, will increase over time)
 	 */
-	static final float VELOCITY = 75f;//75f
+	private static final float VELOCITY = 76f;//75f
+	private static final float MAX_VEL = 120f;
+	private static final byte MAX_STOP = 22;
 
 	static int ROWS = 6;
 	
 	private final DogRunner dogRunner;
+	
+	private final float m_velocity;
 	
 	//THESE SHOULD BE USED/SET BY THE MAIN SURVIVAL WORLD
 	//AND THUS ARE IN --->METERS<---
@@ -80,7 +85,8 @@ class SpawnManager {
 	private final Spawner[] carWaveSpawner;
 	private final Spawner[] betweenWaveSpawner;
 	
-	private final DataPriority[] emptySpawnList;
+	//private final DataPriority[] emptySpawnList;
+	private final DataPriority emptyData;
 	private final DataPriority[] spawnList;
 	
 	private Array<Body> bodiesArray;
@@ -107,6 +113,8 @@ class SpawnManager {
 		
 		this.world = world;
 		
+		m_velocity = (dogRunner.userProfile.gasStops < MAX_STOP ? VELOCITY + (dogRunner.userProfile.gasStops) * 2f : MAX_VEL);
+
 		pendingCarWave = true;
 		
 		//carWaveSpawner = new Array<Spawner>(10);
@@ -127,9 +135,9 @@ class SpawnManager {
 		carWavePos = gameWidth + cSp.getWidth() / 2f;// + gameWidth / 5f;
 		betweenWavePos = gameWidth + occurringLength / 2f;// + gameWidth / 5f;
 		
-		carWaveTime = cSp.getWidth() / VELOCITY;
+		carWaveTime = cSp.getWidth() / m_velocity;
 		
-		betweenWaveTime = occurringLength / VELOCITY;
+		betweenWaveTime = occurringLength / m_velocity;
 
 		////////////////////////////////
 		
@@ -142,15 +150,20 @@ class SpawnManager {
 		carWaveSpawner = new Spawner[]{cSp};
 		
 		betweenWaveSpawner = new Spawner[]{new GhostSpawner(gameWidth, gameHeight),
-				new GasStationSpawner(gameWidth, gameHeight), new UnicornSpawner(gameWidth, gameHeight)};
+				new GasStationSpawner(gameWidth, gameHeight), new UnicornSpawner(gameWidth, gameHeight),
+				new MultiplierSpawner(gameWidth, gameHeight), new ReverseSpawner(gameWidth, gameHeight)};
 		
 		////////////////////////////////
 		
-		emptySpawnList = new DataPriority[ROWS];
+		/*emptySpawnList = new DataPriority[ROWS];
 		Arrays.fill(emptySpawnList, new DataPriority(null, 0));
 		
 		spawnList = new DataPriority[ROWS];
-		System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
+		System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);*/
+		
+		emptyData = new DataPriority(null, 0);
+		spawnList = new DataPriority[ROWS];
+		Arrays.fill(spawnList, emptyData);
 	}
 	
 	public void act(float delta) {
@@ -159,12 +172,12 @@ class SpawnManager {
 		if (pendingCarWave) {
 			
 			if (accumulator >= betweenWaveTime) {
-				
+
 				requestSpawn(carWaveSpawner);
 				
 				spawnThem();
 				
-				System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
+				//System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
 				
 				accumulator -= betweenWaveTime;
 				
@@ -174,12 +187,12 @@ class SpawnManager {
 		else {
 			
 			if (accumulator >= carWaveTime) {
-				
+
 				requestSpawn(betweenWaveSpawner);
 
 				spawnThem();
 				
-				System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
+				//System.arraycopy(emptySpawnList, 0, spawnList, 0, ROWS);
 				
 				accumulator -= carWaveTime;
 				
@@ -247,22 +260,22 @@ class SpawnManager {
 	private void requestSpawn(Spawner[] spawners) {
 		
 		for (Spawner spawner : spawners) {
-			
+
 			DataPriority[] reqSpawnList = spawner.requestSpawnList();
 			//System.out.println(Arrays.toString(reqSpawnList));
 			for (int i = 0; i < ROWS; i++) {
 				
-				if (spawnList[i].data == null) {
-					
-					spawnList[i] = reqSpawnList[i];
-				}
-				else if (reqSpawnList[i].data != null) {
-					
-					if (reqSpawnList[i].priority > spawnList[i].priority) {
-						
+				if (reqSpawnList[i].data != null) {
+
+					if (spawnList[i].data == null) {
+
 						spawnList[i] = reqSpawnList[i];
 					}
-					
+					else if (reqSpawnList[i].priority > spawnList[i].priority) {
+
+						spawnList[i] = reqSpawnList[i];
+					}
+
 					//spawnList[i].data = null;
 				}
 			}
@@ -276,7 +289,7 @@ class SpawnManager {
 			DataPriority dataPriority = spawnList[i];
 			
 			if (dataPriority.data != null) {
-				
+
 				Spawner spawner = dataPriority.data.spawner;
 				
 				BodyDef bodyDef = spawner.getBodyDef();
@@ -291,7 +304,7 @@ class SpawnManager {
 					
 					bodyDef.position.set(betweenWavePos, ((i) * 2f + 1f) * gameHeight / 12f);
 				}
-				bodyDef.linearVelocity.set(-VELOCITY, 0f);
+				bodyDef.linearVelocity.set(-m_velocity, 0f);
 				
 				Body body = world.createBody(bodyDef);
 				
@@ -300,8 +313,8 @@ class SpawnManager {
 				
 				bodiesArray.add(body);
 			}
-			
-			//spawnList[i].data = null;
+
+			spawnList[i] = emptyData;//emptySpawnList[i];
 		}
 	}
 	

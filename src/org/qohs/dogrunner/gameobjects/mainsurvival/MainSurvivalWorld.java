@@ -159,12 +159,12 @@ public class MainSurvivalWorld extends PhysicsWorld {
 	@Override
 	public void dispose() {
 		
-		super.dispose();
-		
-		if (isDisposed()) {
+		if (!isDisposed()) {
 			
 			spawnManager.dispose();
 		}
+		
+		super.dispose();
 	}
 	
 	private void createCarBody() {

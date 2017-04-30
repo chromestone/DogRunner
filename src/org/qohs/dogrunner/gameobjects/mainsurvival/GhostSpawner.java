@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 class GhostSpawner extends Spawner {
 	
+	private static final int PRIORITY = 100;
+	
 	private final TextureRegionDrawable textureDrawable;
 	
 	private final PolygonShape shape;
@@ -76,15 +78,15 @@ class GhostSpawner extends Spawner {
 			if (waveCount > 38) {
 				
 				DataPriority data = super.get(randomIndex());//(int)(Math.random()*2) + 2);
-				data.priority = 9999;
+				data.priority = PRIORITY;
 				resetData();
 				data.data = theData;//PhysicsBodyType.GHOST, this);
 				waveCount = 0;
 			}
-			else if (((int) (Math.random() * 30)) == 0) {
+			else if (Math.random() * 30 < 1) {
 				
 				DataPriority data = super.get(randomIndex());
-				data.priority = 9999;
+				data.priority = PRIORITY;
 				resetData();
 				data.data = theData;//PhysicsBodyType.GHOST, this);
 			}
