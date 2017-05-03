@@ -392,6 +392,7 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		dogRunner.userProfile.invincible = 0;
 		dogRunner.userProfile.multiplier = dogRunner.userProfile.spin ? ((byte) 10) : ((byte) 1);
+		dogRunner.userProfile.invertControl = false;
 	}
 
 	@Override

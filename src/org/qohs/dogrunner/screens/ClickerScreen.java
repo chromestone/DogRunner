@@ -193,6 +193,7 @@ public class ClickerScreen extends StageScreen {
 		resumedGroup.setVisible(false);
 		instructions.setVisible(true);
 		
+		pauseButton.setVisible(true);
 		pauseButton.setTouchable(Touchable.disabled);
 		
 		nextButton.setVisible(false);
@@ -333,6 +334,7 @@ public class ClickerScreen extends StageScreen {
 				instructions.setVisible(false);
 				resumedGroup.setVisible(true);
 				
+				//pauseButton.setVisible(true);
 				pauseButton.setTouchable(Touchable.enabled);
 		
 				stage.removeListener(this);
