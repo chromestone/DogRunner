@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.Array;
  */
 class RoadManager {
 	
+	private static final float SPEED = 130f;//165f
+	
 	private DogRunner dogRunner;
 	
 	private float screenWidth;
@@ -41,9 +43,8 @@ class RoadManager {
 	 * 
 	 * @param screenWidth the width of the screen
 	 * @param roadHeight the height of the road
-	 * @param speed horizontal velocity of road (units/second)
-	 */
-	RoadManager(float screenWidth, float roadHeight, float speed) {
+	 *///@param speed horizontal velocity of road (units/second)
+	RoadManager(float screenWidth, float roadHeight) {//, float speed) {
 		
 		dogRunner = DogRunner.getInstance();
 		
@@ -55,7 +56,7 @@ class RoadManager {
 		this.roadHeight = roadHeight;
 		this.roadWidth = roadHeight * road.getRegionWidth() / road.getRegionHeight();
 		
-		distance = speed * PhysicsWorld.STEP_RATE;
+		distance = SPEED * PhysicsWorld.STEP_RATE;
 		
 		road = new TextureRegion(dogRunner.assetManager.get(DogTexture.ROAD_IMG.FILE_NAME, Texture.class));
 		road.flip(false, true);

@@ -68,7 +68,7 @@ public class MainSurvivalWorld extends PhysicsWorld {
 		//crashes = 0;
 
 		//carSpawner = new CarSpawner(world, meterWidth, meterHeight, carWidth * 1.5f);
-		roadManager = new RoadManager(meterWidth, meterHeight, 165f);
+		roadManager = new RoadManager(meterWidth, meterHeight);//, 165f);
 		
 		init();
 		
