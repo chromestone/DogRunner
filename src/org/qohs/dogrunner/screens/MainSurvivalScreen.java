@@ -695,7 +695,7 @@ public class MainSurvivalScreen extends StageScreen {
 			}
 			else if (dogRunner.userProfile.score == 114) {
 				
-				gOScore.setText("Hey Yunseo!");
+				gOScore.setText("Hey Yunseo! Howdy Ellen!");
 			}
 			else if (dogRunner.userProfile.score == 410) {
 				
