@@ -140,7 +140,7 @@ public class OptionsScreen extends StageScreen {
 				dogRunner.getAtlasRegion(DogAtlasRegion.BLANK))
 		.tint(backColor));
 		
-		warningDialog.setWidth(dogRunner.GAME_WIDTH);
+		//warningDialog.setWidth(dogRunner.GAME_WIDTH);
 	}
 	
 	@Override
@@ -232,6 +232,10 @@ public class OptionsScreen extends StageScreen {
 			else if (event.getTarget() == resetStoryline) {
 				
 				warningDialog.show(stage);
+				if (warningDialog.getPrefWidth() > dogRunner.GAME_WIDTH) {
+
+					warningDialog.setScale(dogRunner.GAME_WIDTH / warningDialog.getPrefWidth());
+				}
 			}
 			else {
 				

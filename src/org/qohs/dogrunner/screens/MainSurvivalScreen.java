@@ -759,6 +759,11 @@ public class MainSurvivalScreen extends StageScreen {
 			playButton.setTouchable(Touchable.disabled);
 			
 			quitDialog.show(stage);//, null);
+			
+			if (quitDialog.getPrefWidth() > dogRunner.GAME_WIDTH) {
+
+				quitDialog.setScale(dogRunner.GAME_WIDTH / quitDialog.getPrefWidth());
+			}
 		}
 		else if (playButton.queryClicked()) {
 			

@@ -169,7 +169,7 @@ public class InputHighScoreScreen extends StageScreen {
 				dogRunner.getAtlasRegion(DogAtlasRegion.BLANK))
 		.tint(backColor));
 		
-		warningDialog.setWidth(dogRunner.GAME_WIDTH);
+		//warningDialog.setWidth(dogRunner.GAME_WIDTH);
 	}
 	
 	@Override
@@ -205,6 +205,10 @@ public class InputHighScoreScreen extends StageScreen {
 				continueButton.setTouchable(Touchable.disabled);
 				continueButton.setVisible(false);
 				warningDialog.show(stage);
+				if (warningDialog.getWidth() > dogRunner.GAME_WIDTH) {
+
+					warningDialog.setScale(dogRunner.GAME_WIDTH / warningDialog.getWidth());
+				}
 			}
 			else {
 
