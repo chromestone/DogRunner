@@ -33,7 +33,7 @@ public class GasBarManager {
 		
 		dogRunner = DogRunner.getInstance();
 		
-		float gasY = dogRunner.GAME_HEIGHT / 2f + dogRunner.GAME_HEIGHT / 20f;
+		float gasY = dogRunner.GAME_HEIGHT / 2f + dogRunner.GAME_HEIGHT * 3f / 40f;
 		
 		container= new Table();
 		container.setTransform(true);

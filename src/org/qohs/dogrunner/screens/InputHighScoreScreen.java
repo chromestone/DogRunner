@@ -59,6 +59,10 @@ public class InputHighScoreScreen extends StageScreen {
 		stage.addActor(name);
 		
 		////////////////////////////////
+		
+		float specialSize = name.getHeight() * 1.5f;
+		
+		////////////////////////////////
 
 		/*TextFieldStyle tFStyle = new TextFieldStyle();
 		tFStyle.font = smallFont;
@@ -79,7 +83,7 @@ public class InputHighScoreScreen extends StageScreen {
 		textField.getStyle().cursor = (new TextureRegionDrawable(
 				dogRunner.assetManager.get(DogRunner.PARENT_DIR + "uiskin/uiskin.atlas", TextureAtlas.class)
 				.findRegion("default-round")));
-		textField.setWidth(dogRunner.GAME_WIDTH);
+		textField.setWidth(dogRunner.GAME_WIDTH - specialSize);
 		textField.setHeight(name.getHeight());
 		textField.setX(0f);
 		textField.setY(name.getY() + name.getHeight());
@@ -124,8 +128,8 @@ public class InputHighScoreScreen extends StageScreen {
 		stage.addActor(score);
 		
 		////////////////////////////////
-		
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - name.getHeight(), 0f, name.getHeight(), name.getHeight(),
+
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - specialSize, 0f, specialSize, specialSize,
 				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		
 		stage.addActor(continueButton);

@@ -236,13 +236,16 @@ public class MainSurvivalScreen extends StageScreen {
 		
 		////////////////////////////////
 		//pause and play buttons
-		pauseButton = new QueryButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 2f - dogRunner.GAME_HEIGHT / 20f,
-				dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 10f, 
+		
+		float size = dogRunner.GAME_HEIGHT * 3f / 20f;
+		
+		pauseButton = new QueryButton(dogRunner.GAME_WIDTH - size, (dogRunner.GAME_HEIGHT - size) / 2f,
+				size, size, 
 				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.PAUSE_IMG)));
 		stage.addActor(pauseButton);
 		
-		playButton = new QueryButton(dogRunner.GAME_WIDTH - dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 2f - dogRunner.GAME_HEIGHT / 20f,
-				dogRunner.GAME_HEIGHT / 10f, dogRunner.GAME_HEIGHT / 10f, 
+		playButton = new QueryButton(dogRunner.GAME_WIDTH - size, (dogRunner.GAME_HEIGHT - size) / 2f,
+				size, size, 
 				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		/*new QueryButton(dogRunner.GAME_WIDTH / 2f - dogRunner.GAME_HEIGHT / 2f, 0f, dogRunner.GAME_HEIGHT, dogRunner.GAME_HEIGHT, 
 				new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));*/

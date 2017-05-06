@@ -43,13 +43,6 @@ public class OptionsScreen extends StageScreen {
 		stage.addActor(new ColorInterrupter(dogRunner.batch.getColor()));
 		
 		////////////////////////////////
-
-		float size = dogRunner.GAME_HEIGHT / 10f;
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - size, 0f, size, size, new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
-		
-		stage.addActor(continueButton);
-		
-		////////////////////////////////
 		
 		LabelStyle labelStyle;
 		
@@ -63,6 +56,14 @@ public class OptionsScreen extends StageScreen {
 		title.setX((dogRunner.GAME_WIDTH - title.getWidth()) / 2f);
 		title.setY(0f);
 		title.setHeight(title.getPrefHeight() * 1.5f);
+		
+		//float size = dogRunner.GAME_HEIGHT / 10f;
+		float size = title.getHeight() * .75f;
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - size, 0f, size, size, new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
+		
+		////////////////////////////////
+		
+		stage.addActor(continueButton);
 		
 		stage.addActor(title);
 		

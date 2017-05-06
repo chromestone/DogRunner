@@ -47,11 +47,6 @@ public class SelectStorylineScreen extends StageScreen {
 		listener = new MyClickListener();
 		
 		////////////////////////////////
-
-		float size = dogRunner.GAME_HEIGHT / 10f;
-		continueButton = new QueryButton(dogRunner.GAME_WIDTH - size, 0f, size, size, new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
-		
-		////////////////////////////////
 		
 		LabelStyle titleStyle;
 		
@@ -67,6 +62,12 @@ public class SelectStorylineScreen extends StageScreen {
 		title.setHeight(title.getPrefHeight() * 1.5f);
 		
 		//initialY = title.getHeight();
+		
+		////////////////////////////////
+		
+		float size = title.getHeight() * .75f;
+		//float size = dogRunner.GAME_HEIGHT / 10f;
+		continueButton = new QueryButton(dogRunner.GAME_WIDTH - size, 0f, size, size, new TextureRegion(dogRunner.getAtlasRegion(DogAtlasRegion.RESUME_IMG)));
 		
 		////////////////////////////////
 		
