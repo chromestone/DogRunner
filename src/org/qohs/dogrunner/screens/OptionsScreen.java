@@ -78,7 +78,7 @@ public class OptionsScreen extends StageScreen {
 		whiteLabel.font = font;
 		whiteLabel.fontColor = Color.BLACK;
 		//TextureRegionDrawable temp = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
-		whiteLabel.background = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));;
+		whiteLabel.background = new TextureRegionDrawable(dogRunner.getAtlasRegion(DogAtlasRegion.BLANK));
 		
 		////////////////////////////////
 		

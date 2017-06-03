@@ -1,5 +1,6 @@
 package org.qohs.dogrunner.io;
 
+import java.io.InputStream;
 import java.util.*;
 
 import javax.xml.parsers.SAXParser;
@@ -16,6 +17,16 @@ import com.badlogic.gdx.files.FileHandle;
 /**
  * 
  * SFM
+ * 
+ * Notes: Makes no sense. Apparently Gdx.files.internal does get the assets folder directory or something
+ * but it always appends a slash. So a call with "storyline.xml" gets file:///storyline.xml at least when .file() is called.
+ *
+ * Apparently Gdx.files.local also works despite it shouldn't. A call with assets/storyline.xml for example get's the filehandle
+ * to the read only space for some reason. If you get the parent of it to list children it will not contain anything
+ *
+ * From both internal and local one can get a string or inputstream just fine but file doesn't work
+ *
+ * the moral of the story is that FileHandle and java.io.File don't mix well
  * 
  * @author Derek Zhang
  *
@@ -56,11 +67,15 @@ public class StorylineFileManager implements FileManager {
 		
 		try {	
 			
+			//FileHandle inputFile = Gdx.files.local(FileManager.PARENT_DIR + "storyline/storyline.xml");
 			FileHandle inputFile = Gdx.files.internal(DogRunner.PARENT_DIR + "storyline/storyline.xml");
+			InputStream inputStream = inputFile.read();
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser saxParser = factory.newSAXParser();
 			MyHandler userhandler = new MyHandler();
-			saxParser.parse(inputFile.file(), userhandler);
+			//saxParser.parse(inputFile.file(), userhandler);
+			saxParser.parse(inputStream, userhandler);
+			inputStream.close();
 			
 			/*
 			InputStream inputStream = readFile.read();

@@ -1,5 +1,7 @@
 package org.qohs.dogrunner.io;
 
+import org.qohs.dogrunner.DogRunner;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -15,7 +17,8 @@ public class CharsetFileManager implements FileManager {
 	@Override
 	public void load() {
 		
-		FileHandle file = Gdx.files.local(FileManager.PARENT_DIR + "charset.txt");
+		//FileHandle file = Gdx.files.local(FileManager.PARENT_DIR + "charset.txt");
+		FileHandle file = Gdx.files.internal(DogRunner.PARENT_DIR + "charset.txt");
 		charset = file.readString();
 	}
 
