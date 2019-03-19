@@ -1,6 +1,8 @@
 # Dog Runner
 
-Developed by the QOHS Game Development Club. (_Actually mostly me, though almost everyone contributed in some way that is not code._)
+Developed by the QOHS Game Development Club (2016-2017). (_Actually mostly me, though almost everyone contributed in some way apart from code._)
+
+Note that this game has almost nothing to do with dogs apart from the storyline and a few images.
 
 **OUR APP IS OUT:**
 
